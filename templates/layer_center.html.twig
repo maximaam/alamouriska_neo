@@ -13,9 +13,10 @@
             <div class="card-body">
                 {% block card_body %}{% endblock %}
             </div>
+            {% block card_footer %}
             <div class="card-footer">
-                {% block card_footer %}{% endblock %}
             </div>
+            {% endblock %}
         </div>
     </div>
 {% endblock %}

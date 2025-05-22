@@ -1,6 +1,6 @@
 :root {
     --dark-grey: #333333;
-    --mid-grey: #cccccc;
+    --mid-grey: #999999;
     --light-grey: #dddddd;
     --dark-blue: #0B4B85;
     --light-blue: #1372A9;
@@ -188,6 +188,12 @@ main {
             }
         }
     }
+}
+
+
+.help-text {
+    color: var(--mid-grey) !important;
+    text-align: right;
 }
 
 @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */

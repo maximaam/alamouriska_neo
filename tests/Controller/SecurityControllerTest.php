@@ -34,8 +34,7 @@ class SecurityControllerTest extends WebTestCase
         $user = (new User())
             ->setEmail('email@example.com')
             ->setDisplayName('samingo')
-            ;
-        $user->setPassword($passwordHasher->hashPassword($user, 'password'));
+            ->setPassword($passwordHasher->hashPassword($user, 'password'));
 
         $em->persist($user);
         $em->flush();
