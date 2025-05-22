@@ -1,0 +1,70 @@
+welcome: Bienvenue, Merhba Bikoum!
+slogan: L'appel de la langue algérienne !
+
+label:
+  send: Envoyer
+  user: Utilisateur
+  display_name: Nom d'utilisateur
+  password: Mot de passe
+  login: Connexion
+  register: Inscription
+  email_address: Adresse Email
+  reset_password: Réinitialiser le mot de passe
+  reset_password_help: Mets ton Adresse Email et tu receveras un message pour changer ton mot de passe
+  change_password: Modifier le mot de passe
+  new_password: Nouveau mot de passe
+  repeat_password: Repeter le mot de passe
+  forgot_password: Mot de passe oublié?
+  display_name_only_alnum: Caractères alpha-numériques seulement
+  email_private: L'adresse Email reste privée
+  password_constraints: Mot de passe entre 6 et 64 caractères
+  profile_edit: Modifier le profil
+  profile_image: Image de profil (Optionnel)
+  profile: Profil
+  logout: Déconnexion
+  login_facebook: Connexion avec Facebook
+  no_account: Pas encore de compte? Incris-toi!
+  search: Recherche
+
+flash:
+  registration_pre_confirmation: "Sahit ! Un email de confirmation a été envoyé. Ne pas oublier de confirmer en cliquant sur le lien inclus."
+  registration_confirmation: "Ton inscription est confirmée !"
+  reset_password_invalid_link: "Le lien n'est plus valide. Essaie de nouveau."
+  reset_password_invalid_user: "Utilisateur introuvable."
+  profile_edit_success: "Le profile a été actualisé"
+
+email:
+  registration_subject: "Alamouriska - Confirmation de ton inscription"
+  reset_password_request_subject: "Alamouriska - Réinitialiser le mot de passe"
+
+post:
+  word:
+    singular: Mot
+    plural: Mots
+    title_hint: Insérer le mot...
+    seo_route: mots-algeriens
+  expression:
+    singular: Expression
+    plural: Expressions
+    title_hint: Insérer l'expression...
+    seo_route: expressions-algeriennes
+  proverb:
+    singular: Proverbe
+    plural: Proverbes
+    title_hint: Insérer le proverbe...
+    seo_route: proverbes-algeriens
+  joke:
+    singular: Blague
+    plural: Blagues
+    title_hint: Insérer la blegue...
+    seo_route: blagues-algeriennes
+  label:
+    create: Créer une publication
+  form:
+    label:
+      type: --- Type de publication *
+      title: La publication *
+      description: Explication *
+      question: Je cherche l'explication
+      image:
+        help: Image est optionnelle

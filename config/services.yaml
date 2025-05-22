@@ -4,6 +4,17 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    locale: 'fr'
+    app_name: 'Alamouriska'
+    app_host: 'alamouriska.com'
+    app_secret: '%env(APP_SECRET)%'
+    app_notifier_email: 'app@alamouriska.com'
+    app_receiver_email: 'alamouriska.app@gmail.com'
+    mailer_user: 'app@alamouriska.com'
+    mailer_from: 'app@alamouriska.com'
+    seo_route_post_type: 'mots-algeriens|expressions-algeriennes|proverbes-algeriens|blagues-algeriennes|blogs-langue-algerienne'
+    full_domain: 'https://www.alamouriska.com'
+    public_dir: '%kernel.project_dir%/public'
 
 services:
     # default configuration for services in *this* file
@@ -22,3 +33,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\NavBuilder:
+        arguments: [ "@knp_menu.factory", "@doctrine.orm.entity_manager" ]
+        tags:
+            - { name: knp_menu.menu_builder, method: mainMenu, alias: main }
+            - { name: knp_menu.menu_builder, method: footerMenu, alias: footer }

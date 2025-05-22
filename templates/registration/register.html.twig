@@ -1,23 +1,20 @@
-{% extends 'base.html.twig' %}
+{% extends 'layer_center.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}
+    {{ 'label.register'|trans }}
+    {{ parent() }}
+{% endblock %}
 
-{% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+{% block card_header %}
+    <h1 class="text-center">{{ 'label.register'|trans }}</h1>
+{% endblock %}
+
+{% block card_body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ flashError }}
+        </div>
     {% endfor %}
 
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+    {{ form(form) }}
 {% endblock %}

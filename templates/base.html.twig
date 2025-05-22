@@ -1,9 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale }}">
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <meta charset="utf-8">
+        <title>
+            {% block title %} - {{ app_name }} {% endblock %}
+        </title>
+        <link rel="shortcut icon" sizes="32x32" href="{{ asset('media/images/app/logo.png') }}" type="image/png">
+            
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="index,follow">
+        <meta name="author" content="{{ app_name }}">
+        <meta name="keywords" content="derdja algérienne, daridja, dardja, mots algériens, proverbes algériens, expressions algériennes, alamouriska, zkara, nafha, blagues algériennes">
+        <meta name="description" content="{{ app_name }} est une application dédiée au rassemblement et stockage des mots algériens, du repertoire historique de la derdja.">
+
+        <meta property="fb:app_id" content="440835073385326">
+        <meta property="og:locale" content="fr_FR">
+        <meta property="og:url" content="{{ app.request.uri }}">
+        <meta property="og:type" content="{{ (app.request.get('_route') == 'index_index') ? 'website' : 'article' }}">
+
+        {% block opengraph_image %}
+            <meta property="og:image" content="https://www.alamouriska.com/images/deep-sea2.jpg">
+        {% endblock %}
+
+        {% block opengraph_title %}
+            <meta property="og:title" content="- {{ app_name }}">
+        {% endblock %}
+
+        {% block opengraph_description %}
+            <meta property="og:description" content="{{ app_name }} est une application dédiée au rassemblement et stockage des mots algériens, du repertoire historique de la derdja.">
+        {% endblock %}
+
         {% block stylesheets %}
         {% endblock %}
 
@@ -12,6 +39,74 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header class="main-header">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <a class="navbar-brand" href="{{ path('app_home_index') }}">
+                        <img src="{{ asset('media/images/app/alamouriska-logo.jpg') }}" alt="{{ app_name }} Logo" title="{{ app_name }} - {{ 'slogan' | trans }}" width="48" height="48" class="logo rounded-circle">
+                        <span class="ms-1">
+                            <em class="fw-bold">{{ app_name|upper }}</em>
+                            <br>
+                            <small class="text-light">{{ 'slogan'|trans }}</small>
+                        </span>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-main" aria-controls="navbar-main" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar-main">
+                        {{ knp_menu_render('main') }}
+
+                        <form class="d-flex">
+                            <input class="form-control search-input" type="search" placeholder="{{ 'label.search'|trans }}..." aria-label="Search">
+                            <button class="btn btn-primary search-btn" type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+
+                        <div class="user-container">
+                            {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                                <a href="{{ path('app_home_index') }}" title="{{ app.user.email }} - {{ 'label.profile'|trans }}">
+                                {#
+                                {{ include('partials/avatar.html.twig') }}
+                                #}
+                                    avatar
+                                </a>
+                            {% else %}
+                                <a href="{{ path('app_security_login') }}" title="{{ 'label.login'|trans }}">
+                                    {{ ux_icon('bi:person-fill', {class: 'basic-icon'}) }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="container">
+                <div class="row">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </main>
+
+        <footer class="main-footer py-3 py-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        sdfsdfsdfs
+                        {# {{ knp_menu_render('footer') }} #}
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                        <a href="https://www.facebook.com/alamouriska/" target="_blank" rel="noreferrer" class="display-4 text-white">
+                            <i class="fa fa-facebook-official" title="{{ app_name }} Facebook page"></i>
+                        </a>
+                        <a href="https://www.twitter.com/alamouriska" target="_blank" rel="noreferrer" class="display-4 text-white">
+                            <i class="fa fa-twitter" title="{{ app_name }} Twitter page"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>

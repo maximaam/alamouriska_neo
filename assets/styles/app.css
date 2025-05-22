@@ -1,3 +1,207 @@
+:root {
+    --dark-grey: #333333;
+    --mid-grey: #cccccc;
+    --light-grey: #dddddd;
+    --dark-blue: #0B4B85;
+    --light-blue: #1372A9;
+    --purple: #a91372;
+    --light-purple: #962173;
+    --green: #72a913;
+    --yellow: #a99513;
+    --aqua: #0B4B85;
+}
+
 body {
-    background-color: skyblue;
+    color: var(--bs-white);
+    background: var(--light-blue);
+    font-family: "Roboto Light", sans-serif;
+}
+i {
+    background: var(--bs-white);
+    font-size: 2rem;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+    &.user-sign-in {
+        color: var(--purple);
+    }
+    &.user-signed-in {
+        color: var(--green);
+    }
+    &.fa-search {
+        font-size: 1rem;
+        background: transparent;
+    }
+}
+textarea:focus, input:focus{
+    outline: none;
+}
+h1 {
+    font-size: 1.5rem;
+}
+h2 {
+    font-size: 1.2rem;
+}
+
+.navbar-brand span {
+    display: inline-block;
+    color: var(--bs-white);
+    line-height: 1.2rem;
+    vertical-align: middle;
+    em {
+        font-weight: bold;
+    }
+    small {
+        font-size: 0.78rem;
+    }
+}
+.user-container {
+    text-align: center;
+    margin: 0.25rem 0 0.25rem 0;
+}
+.navbar-toggler {
+    background-color: var(--bs-white) !important;
+}
+.navbar-toggler-icon {
+    /*
+    background-image: escape-svg($navbar-light-toggler-icon-bg);
+    */
+}
+.search-input {
+    border-radius: 0.25rem 0 0 0.25rem;
+    border: 0;
+}
+.search-btn {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+.logo {
+    border: 1px solid var(--bs-white);
+}
+.nav-item {
+    margin: 2px;
+    a {
+        letter-spacing: 1px;
+        color: var(--bs-white);
+        font-weight: bold;
+    }
+    &.current a, a:hover {
+        color: var(--light-blue);
+        background: var(--bs-white);
+        border-radius: 0.25rem;
+    }
+}
+main {
+    margin-top: 20px;
+    min-height: 500px;
+}
+.main-footer {
+    margin-top: 50px;
+    min-height: 300px;
+}
+.btn-primary {
+    background-color: var(--aqua);
+    border: var(--aqua);
+    text-decoration: none !important;
+    &:hover {
+        background-color: var(--light-purple);
+    }
+}
+.btn-secondary {
+    background-color: var(--green);
+    border: var(--green);
+    &:hover {
+        background-color: var(--yellow);
+    }
+}
+.basic-icon {
+    background: var(--bs-white);
+    font-size: 2rem;
+    border-radius: 0.25rem;
+    padding: 0.1rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    &.user-sign-in {
+        color: var(--purple);
+    }
+    &.user-signed-in {
+        color: var(--green);
+    }
+    &.fa-search {
+        font-size: 1rem;
+        background: transparent;
+    }
+}
+.app-centered {
+    width: 75%;
+}
+.image-preview {
+    display: block;
+    margin-top: 10px;
+    max-width: 128px;
+    max-height: 128px;
+}
+.card {
+    color: var(--dark-grey);
+    a {
+        color: var(--dark-blue);
+        text-decoration: none;
+        &:hover {
+            color: var(--light-blue);
+            text-decoration: underline;
+        }
+    }
+    .card-header {
+        position: relative;
+        padding: 0.2rem 0.5rem;
+        .post-type {
+            position: absolute;
+            right: 30px;
+            top: -2px;
+            background: var(--green);
+            color: var(--bs-white);
+            padding: 0.2rem 0.5rem;
+            border-radius: 0 0 0.25rem 0.25rem;
+        }
+    }
+    &.post-show {
+        .card-body {
+            padding: 0;
+            .post-title {
+                padding: 1rem;
+            }
+            .post-image {
+                background: var(--bs-gray);
+                text-align: center;
+                img {
+                    max-width: 100%;
+                    height: auto;
+                }
+            }
+        }
+    }
+
+    .card-body {
+        #post {
+            > div:not(.text-end), > fieldset {
+                padding: 0.5rem;
+                background-color: var(--mid-grey);
+                border-radius: 0.25rem;
+            }
+        }
+    }
+}
+
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */
+    .navbar-brand span {
+        display: none;
+    }
+    body {
+        background: var(--dark-blue) url("../media/images/app/bg-main.jpg") no-repeat fixed;
+        background-size: cover;
+    }
+    .app-centered {
+        width: 50%;
+    }
+    .user-container {
+        margin-left: 1rem;
+    }
 }

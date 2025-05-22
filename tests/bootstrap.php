@@ -16,3 +16,12 @@ passthru(sprintf(
     $_ENV['APP_ENV'],
     __DIR__,
 ));
+
+// Load fixtures
+/*
+passthru(sprintf(
+    'APP_ENV=%s php "%s/../bin/console" doctrine:fixtures:load',
+    $_ENV['APP_ENV'],
+    __DIR__,
+));
+*/
