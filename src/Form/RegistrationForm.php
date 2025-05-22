@@ -24,6 +24,11 @@ class RegistrationForm extends AbstractType
                 'label' => 'label.email_address',
                 'help' => 'label.email_private',
             ])
+            ->add('displayName', null, [
+                'trim' => true,
+                'label' => 'label.display_name',
+                'help' => 'label.display_name_only_alnum',
+            ])
 
             /*
             ->add('agreeTerms', CheckboxType::class, [

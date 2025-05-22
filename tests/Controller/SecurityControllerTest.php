@@ -31,7 +31,10 @@ class SecurityControllerTest extends WebTestCase
         /** @var UserPasswordHasherInterface $passwordHasher */
         $passwordHasher = $container->get('security.user_password_hasher');
 
-        $user = (new User())->setEmail('email@example.com');
+        $user = (new User())
+            ->setEmail('email@example.com')
+            ->setDisplayName('samingo')
+            ;
         $user->setPassword($passwordHasher->hashPassword($user, 'password'));
 
         $em->persist($user);

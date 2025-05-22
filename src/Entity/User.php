@@ -9,11 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'email_exists')]
+#[UniqueEntity(fields: ["displayName"], message: "display_name_exists")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,7 +23,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\Email]
     private ?string $email = null;
 
     /**
@@ -38,6 +41,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    #[ORM\Column(length: 32, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Type(type: "alnum")]
+    #[Assert\Length(min: 4, max: 30)]
+    private ?string $displayName = null;
+
+    #[ORM\Column]
+    private bool $enableCommunityContact = true;
+
+    #[ORM\Column]
+    private bool $enablePostNotification = true;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Image $avatar = null;
 
     public function getId(): ?int
     {
@@ -120,6 +138,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    public function setDisplayName(string $displayName): static
+    {
+        $this->displayName = $displayName;
+
+        return $this;
+    }
+
+    public function isEnableCommunityContact(): bool
+    {
+        return $this->enableCommunityContact;
+    }
+
+    public function setEnableCommunityContact(bool $enableCommunityContact): static
+    {
+        $this->enableCommunityContact = $enableCommunityContact;
+
+        return $this;
+    }
+
+    public function isEnablePostNotification(): bool
+    {
+        return $this->enablePostNotification;
+    }
+
+    public function setEnablePostNotification(bool $enablePostNotification): static
+    {
+        $this->enablePostNotification = $enablePostNotification;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?Image
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Image $avatar): static
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }
