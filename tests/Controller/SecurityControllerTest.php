@@ -44,7 +44,7 @@ class SecurityControllerTest extends WebTestCase
         $this->client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('Connexion', [
             '_username' => 'doesNotExist@example.com',
             '_password' => 'password',
         ]);
@@ -53,13 +53,13 @@ class SecurityControllerTest extends WebTestCase
         $this->client->followRedirect();
 
         // Ensure we do not reveal if the user exists or not.
-        self::assertSelectorTextContains('.alert-danger', 'Invalid credentials.');
+        self::assertSelectorTextContains('.alert-danger', 'Identifiants invalides');
 
         // Denied - Can't login with invalid password.
         $this->client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('Connexion', [
             '_username' => 'email@example.com',
             '_password' => 'bad-password',
         ]);
@@ -68,10 +68,10 @@ class SecurityControllerTest extends WebTestCase
         $this->client->followRedirect();
 
         // Ensure we do not reveal the user exists but the password is wrong.
-        self::assertSelectorTextContains('.alert-danger', 'Invalid credentials.');
+        self::assertSelectorTextContains('.alert-danger', 'Identifiants invalides');
 
         // Success - Login with valid credentials is allowed.
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('Connexion', [
             '_username' => 'email@example.com',
             '_password' => 'password',
         ]);
