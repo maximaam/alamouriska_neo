@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-#use App\Entity\Post;
 use Knp\Menu\FactoryInterface;
 use Doctrine\ORM\EntityManager;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Enum\PostType;
 
 final class NavBuilder
 {
@@ -26,18 +26,16 @@ final class NavBuilder
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'navbar-nav me-auto mb-2 mb-lg-0');
 
-        /*
-        foreach (Post::getTypes(false) as $typeId => $typeName) {
-            $menu->addChild(strtoupper($this->translator->trans(sprintf('post.%s.plural', $typeName))), [
-                'route' => 'app_index_index',
+        foreach (PostType::cases() as $type) {
+            $menu->addChild(strtoupper($this->translator->trans(sprintf('post.%s.plural', $type->name))), [
+                'route' => 'app_home_index',
                 'routeParameters' => [
-                    'type' => $this->translator->trans(sprintf('post.%s.seo_route', $typeName))
+                    'type' => $this->translator->trans(sprintf('post.%s.seo_route', $type->name))
                 ],
                 'attributes' => ['class' => 'nav-item'],
                 'linkAttributes' => ['class' => 'nav-link'],
             ]);
         }
-            */
 
         //Set current for sub items
         /*
