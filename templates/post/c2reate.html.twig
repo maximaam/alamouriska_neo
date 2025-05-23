@@ -1,0 +1,30 @@
+{% extends 'layer_center.html.twig' %}
+
+{% block title %}
+    {{ 'post.create'|trans }}
+    {{ parent() }}
+{% endblock %}
+
+{% block card_header %}
+    <h1 class="text-center">{{ 'label.login'|trans }}</h1>
+{% endblock %}
+
+{% block card_body %}
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+
+    <form method="post">
+        <div class="mb-3">
+            asdasd
+        </div>
+        <div class="mb-3">
+            asdasd
+        </div>
+        <div class="text-end">
+            adasd
+        </div>
+    </form>
+{% endblock %}

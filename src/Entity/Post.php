@@ -43,7 +43,7 @@ class Post
         return $this->id;
     }
 
-    public function getType(): PostType
+    public function getType(): ?PostType
     {
         return $this->type;
     }
