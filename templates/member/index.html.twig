@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}member{% endblock %}
+
+{% block body %}
+    <h1>member</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ member.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ member.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ member.roles ? member.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ member.password }}</td>
+            </tr>
+            <tr>
+                <th>IsVerified</th>
+                <td>{{ member.isVerified ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>DisplayName</th>
+                <td>{{ member.displayName }}</td>
+            </tr>
+            <tr>
+                <th>EnableCommunityContact</th>
+                <td>{{ member.enableCommunityContact ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>EnablePostNotification</th>
+                <td>{{ member.enablePostNotification ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

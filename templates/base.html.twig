@@ -63,7 +63,7 @@
 
                         <div class="user-container">
                             {% if is_granted("IS_AUTHENTICATED_FULLY") %}
-                                <a href="{{ path('app_home_index') }}" title="{{ app.user.email }} - {{ 'label.profile'|trans }}">
+                                <a href="{{ path('app_user_show') }}" title="{{ app.user.email }} - {{ 'label.profile'|trans }}">
                                 {#
                                 {{ include('partials/avatar.html.twig') }}
                                 #}
