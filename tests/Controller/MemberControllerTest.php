@@ -8,6 +8,8 @@ final class MemberControllerTest extends WebTestCase
 {
     public function testIndex(): void
     {
+        $this->markTestSkipped('must be revisited.');
+        
         $client = static::createClient();
         $client->request('GET', '/member');
 

@@ -15,9 +15,9 @@ class UserForm extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
-            ->add('password')
-            ->add('isVerified')
+            //->add('roles')
+            //->add('password')
+            //->add('isVerified')
             ->add('displayName')
             ->add('enableCommunityContact')
             ->add('enablePostNotification')
