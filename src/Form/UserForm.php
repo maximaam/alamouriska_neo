@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class UserForm extends AbstractType
 {
@@ -19,11 +20,17 @@ class UserForm extends AbstractType
             //->add('password')
             //->add('isVerified')
             ->add('displayName')
-            ->add('enableCommunityContact')
-            ->add('enablePostNotification')
-            ->add('avatar', EntityType::class, [
-                'class' => Image::class,
-                'choice_label' => 'id',
+            ->add('enableCommunityContact', null, [
+                'label' => 'user.allow_member_contact'
+            ])
+            ->add('enablePostNotification', null, [
+                'label' => 'user.allow_post_notification'
+            ])
+            ->add('avatarFile', VichImageType::class, [
+                'mapped' => false,
+                'label' => 'Photo',
+                'required' => false,
+                'allow_delete' => true,
             ])
         ;
     }

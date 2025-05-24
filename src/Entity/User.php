@@ -12,14 +12,21 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\DBAL\Types\Types;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'email_exists')]
 #[UniqueEntity(fields: ["displayName"], message: "display_name_exists")]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -46,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 32, unique: true)]
     #[Assert\NotBlank]
-    #[Assert\Type(type: "alnum")]
+    #[Assert\Type(Types::STRING)]
     #[Assert\Length(min: 4, max: 30)]
     private ?string $displayName = null;
 
@@ -56,8 +63,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $enablePostNotification = true;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Image $avatar = null;
+    #[ORM\Column(nullable: true)]
+    private ?string $avatarName = null;
+
+    #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'avatarName')]
+    #[Assert\Image(
+        maxSize: '1M',
+        mimeTypes: ['image/jpeg', 'image/png'],
+        minWidth: 128,
+        maxWidth: 800,
+        minHeight: 128,
+        maxHeight: 800,
+        minWidthMessage: 'Votre photo doit faire minimum 128px de largeur.',
+        minHeightMessage: 'Votre photo doit faire minimum 128px de hauteur.',
+        maxSizeMessage: 'The maxmimum allowed file size is 1MB.',
+        mimeTypesMessage: 'Only the filetypes image are allowed.'
+    )]
+    private ?File $avatarFile = null;
 
     /**
      * @var Collection<int, Post>
@@ -191,14 +213,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAvatar(): ?Image
+    public function getAvatarName(): ?string
     {
-        return $this->avatar;
+        return $this->avatarName;
     }
 
-    public function setAvatar(?Image $avatar): static
+    public function setAvatarName(?string $avatarName): static
     {
-        $this->avatar = $avatar;
+        $this->avatarName = $avatarName;
 
         return $this;
     }
@@ -231,5 +253,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function setAvatarFile(?File $avatarFile = null): void
+    {
+        $this->avatarFile = $avatarFile;
+
+        if (null !== $avatarFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getAvatarFile(): ?File
+    {
+        return $this->avatarFile;
     }
 }
