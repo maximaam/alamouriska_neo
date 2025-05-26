@@ -1,0 +1,7 @@
+{% set avatar = asset('media/images/default-avatar.png') %}
+
+{% if user.avatarName is defined %}
+    {% set avatar = asset('media/avatars/' ~ user.avatarName) %}
+{% endif %}
+
+<img class="rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="" width="{{ size|default(64) }}" height="{{ size|default(64) }}">

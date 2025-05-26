@@ -58,16 +58,15 @@
 
                         <form class="d-flex">
                             <input class="form-control search-input" type="search" placeholder="{{ 'label.search'|trans }}..." aria-label="Search">
-                            <button class="btn btn-primary search-btn" type="submit"><i class="fas fa-search"></i></button>
+                            <button class="btn btn-secondary search-btn" type="submit">
+                                {{ ux_icon('bi:search', {class: 'basic-icon search-icon'}) }}
+                            </button>
                         </form>
 
                         <div class="user-container">
                             {% if is_granted("IS_AUTHENTICATED_FULLY") %}
-                                <a href="{{ path('app_user_show') }}" title="{{ app.user.email }} - {{ 'label.profile'|trans }}">
-                                {#
-                                {{ include('partials/avatar.html.twig') }}
-                                #}
-                                    avatar
+                                <a href="{{ path('app_user_show') }}" title="{{ app.user.displayName }} - {{ 'label.profile'|trans }}">
+                                    {%  include 'partials/avatar.html.twig' with {'user': app.user, 'size': 32 } only %}
                                 </a>
                             {% else %}
                                 <a href="{{ path('app_security_login') }}" title="{{ 'label.login'|trans }}">
