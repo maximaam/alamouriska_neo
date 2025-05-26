@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
-use App\Entity\Image;
 use App\Entity\Post;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Enum\PostType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class PostForm extends AbstractType
 {
@@ -24,9 +24,10 @@ class PostForm extends AbstractType
             ])
             ->add('title')
             ->add('description')
-            ->add('image', EntityType::class, [
-                'class' => Image::class,
-                'choice_label' => 'id',
+            ->add('postImageFile', VichImageType::class, [
+                'label' => 'Photo',
+                'required' => false,
+                'allow_delete' => true,
             ])
         ;
     }

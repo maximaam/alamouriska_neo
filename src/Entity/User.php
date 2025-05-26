@@ -67,18 +67,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $avatarName = null;
 
     #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'avatarName')]
-    #[Assert\Image(
-        maxSize: '1M',
-        mimeTypes: ['image/jpeg', 'image/png'],
-        minWidth: 128,
-        maxWidth: 800,
-        minHeight: 128,
-        maxHeight: 800,
-        minWidthMessage: 'Votre photo doit faire minimum 128px de largeur.',
-        minHeightMessage: 'Votre photo doit faire minimum 128px de hauteur.',
-        maxSizeMessage: 'The maxmimum allowed file size is 1MB.',
-        mimeTypesMessage: 'Only the filetypes image are allowed.'
-    )]
     private ?File $avatarFile = null;
 
     /**
@@ -269,5 +257,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getAvatarFile(): ?File
     {
         return $this->avatarFile;
+    }
+
+    public function __serialize(): array
+    {
+        return [$this->id, $this->email, $this->password];
+    }
+
+    /**
+     * @param array{int|null, string, string} $data
+     */
+    public function __unserialize(array $data): void
+    {
+        [$this->id, $this->email, $this->password] = $data;
     }
 }

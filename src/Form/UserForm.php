@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
-use App\Entity\Image;
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,7 +27,6 @@ class UserForm extends AbstractType
                 'label' => 'user.allow_post_notification'
             ])
             ->add('avatarFile', VichImageType::class, [
-                'mapped' => false,
                 'label' => 'Photo',
                 'required' => false,
                 'allow_delete' => true,

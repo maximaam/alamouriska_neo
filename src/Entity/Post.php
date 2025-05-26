@@ -10,11 +10,17 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[UniqueEntity(fields: ['title'], message: 'post_title_exists')]
+#[Vich\Uploadable]
 class Post
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,6 +40,12 @@ class Post
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $postImageName = null;
+
+    #[Vich\UploadableField(mapping: 'posts', fileNameProperty: 'postImageName')]
+    private ?File $postImageFile = null;
 
     public function getId(): ?int
     {
@@ -86,5 +98,31 @@ class Post
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getPostImageName(): ?string
+    {
+        return $this->postImageName;
+    }
+
+    public function setPostImageName(?string $postImageName): static
+    {
+        $this->postImageName = $postImageName;
+
+        return $this;
+    }
+
+    public function setPostImageFile(?File $postImageFile = null): void
+    {
+        $this->postImageFile = $postImageFile;
+
+        if (null !== $postImageFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getPostImageFile(): ?File
+    {
+        return $this->postImageFile;
     }
 }

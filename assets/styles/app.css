@@ -42,6 +42,10 @@ h2 {
     font-size: 1.2rem;
 }
 
+a {
+    color: var(--yellow);
+}
+
 .navbar-brand span {
     display: inline-block;
     color: var(--bs-white);

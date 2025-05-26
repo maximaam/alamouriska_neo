@@ -26,6 +26,9 @@
                     <a href="{{ path('app_post_show', {'id': post.id}) }}">show</a>
                     <a href="{{ path('app_post_edit', {'id': post.id}) }}">edit</a>
                 </td>
+                <td>
+                    <img src="{{ asset('media/posts/'~post.postImageName)}}" width="60" height="60">
+                </td>
             </tr>
         {% else %}
             <tr>
