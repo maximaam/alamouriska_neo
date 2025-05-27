@@ -28,9 +28,10 @@ final class NavBuilder
 
         foreach (PostType::cases() as $type) {
             $menu->addChild(strtoupper($this->translator->trans(sprintf('post.%s.plural', $type->name))), [
-                'route' => 'app_home_index',
+                'route' => 'app_home_posts',
                 'routeParameters' => [
-                    'type' => $this->translator->trans(sprintf('post.%s.seo_route', $type->name))
+                    'typeSlug' => $this->translator->trans(sprintf('post.%s.seo_route', $type->name)),
+                    'type' => $type->value,
                 ],
                 'attributes' => ['class' => 'nav-item'],
                 'linkAttributes' => ['class' => 'nav-link'],

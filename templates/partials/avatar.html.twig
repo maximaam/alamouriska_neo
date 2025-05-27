@@ -1,6 +1,6 @@
 {% set avatar = asset('media/images/default-avatar.png') %}
 
-{% if user.avatarName is defined %}
+{% if user.avatarName is not null %}
     {% set avatar = asset('media/avatars/' ~ user.avatarName) %}
 {% endif %}
 

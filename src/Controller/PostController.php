@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/post', name: 'app_post_')]
+#[Route('/post', name: 'app_post_', priority: 3)]
 final class PostController extends AbstractController
 {
     #[Route(name: 'index', methods: ['GET'])]

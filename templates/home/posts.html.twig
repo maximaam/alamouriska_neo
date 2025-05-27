@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    -------
+    {{ parent() }}
+{% endblock %}
+
+{% block font %}
+{% endblock %}
+
+{% block opengraph_title %}
+    <meta property="og:title" content=" - {{ app_name }}" />
+{% endblock %}
+
+{% block body %}
+
+    {{ posts | length }}
+
+{% endblock %}

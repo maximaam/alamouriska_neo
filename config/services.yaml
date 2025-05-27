@@ -39,3 +39,6 @@ services:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main }
             - { name: knp_menu.menu_builder, method: footerMenu, alias: footer }
+
+    #App\EventListener\ExceptionListener:
+    #    tags: [kernel.event_listener]

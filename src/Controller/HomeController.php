@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Repository\PostRepository;
+use App\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 #[Route(name: 'app_home_')]
 final class HomeController extends AbstractController
@@ -17,6 +19,32 @@ final class HomeController extends AbstractController
     {
         return $this->render('home/index.html.twig', [
             'latest_posts' => $postRepo->findAll(),
+        ]);
+    }
+
+    #[Route('/{typeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['typeSlug' => Requirement::ASCII_SLUG])]
+    public function postById(Post $post, string $typeSlug, string $titleSlug): Response
+    {
+        // URL manipulation, like changing the ID
+        if ($titleSlug !== $post->getTitleSlug()) {
+            return $this->redirectToRoute('app_home_post', [
+                'typeSlug' => $typeSlug,
+                'id' => $post->getId(),
+                'titleSlug' => $post->getTitleSlug(),
+            ]);
+        }
+
+
+        return $this->render('home/post.html.twig', [
+            'post' => $post,
+        ]);
+    }
+
+    #[Route('/{typeSlug}/{type}', name: 'posts')]
+    public function postsByType(PostRepository $postRepo, int $type): Response
+    {
+        return $this->render('home/posts.html.twig', [
+            'posts' => $postRepo->findBy(['type' => $type]),
         ]);
     }
 }

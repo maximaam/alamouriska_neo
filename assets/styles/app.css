@@ -135,6 +135,11 @@ main {
         background-color: transparent;
         color: var(--aqua);
     }
+    &.login-icon {
+        width: 2.2rem;
+        height: 2.2rem;
+        color: var(--aqua);
+    }
 }
 .app-centered {
     width: 75%;

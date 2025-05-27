@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[UniqueEntity(fields: ['title'], message: 'post_title_exists')]
@@ -46,6 +47,10 @@ class Post
 
     #[Vich\UploadableField(mapping: 'posts', fileNameProperty: 'postImageName')]
     private ?File $postImageFile = null;
+
+    #[ORM\Column(length: 255, unique: true)]
+    #[Slug(fields: ['title'])]
+    private ?string $titleSlug = null;
 
     public function getId(): ?int
     {
@@ -124,5 +129,17 @@ class Post
     public function getPostImageFile(): ?File
     {
         return $this->postImageFile;
+    }
+
+    public function getTitleSlug(): ?string
+    {
+        return $this->titleSlug;
+    }
+
+    public function setTitleSlug(string $titleSlug): static
+    {
+        $this->titleSlug = $titleSlug;
+
+        return $this;
     }
 }

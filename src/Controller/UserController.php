@@ -12,22 +12,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-#[Route('/user', name: 'app_user_')]
+#[Route('/user', name: 'app_user_', priority: 2)]
 final class UserController extends AbstractController
 {
     #[Route('/show', name: 'show', methods: ['GET'])]
-    public function show(): Response
+    public function show(#[CurrentUser] User $user): Response
     {
         return $this->render('user/show.html.twig', [
-            'user' => $this->getUser(),
+            'user' => $user,
         ]);
     }
 
     #[Route('/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
         $form = $this->createForm(UserForm::class, $user);
         $form->handleRequest($request);
 
