@@ -4,7 +4,7 @@ slogan: L'appel de la langue algérienne !
 label:
   send: Envoyer
   user: Utilisateur
-  display_name: Nom d'utilisateur
+  pseudo: Pseudo
   password: Mot de passe
   login: Connexion
   register: Inscription
@@ -15,7 +15,7 @@ label:
   new_password: Nouveau mot de passe
   repeat_password: Repeter le mot de passe
   forgot_password: Mot de passe oublié?
-  display_name_only_alnum: Caractères alpha-numériques seulement
+  pseudo_only_alnum: Chiffres, lettres et - seulement
   email_private: L'adresse Email reste privée
   password_constraints: Mot de passe entre 6 et 64 caractères
   profile_edit: Modifier le profil
@@ -68,3 +68,8 @@ post:
       question: Je cherche l'explication
       image:
         help: Image est optionnelle
+
+
+user:
+  enable_community_contact: "Autoriser les autres utilisateurs à me contacter"
+  allow_post_notification: "Recevoir une notification à chaque nouvelle publication"

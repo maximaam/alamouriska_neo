@@ -21,7 +21,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'email_exists')]
-#[UniqueEntity(fields: ["displayName"], message: "display_name_exists")]
+#[UniqueEntity(fields: ["pseudo"], message: "pseudo_exists")]
 #[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -54,8 +54,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 32, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Type(Types::STRING)]
-    #[Assert\Length(min: 4, max: 30)]
-    private ?string $displayName = null;
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^[A-Za-z0-9\-]+$/')]
+    #[Assert\Length(
+        min: 4,
+        max: 32,
+        minMessage: 'fos_user.username.short',
+        maxMessage: 'fos_user.username.long',
+        groups: ['Profile', 'Registration']
+    )]
+    private ?string $pseudo = null;
 
     #[ORM\Column]
     private bool $enableCommunityContact = true;
@@ -165,14 +173,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDisplayName(): ?string
+    public function getPseudo(): ?string
     {
-        return $this->displayName;
+        return $this->pseudo;
     }
 
-    public function setDisplayName(string $displayName): static
+    public function setPseudo(string $pseudo): static
     {
-        $this->displayName = $displayName;
+        $this->pseudo = $pseudo;
 
         return $this;
     }

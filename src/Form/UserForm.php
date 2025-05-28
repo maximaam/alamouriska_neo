@@ -15,21 +15,20 @@ class UserForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            //->add('roles')
-            //->add('password')
-            //->add('isVerified')
-            ->add('displayName')
+            ->add('pseudo', null, [
+                'help' => 'label.pseudo_only_alnum',
+            ])
             ->add('enableCommunityContact', null, [
-                'label' => 'user.allow_member_contact'
+                'label' => 'user.enable_community_contact'
             ])
             ->add('enablePostNotification', null, [
                 'label' => 'user.allow_post_notification'
             ])
             ->add('avatarFile', VichImageType::class, [
-                'label' => 'Photo',
+                'label' => 'label.profile_image',
                 'required' => false,
                 'allow_delete' => true,
+                'download_uri' => false,
             ])
         ;
     }

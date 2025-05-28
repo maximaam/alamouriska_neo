@@ -1,0 +1,19 @@
+{# Single post partial #}
+
+<div class="card mb-3 card-post">
+    <div class="card-header">
+        <a href="{{ path('app_profile_index', {'pseudo': post.user.pseudo}) }}" title="{{ post.user.pseudo }} - {{ 'label.profile'|trans }}">
+            {%  include 'partials/_avatar.html.twig' with {'user': post.user, 'size': 32 } only %}
+
+        </a>
+    </div>
+    <div class="card-body p-2">
+         <h1>{{ post.title }}</h1>
+         <p>{{ post.description }}</p>
+    </div>
+
+    <div class="card-footer">
+    footer...
+
+    </div>
+</div>

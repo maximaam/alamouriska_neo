@@ -18,7 +18,7 @@ final class HomeController extends AbstractController
     public function index(PostRepository $postRepo): Response
     {
         return $this->render('home/index.html.twig', [
-            'latest_posts' => $postRepo->findAll(),
+            
         ]);
     }
 

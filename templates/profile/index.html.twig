@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}member{% endblock %}
+
+{% block body %}
+    <h1>member</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

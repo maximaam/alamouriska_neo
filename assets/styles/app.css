@@ -16,24 +16,11 @@ body {
     background: var(--light-blue);
     font-family: "Roboto Light", sans-serif;
 }
-i {
-    background: var(--bs-white);
-    font-size: 2rem;
-    border-radius: 0.25rem;
-    padding: 0.25rem;
-    &.user-sign-in {
-        color: var(--purple);
+textarea, input {
+    border: inset !important;
+    &:focus {
+        outline: none !important;
     }
-    &.user-signed-in {
-        color: var(--green);
-    }
-    &.fa-search {
-        font-size: 1rem;
-        background: transparent;
-    }
-}
-textarea:focus, input:focus{
-    outline: none;
 }
 h1 {
     font-size: 1.5rem;
@@ -41,9 +28,9 @@ h1 {
 h2 {
     font-size: 1.2rem;
 }
-
-a {
-    color: var(--yellow);
+a, button {
+    border: none !important;
+    padding: 0.5rem !important;
 }
 
 .navbar-brand span {
@@ -104,11 +91,12 @@ main {
     min-height: 300px;
 }
 .btn-primary {
-    background-color: var(--aqua);
-    border: var(--aqua);
+    text-transform:uppercase;
+    color: var(--bs-white) !important;
+    background-color: var(--dark-blue) !important;
     text-decoration: none !important;
     &:hover {
-        background-color: var(--light-purple);
+        background-color: var(--light-blue) !important;
     }
 }
 .btn-secondary {
@@ -160,6 +148,13 @@ main {
             text-decoration: underline;
         }
     }
+    &.card-post {
+        background-color: var(--yellow);
+        opacity: 0.7;
+    }
+
+
+
     .card-header {
         position: relative;
         padding: 0.2rem 0.5rem;

@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserForm;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,13 +51,5 @@ final class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('app_user_show', [], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('/{displayName}', name: 'profle', methods: ['GET'])]
-    public function profile(UserRepository $userRepository, string $displayName): Response
-    {
-        return $this->render('user/profile.html.twig', [
-            'user' => $userRepository->findOneBy(['displayName' => $displayName]),
-        ]);
     }
 }

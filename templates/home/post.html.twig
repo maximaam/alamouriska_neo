@@ -14,8 +14,25 @@
 
 {% block body %}
 
-    <h1>{{ post.title }}</h1>
-    <h3>{{ post.titleSlug }}</h3>
-    <p>{{ post.description }}</p>
+    <div class="container start-page">
+        <div class="row text-dark">
+
+            {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
+
+            <div class="col-sm-8">
+
+                {%  include 'partials/_card-post.html.twig' with {'post': post} only %}
+
+                <div class="card" id="latest-users">
+                    <div class="card-header font-weight-bold">Membres récents</div>
+                    <ul class="card-body p-2">
+                        latest udrtd....
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 {% endblock %}
