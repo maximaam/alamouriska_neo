@@ -11,7 +11,7 @@
 
 {% block card_body %}
     <div class="mb-3">
-        {% include 'partials/avatar.html.twig' with {'user': user, 'size': 128 } only %}
+        {% include 'partials/_avatar.html.twig' with {'user': user, 'size': 128 } only %}
     </div>
     <div class="mb-3">
         {{ form_start(form) }}
