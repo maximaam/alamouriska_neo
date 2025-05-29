@@ -24,5 +24,8 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
-/assets/media/avatars/
-/assets/media/posts/
+/public/uploads/images/
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

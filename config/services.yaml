@@ -42,3 +42,8 @@ services:
 
     #App\EventListener\ExceptionListener:
     #    tags: [kernel.event_listener]
+
+    App\Service\VichNamerAvatar:
+        public: true
+        tags:
+            - { name: 'vich_uploader.namer' }
