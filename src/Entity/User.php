@@ -75,6 +75,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $avatarName = null;
 
     #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'avatarName')]
+    #[Assert\Image(
+        allowLandscape: false,
+        allowPortrait: false,
+        maxSize: '1M',
+        mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+        minWidth: 128,
+        minHeight: 128,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        minWidthMessage: 'avatar_min_width',
+        minHeightMessage: 'avatar_min_height',
+        maxWidthMessage: 'avatar_max_width',
+        maxHeightMessage: 'avatar_max_height',
+        maxSizeMessage: 'avatar_max_size',
+        mimeTypesMessage: 'avatar_mime_types_allowed'
+    )]
     private ?File $avatarFile = null;
 
     /**

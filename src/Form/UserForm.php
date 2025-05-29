@@ -15,6 +15,14 @@ class UserForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('avatarFile', VichImageType::class, [
+                'label' => 'form.label.avatar',
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => false,
+                'help' => 'form.help.avatar_upload',
+                'row_attr' => ['class' => 'avatar-fieldset mb-3']
+            ])
             ->add('pseudo', null, [
                 'help' => 'label.pseudo_only_alnum',
             ])
@@ -23,14 +31,7 @@ class UserForm extends AbstractType
             ])
             ->add('enablePostNotification', null, [
                 'label' => 'user.allow_post_notification'
-            ])
-            ->add('avatarFile', VichImageType::class, [
-                'label' => 'label.profile_image',
-                'required' => false,
-                'allow_delete' => true,
-                'download_uri' => false,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

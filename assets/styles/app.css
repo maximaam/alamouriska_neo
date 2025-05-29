@@ -23,14 +23,17 @@ textarea, input {
     }
 }
 h1 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 h2 {
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 a, button {
     border: none !important;
-    padding: 0.5rem !important;
+}
+
+a.no-underline:hover {
+    text-decoration: none !important;
 }
 
 .navbar-brand span {
@@ -150,7 +153,7 @@ main {
     }
     &.card-post {
         background-color: var(--yellow);
-        opacity: 0.7;
+        opacity: 0.8;
     }
 
 
@@ -194,6 +197,11 @@ main {
             }
         }
     }
+}
+
+.avatar-fieldset {
+    background-color: var(--light-grey);
+    padding: 0 1rem;
 }
 
 

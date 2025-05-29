@@ -19,7 +19,7 @@ label:
   email_private: L'adresse Email reste privée
   password_constraints: Mot de passe entre 6 et 64 caractères
   profile_edit: Modifier le profil
-  profile_image: Image de profil (Optionnel)
+  profile_image: Image de profil
   profile: Profil
   logout: Déconnexion
   login_facebook: Connexion avec Facebook
@@ -73,3 +73,13 @@ post:
 user:
   enable_community_contact: "Autoriser les autres utilisateurs à me contacter"
   allow_post_notification: "Recevoir une notification à chaque nouvelle publication"
+
+layout:
+  post_by: "Par: "
+  post_on: "Le: "
+
+form:
+  label:
+    avatar: Photo de profil
+  help:
+    avatar_upload: "Taile max 1 MB, min 128x128PX max 1024x1024PX."
