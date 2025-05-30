@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\PostRepository;
 use App\Entity\Post;
+use App\Utils\PostUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,13 +23,13 @@ final class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/{typeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['typeSlug' => Requirement::ASCII_SLUG])]
-    public function postById(Post $post, string $typeSlug, string $titleSlug): Response
+    #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['seoTypeSlug' => Requirement::ASCII_SLUG])]
+    public function postById(Post $post, string $seoTypeSlug, string $titleSlug): Response
     {
         // URL manipulation, like changing the ID
         if ($titleSlug !== $post->getTitleSlug()) {
             return $this->redirectToRoute('app_home_post', [
-                'typeSlug' => $typeSlug,
+                'seoTypeSlug' => $seoTypeSlug,
                 'id' => $post->getId(),
                 'titleSlug' => $post->getTitleSlug(),
             ]);
@@ -40,9 +41,13 @@ final class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/{typeSlug}/{type}', name: 'posts')]
-    public function postsByType(PostRepository $postRepo, int $type): Response
+    #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => Requirement::ASCII_SLUG], condition: "service('post_utils').getValidSeoSlugs()")]
+    public function postsByType(PostRepository $postRepo, string $seoTypeSlug): Response
     {
+        if (null === $type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) {
+            return $this->redirectToRoute('app_home_index');
+        }
+
         return $this->render('home/posts.html.twig', [
             'posts' => $postRepo->findBy(['type' => $type]),
         ]);

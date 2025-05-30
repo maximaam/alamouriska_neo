@@ -30,8 +30,7 @@ final class NavBuilder
             $menu->addChild(strtoupper($this->translator->trans(sprintf('post.%s.plural', $type->name))), [
                 'route' => 'app_home_posts',
                 'routeParameters' => [
-                    'typeSlug' => $this->translator->trans(sprintf('post.%s.seo_route', $type->name)),
-                    'type' => $type->value,
+                    'seoTypeSlug' => $this->translator->trans(sprintf('post.%s.seo_route', $type->name)),
                 ],
                 'attributes' => ['class' => 'nav-item'],
                 'linkAttributes' => ['class' => 'nav-link'],

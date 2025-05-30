@@ -5,11 +5,12 @@
                         {%  for latest_post in latest_posts %}
                             <div class="media mb-2 pb-1 border-bottom">
                                 {%  include 'partials/_avatar.html.twig' with {'user': latest_post.user, 'size': 32 } only %}
-                                <a href="{{ path('app_home_post', {'typeSlug': ('post.'~ latest_post.type.name ~'.seo_route') | trans, 'id' : latest_post.id, 'titleSlug': latest_post.titleSlug}) }}" title="Par: {{ latest_post.user.pseudo }} - Le: {{ latest_post.createdAt | date }}" class="media-body">{{ latest_post.title }}</a>
+                                <a href="{{ path('app_home_post', {'seoTypeSlug': ('post.'~ latest_post.type.name ~'.seo_route') | trans, 'id' : latest_post.id, 'titleSlug': latest_post.titleSlug}) }}" title="Par: {{ latest_post.user.pseudo }} - Le: {{ latest_post.createdAt | date }}" class="media-body">{{ latest_post.title }}</a>
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer text-end">
+                        <a href="{{ path('app_post_new') }}" class="btn btn-primary">{{ 'post.label.create' | trans }}</a>
                     <!--
                         <label for="quick-post" class="d-block">
                         

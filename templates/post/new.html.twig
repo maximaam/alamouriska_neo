@@ -1,11 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'layer_center.html.twig' %}
 
-{% block title %}New Post{% endblock %}
+{% block title %}
+    {{ 'post.label.create' | trans }}
+    {{ parent() }}
+{% endblock %}
 
-{% block body %}
-    <h1>Create new Post</h1>
+{% block card_header %}
+    <h1>{{ 'post.label.create' | trans }}</h1>
+{% endblock %}
 
-    {{ include('post/_form.html.twig') }}
+{% block card_body %}
+    <div class="mb-3">
+        {{ include('post/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
+{% endblock %}
 
-    <a href="{{ path('app_post_index') }}">back to list</a>
+{% block card_footer %}
 {% endblock %}
