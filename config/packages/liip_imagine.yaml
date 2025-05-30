@@ -5,24 +5,29 @@ liip_imagine:
 
     default_filter_set_settings:
         format: webp
+    webp:
+        generate: true
 
     resolvers:
         default:
-            web_path:
-                web_root: '%kernel.project_dir%/public'
-                cache_prefix: /media/cache
-    loaders:
-        default:
-            filesystem:
-                data_root:
-                    - '%kernel.project_dir%/assets/media/avatars'
-                    - '%kernel.project_dir%/assets/media/posts'
+            web_path: ~
+    #resolvers:
+    #    default:
+    #        web_path:
+    #            web_root: '%kernel.project_dir%/public'
+    #            cache_prefix: /media/cache
+    #loaders:
+    #    default:
+    #        filesystem:
+    #            data_root:
+    #               - '%kernel.project_dir%/public/uploads/images/avatars'
+    #               - '%kernel.project_dir%/public/uploads/images/posts'
 
     filter_sets:
         cache: ~
 
         # the name of the "filter set"
-        avatar_thumb:
+        avatar_thumb_128:
 
             # adjust the image quality to 75%
             quality: 75
@@ -38,3 +43,11 @@ liip_imagine:
                 # create a 2px black border: center the thumbnail on a black background
                 # 4px larger to create a 2px border around the final image
                 # background: { size: [132, 132], position: center, color: '#000000' }
+        
+        avatar_thumb_64:
+            filters:
+                thumbnail: { size: [64, 64] }
+
+        avatar_thumb_32:
+            filters:
+                thumbnail: { size: [32, 32] }

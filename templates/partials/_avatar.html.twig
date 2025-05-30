@@ -1,9 +1,7 @@
 {% set avatar = asset('media/images/default-avatar.png') %}
 
 {% if user.avatarName is not null %}
-    {# set avatar = asset('media/avatars/' ~ user.avatarName) #}
-    {% set avatar = vich_uploader_asset(user, 'avatarFile') %}
-
+    {% set avatar = vich_uploader_asset(user, 'avatarFile') | imagine_filter('avatar_thumb_' ~ size) %}
 {% endif %}
 
 <img class="rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="" width="{{ size|default(64) }}" height="{{ size|default(64) }}">

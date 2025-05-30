@@ -11,9 +11,6 @@
 
 {% block card_body %}
     <div class="mb-3">
-        {% include 'partials/_avatar.html.twig' with {'user': user, 'size': 128 } only %}
-    </div>
-    <div class="mb-3">
         {{ form_start(form) }}
         {{ form_widget(form) }}
         <div class="text-end">
@@ -21,10 +18,7 @@
         </div>
         {{ form_end(form) }}
     </div>
-    <div class="text-end">
-    </div>
 {% endblock %}
-
 
 {% block card_footer %}
 {% endblock %}
