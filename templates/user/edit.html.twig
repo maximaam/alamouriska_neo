@@ -5,6 +5,10 @@
     {{ parent() }}
 {% endblock %}
 
+{% block importmap %}
+    {{ importmap(['app', 'user_edit']) }}
+{% endblock %}
+
 {% block card_header %}
     <h1>{{ 'label.profile_edit' | trans }}</h1>
 {% endblock %}

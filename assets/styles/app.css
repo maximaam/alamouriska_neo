@@ -215,7 +215,7 @@ main {
         display: none;
     }
     body {
-        background: var(--dark-blue) url("../media/images/app/bg-main.jpg") no-repeat fixed;
+        background: var(--dark-blue) url("../images/bg-main.jpg") no-repeat fixed;
         background-size: cover;
     }
     .app-centered {
