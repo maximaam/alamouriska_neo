@@ -267,6 +267,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // updatedAt, requird by VichUppload to trigger doctrine
+    // is automatically called TimestampableEntity
     public function setAvatarFile(?File $avatarFile = null): void
     {
         $this->avatarFile = $avatarFile;
@@ -283,6 +285,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->avatarFile;
     }
 
+    // Disables serialization of the uploaded file
     public function __serialize(): array
     {
         return [$this->id, $this->email, $this->password];

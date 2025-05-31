@@ -2,6 +2,7 @@
 liip_imagine:
     # valid drivers options include "gd" or "gmagick" or "imagick"
     driver: "gd"
+    # driver: imagick
 
     default_filter_set_settings:
         format: webp
@@ -30,7 +31,7 @@ liip_imagine:
         avatar_thumb_128:
 
             # adjust the image quality to 75%
-            quality: 75
+            quality: 80
 
             # list of transformations to apply (the "filters")
             filters:

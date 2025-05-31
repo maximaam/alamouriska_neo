@@ -15,6 +15,7 @@ parameters:
     seo_route_post_type: 'mots-algeriens|expressions-algeriennes|proverbes-algeriens|blagues-algeriennes|blogs-langue-algerienne'
     full_domain: 'https://www.alamouriska.com'
     public_dir: '%kernel.project_dir%/public'
+    avatars_dir: 'uploads/images/avatars'
 
 services:
     # default configuration for services in *this* file

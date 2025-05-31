@@ -4,4 +4,4 @@
     {% set avatar = vich_uploader_asset(user, 'avatarFile') | imagine_filter('avatar_thumb_' ~ size) %}
 {% endif %}
 
-<img class="rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="" width="{{ size|default(64) }}" height="{{ size|default(64) }}">
+<img class="rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ user.pseudo }}" width="{{ size|default(64) }}" height="{{ size|default(64) }}">
