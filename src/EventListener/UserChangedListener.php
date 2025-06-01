@@ -9,6 +9,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager as LiipCacheManager;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 // #[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: User::class)]
 #[AsEntityListener(event: Events::preUpdate, method: 'preUpdate', entity: User::class)]
@@ -16,7 +17,10 @@ final class UserChangedListener
 {
     public function __construct(
         private readonly LiipCacheManager $lcm,
+
+        #[Autowire('%kernel.project_dir%/public')]
         private readonly string $publicDir,
+        #[Autowire('%avatars_dir%')]
         private readonly string $avatarsDir,
     ) {
     }
