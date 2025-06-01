@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Form\PostForm;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,8 +28,9 @@ final class PostController extends AbstractController
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $post = (new Post())
-            ->setUser($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $post = (new Post())->setUser($user);
         $form = $this->createForm(PostForm::class, $post);
         $form->handleRequest($request);
 

@@ -122,7 +122,7 @@ class Post
         $this->postImageFile = $postImageFile;
 
         if (null !== $postImageFile) {
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAt = new \DateTime();
         }
     }
 

@@ -8,7 +8,6 @@ use App\Entity\User;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager as LiipCacheManager;
 
 // #[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: User::class)]
@@ -16,47 +15,52 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager as LiipCacheManager;
 final class UserChangedListener
 {
     public function __construct(
-        private readonly ParameterBagInterface $parameterBag,
         private readonly LiipCacheManager $lcm,
+        private readonly string $publicDir,
+        private readonly string $avatarsDir,
     ) {
     }
 
     public function preUpdate(User $user, PreUpdateEventArgs $event): void
     {
         $this->pseudoChanged($user, $event);
-        $this->removeCachedAvatars([$user->getAvatarName()]);
+        $this->removeCachedAvatars($user);
     }
 
     private function pseudoChanged(User $user, PreUpdateEventArgs $event): void
     {
-        if ($event->hasChangedField('pseudo')) {
-            $previousPseudo = $event->getOldValue('pseudo');
-            $newPseudo = $event->getNewValue('pseudo');
-            $avatarFile = sprintf(
-                '%s/%s/%s',
-                $this->parameterBag->get('public_dir'),
-                $this->parameterBag->get('avatars_dir'),
-                $user->getAvatarName()
-            );
-
-            if (null !== $user->getAvatarName() && file_exists($avatarFile)) {
-                $avatarFileNew = str_replace($previousPseudo, $newPseudo, $avatarFile);
-                $avatarNameNew = str_replace($previousPseudo, $newPseudo, $user->getAvatarName());
-                
-                // Remove Avatars with old name
-                $this->removeCachedAvatars([$user->getAvatarName()]);
-                
-                rename($avatarFile, $avatarFileNew);
-                
-                $user->setAvatarName($avatarNameNew);
-            }
+        if (!$event->hasChangedField('pseudo')) {
+            return;
         }
+
+        if (null === $user->getAvatarName()) {
+            return;
+        }
+
+        $previousPseudo = $event->getOldValue('pseudo');
+        $newPseudo = $event->getNewValue('pseudo');
+        $avatarFile = sprintf('%s/%s/%s', $this->publicDir, $this->avatarsDir, $user->getAvatarName());
+
+        if (!file_exists($avatarFile)) {
+            return;
+        }
+
+        $avatarFileNew = str_replace($previousPseudo, $newPseudo, $avatarFile);
+        $avatarNameNew = str_replace($previousPseudo, $newPseudo, $user->getAvatarName());
+                
+        // Remove Avatars with old name
+        $this->removeCachedAvatars($user);   
+        rename($avatarFile, $avatarFileNew);
+        $user->setAvatarName($avatarNameNew);
     }
 
-    private function removeCachedAvatars(array $avatars): void
+    private function removeCachedAvatars(User $user): void
     {
-        foreach ($avatars as $avatar) {
-            $this->lcm->remove(sprintf('%s/%s', $this->parameterBag->get('avatars_dir'), $avatar));
+        if (null === $avatarName = $user->getAvatarName()) {
+            return;
         }
+
+        $this->lcm->remove(sprintf('%s/%s', $this->avatarsDir, $avatarName));
+        $this->lcm->remove(sprintf('%s/%s', $this->avatarsDir, $avatarName.'.webp'));
     }
 }

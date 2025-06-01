@@ -10,7 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Routing\Attribute\AsRoutingConditionService;
 #[AsRoutingConditionService(alias: 'post_utils')]
 final class PostUtils
 {
-    public static $typesSeoSlugs = [
+
+    /**
+     * @var array<string, PostType>
+    */
+    public static array $typesSeoSlugs = [
         'mots-algeriens' => PostType::word,
         'expressions-algeriennes' => PostType::expression,
         'proverbes-algeriens' => PostType::proverb,
