@@ -73,10 +73,10 @@ final class UserControllerTest extends WebTestCase
         $fixture->setRoles([]);
         $fixture->setPassword('My Title');
         $fixture->setIsVerified('My Title');
-        $fixture->setDisplayName('My Title');
+        $fixture->setPseudo('My Title');
         $fixture->setEnableCommunityContact('My Title');
         $fixture->setEnablePostNotification('My Title');
-        $fixture->setAvatar(null);
+        $fixture->setAvatarName(null);
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -97,10 +97,10 @@ final class UserControllerTest extends WebTestCase
         $fixture->setRoles([]);
         $fixture->setPassword('Value');
         $fixture->setIsVerified('Value');
-        $fixture->setDisplayName('Value');
+        $fixture->setPseudo('Value');
         $fixture->setEnableCommunityContact('Value');
         $fixture->setEnablePostNotification('Value');
-        $fixture->setAvatar(null);
+        $fixture->setAvatarName(null);
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -140,10 +140,10 @@ final class UserControllerTest extends WebTestCase
         $fixture->setRoles([]);
         $fixture->setPassword('Value');
         $fixture->setIsVerified('Value');
-        $fixture->setDisplayName('Value');
+        $fixture->setPseudo('Value');
         $fixture->setEnableCommunityContact('Value');
         $fixture->setEnablePostNotification('Value');
-        $fixture->setAvatar(null);
+        $fixture->setAvatarName(null);
 
         $this->manager->persist($fixture);
         $this->manager->flush();

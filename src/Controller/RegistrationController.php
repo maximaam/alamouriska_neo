@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
-#[Route(name: 'app_registration_')]
+#[Route(name: 'app_registration_', priority: 7)]
 class RegistrationController extends AbstractController
 {
     public function __construct(private EmailVerifier $emailVerifier)

@@ -31,9 +31,9 @@ class SecurityControllerTest extends WebTestCase
         /** @var UserPasswordHasherInterface $passwordHasher */
         $passwordHasher = $container->get('security.user_password_hasher');
 
-        $user = (new User())
-            ->setEmail('email@example.com')
-            ->setDisplayName('samingo')
+        $user = new User();
+        $user->setEmail('email@example.com')
+            ->setPseudo('samingo')
             ->setPassword($passwordHasher->hashPassword($user, 'password'));
 
         $em->persist($user);
@@ -42,7 +42,6 @@ class SecurityControllerTest extends WebTestCase
 
     public function testLogin(): void
     {
-        // Denied - Can't login with invalid email address.
         $this->client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
