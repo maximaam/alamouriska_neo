@@ -8,6 +8,6 @@ final class EmbedControllerTest extends WebTestCase
 {
     public function testIndex(): void
     {
-        $this->markTestSkipped('must be revisited.');
+        self::markTestSkipped('must be revisited.');
     }
 }

@@ -18,7 +18,7 @@ final class PostControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->markTestSkipped('must be revisited.');
+        self::markTestSkipped('must be revisited.');
 
         $this->client = static::createClient();
         $this->manager = static::getContainer()->get('doctrine')->getManager();
@@ -45,7 +45,7 @@ final class PostControllerTest extends WebTestCase
 
     public function testNew(): void
     {
-        $this->markTestIncomplete();
+        self::markTestSkipped('must be revisited.');
         $this->client->request('GET', sprintf('%snew', $this->path));
 
         self::assertResponseStatusCodeSame(200);
@@ -65,7 +65,7 @@ final class PostControllerTest extends WebTestCase
 
     public function testShow(): void
     {
-        $this->markTestIncomplete();
+        self::markTestSkipped('must be revisited.');
         $fixture = new Post();
         //$fixture->setType(PostType::fromName('word')->value);
         $fixture->setTitle('My Title');
@@ -86,7 +86,7 @@ final class PostControllerTest extends WebTestCase
 
     public function testEdit(): void
     {
-        $this->markTestIncomplete();
+        self::markTestSkipped('must be revisited.');
         $fixture = new Post();
         //$fixture->setType('Value');
         $fixture->setTitle('Value');
@@ -120,7 +120,7 @@ final class PostControllerTest extends WebTestCase
 
     public function testRemove(): void
     {
-        $this->markTestIncomplete();
+        self::markTestSkipped('must be revisited.');
         $fixture = new Post();
         //$fixture->setType('Value');
         $fixture->setTitle('Value');

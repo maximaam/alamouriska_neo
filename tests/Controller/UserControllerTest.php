@@ -17,7 +17,7 @@ final class UserControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->markTestSkipped('must be revisited.');
+        self::markTestSkipped('must be revisited.');
 
         $this->client = static::createClient();
         $this->manager = static::getContainer()->get('doctrine')->getManager();
@@ -44,7 +44,7 @@ final class UserControllerTest extends WebTestCase
 
     public function testNew(): void
     {
-        $this->markTestIncomplete();
+        self::markTestSkipped('must be revisited.');
         $this->client->request('GET', sprintf('%snew', $this->path));
 
         self::assertResponseStatusCodeSame(200);
@@ -54,7 +54,7 @@ final class UserControllerTest extends WebTestCase
             'user[roles]' => 'Testing',
             'user[password]' => 'Testing',
             'user[isVerified]' => 'Testing',
-            'user[displayName]' => 'Testing',
+            'user[pseudo]' => 'Testing',
             'user[enableCommunityContact]' => 'Testing',
             'user[enablePostNotification]' => 'Testing',
             'user[avatar]' => 'Testing',
@@ -67,7 +67,7 @@ final class UserControllerTest extends WebTestCase
 
     public function testShow(): void
     {
-        $this->markTestIncomplete();
+        self::markTestSkipped('must be revisited.');
         $fixture = new User();
         $fixture->setEmail('My Title');
         $fixture->setRoles([]);
@@ -91,7 +91,7 @@ final class UserControllerTest extends WebTestCase
 
     public function testEdit(): void
     {
-        $this->markTestIncomplete();
+        self::markTestSkipped('must be revisited.');
         $fixture = new User();
         $fixture->setEmail('Value');
         $fixture->setRoles([]);
@@ -112,7 +112,7 @@ final class UserControllerTest extends WebTestCase
             'user[roles]' => 'Something New',
             'user[password]' => 'Something New',
             'user[isVerified]' => 'Something New',
-            'user[displayName]' => 'Something New',
+            'user[pseudo]' => 'Something New',
             'user[enableCommunityContact]' => 'Something New',
             'user[enablePostNotification]' => 'Something New',
             'user[avatar]' => 'Something New',
@@ -134,7 +134,7 @@ final class UserControllerTest extends WebTestCase
 
     public function testRemove(): void
     {
-        $this->markTestIncomplete();
+        self::markTestSkipped('must be revisited.');
         $fixture = new User();
         $fixture->setEmail('Value');
         $fixture->setRoles([]);

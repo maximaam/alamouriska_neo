@@ -16,8 +16,8 @@ final class NavBuilder
 {
     public function __construct(
         private readonly FactoryInterface $factory,
-        private readonly EntityManager $entityManager,
-        //private readonly RequestStack $requestStack,
+        // private readonly EntityManager $entityManager,
+        // private readonly RequestStack $requestStack,
         private readonly TranslatorInterface $translator,
     ){
     }
@@ -28,7 +28,8 @@ final class NavBuilder
         $menu->setChildrenAttribute('class', 'navbar-nav me-auto mb-2 mb-lg-0');
 
         foreach (PostType::cases() as $type) {
-            $menu->addChild(strtoupper($this->translator->trans(sprintf('post.%s.plural', $type->name))), [
+            $child = strtoupper($this->translator->trans(sprintf('post.%s.plural', $type->name)));
+            $menu->addChild($child, [
                 'route' => 'app_home_posts',
                 'routeParameters' => [
                     'seoTypeSlug' => $this->translator->trans(sprintf('post.%s.seo_route', $type->name)),
@@ -41,6 +42,7 @@ final class NavBuilder
         return $menu;
     }
 
+    /*
     public function footerMenu(): ItemInterface
     {
         $menu = $this->factory->createItem('root');
@@ -60,4 +62,5 @@ final class NavBuilder
 
         return $menu;
     }
+    */
 }

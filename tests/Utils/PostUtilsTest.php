@@ -8,6 +8,6 @@ class PostUtilsTest extends TestCase
 {
     public function testSomething(): void
     {
-        $this->assertTrue(true);
+        self::assertTrue(0+1);
     }
 }

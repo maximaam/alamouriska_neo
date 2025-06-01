@@ -8,7 +8,7 @@ final class ProfileControllerTest extends WebTestCase
 {
     public function testIndex(): void
     {
-        $this->markTestSkipped('must be revisited.');
+        self::markTestSkipped('must be revisited.');
         
         $client = static::createClient();
         $client->request('GET', '/member');
