@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\Entity\Post;
@@ -46,7 +48,7 @@ final class PostControllerTest extends WebTestCase
     public function testNew(): void
     {
         self::markTestSkipped('must be revisited.');
-        $this->client->request('GET', sprintf('%snew', $this->path));
+        $this->client->request('GET', \sprintf('%snew', $this->path));
 
         self::assertResponseStatusCodeSame(200);
 
@@ -67,16 +69,16 @@ final class PostControllerTest extends WebTestCase
     {
         self::markTestSkipped('must be revisited.');
         $fixture = new Post();
-        //$fixture->setType(PostType::fromName('word')->value);
+        // $fixture->setType(PostType::fromName('word')->value);
         $fixture->setTitle('My Title');
         $fixture->setDescription('My Title');
-        //$fixture->setUser('My Title');
-        //$fixture->setImage('My Title');
+        // $fixture->setUser('My Title');
+        // $fixture->setImage('My Title');
 
         $this->manager->persist($fixture);
         $this->manager->flush();
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        $this->client->request('GET', \sprintf('%s%s', $this->path, $fixture->getId()));
 
         self::assertResponseStatusCodeSame(200);
         self::assertPageTitleContains('Post');
@@ -88,16 +90,16 @@ final class PostControllerTest extends WebTestCase
     {
         self::markTestSkipped('must be revisited.');
         $fixture = new Post();
-        //$fixture->setType('Value');
+        // $fixture->setType('Value');
         $fixture->setTitle('Value');
         $fixture->setDescription('Value');
-        //$fixture->setUser('Value');
-        //$fixture->setImage('Value');
+        // $fixture->setUser('Value');
+        // $fixture->setImage('Value');
 
         $this->manager->persist($fixture);
         $this->manager->flush();
 
-        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
+        $this->client->request('GET', \sprintf('%s%s/edit', $this->path, $fixture->getId()));
 
         $this->client->submitForm('Update', [
             'post[type]' => 'Something New',
@@ -122,16 +124,16 @@ final class PostControllerTest extends WebTestCase
     {
         self::markTestSkipped('must be revisited.');
         $fixture = new Post();
-        //$fixture->setType('Value');
+        // $fixture->setType('Value');
         $fixture->setTitle('Value');
         $fixture->setDescription('Value');
-        //$fixture->setUser('Value');
-        //$fixture->setImage('Value');
+        // $fixture->setUser('Value');
+        // $fixture->setImage('Value');
 
         $this->manager->persist($fixture);
         $this->manager->flush();
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        $this->client->request('GET', \sprintf('%s%s', $this->path, $fixture->getId()));
         $this->client->submitForm('Delete');
 
         self::assertResponseRedirects('/post/');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\Entity\User;
@@ -45,7 +47,7 @@ final class UserControllerTest extends WebTestCase
     public function testNew(): void
     {
         self::markTestSkipped('must be revisited.');
-        $this->client->request('GET', sprintf('%snew', $this->path));
+        $this->client->request('GET', \sprintf('%snew', $this->path));
 
         self::assertResponseStatusCodeSame(200);
 
@@ -81,7 +83,7 @@ final class UserControllerTest extends WebTestCase
         $this->manager->persist($fixture);
         $this->manager->flush();
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        $this->client->request('GET', \sprintf('%s%s', $this->path, $fixture->getId()));
 
         self::assertResponseStatusCodeSame(200);
         self::assertPageTitleContains('User');
@@ -105,7 +107,7 @@ final class UserControllerTest extends WebTestCase
         $this->manager->persist($fixture);
         $this->manager->flush();
 
-        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
+        $this->client->request('GET', \sprintf('%s%s/edit', $this->path, $fixture->getId()));
 
         $this->client->submitForm('Update', [
             'user[email]' => 'Something New',
@@ -148,7 +150,7 @@ final class UserControllerTest extends WebTestCase
         $this->manager->persist($fixture);
         $this->manager->flush();
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        $this->client->request('GET', \sprintf('%s%s', $this->path, $fixture->getId()));
         $this->client->submitForm('Delete');
 
         self::assertResponseRedirects('/user/');
