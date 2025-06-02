@@ -16,6 +16,8 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    public const QB_ALIAS = 'u';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);

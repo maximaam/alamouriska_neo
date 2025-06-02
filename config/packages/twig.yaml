@@ -4,6 +4,7 @@ twig:
         - 'bootstrap_5_layout.html.twig'
     globals:
         app_name: '%app_name%'
+        avatars_dir: '%avatars_dir%'
     date:
         format: d-m-Y H:i
 

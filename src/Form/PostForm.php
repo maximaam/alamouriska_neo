@@ -11,6 +11,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Enum\PostType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 class PostForm extends AbstractType
 {
@@ -29,6 +31,12 @@ class PostForm extends AbstractType
                 'required' => false,
                 'allow_delete' => true,
             ])
+            ->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) {
+                $post = $event->getData();
+                if (in_array($post->getType(), [PostType::proverb->value, PostType::joke->value])){
+                    $post->setTitle(mb_strimwidth($post->getDescription(), 0, 100, '...'));
+                }
+            })
         ;
     }
 

@@ -1,7 +1,9 @@
 {% set avatar = asset('images/default-avatar.png') %}
+{% set size = size|default(32) %}
+
 
 {% if user.avatarName is not null %}
-    {% set avatar = vich_uploader_asset(user, 'avatarFile') | imagine_filter('avatar_thumb_' ~ size) %}
+    {% set avatar = asset(avatars_dir ~ '/' ~ user.avatarName) | imagine_filter('avatar_thumb_' ~ size) %}
 {% endif %}
 
-<img class="rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ user.pseudo }}" width="{{ size|default(64) }}" height="{{ size|default(64) }}">
+<img class="rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ user.pseudo }}" width="{{ size }}" height="{{ size }}">

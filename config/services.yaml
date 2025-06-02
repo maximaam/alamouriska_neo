@@ -36,7 +36,8 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Service\NavBuilder:
-        arguments: [ "@knp_menu.factory", "@doctrine.orm.entity_manager" ]
+        #arguments: [ "@knp_menu.factory", "@doctrine.orm.entity_manager" ]
+        arguments: [ "@knp_menu.factory" ]
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main }
             - { name: knp_menu.menu_builder, method: footerMenu, alias: footer }

@@ -68,7 +68,7 @@
                         <div class="user-container">
                             {% if is_granted("IS_AUTHENTICATED_FULLY") %}
                                 <a href="{{ path('app_user_show') }}" title="{{ app.user.pseudo }} - {{ 'label.profile'|trans }}">
-                                    {%  include 'partials/_avatar.html.twig' with {'user': app.user, 'size': 32 } only %}
+                                    {%  include 'partials/_avatar.html.twig' with {'user': app.user } only %}
                                 </a>
                             {% else %}
                                 <a href="{{ path('app_security_login') }}" title="{{ 'label.login'|trans }}">
