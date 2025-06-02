@@ -34,7 +34,7 @@ class PostForm extends AbstractType
             ->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event): void {
                 $post = $event->getData();
                 if (\in_array($post->getType(), [PostType::proverb->value, PostType::joke->value], true)) {
-                    $post->setTitle(mb_strimwidth($post->getDescription(), 0, 100, '...'));
+                    $post->setTitle(mb_strimwidth((string) $post->getDescription(), 0, 100, '...'));
                 }
             });
     }

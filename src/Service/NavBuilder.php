@@ -12,13 +12,13 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class NavBuilder
+final readonly class NavBuilder
 {
     public function __construct(
-        private readonly FactoryInterface $factory,
+        private FactoryInterface $factory,
         // private readonly EntityManager $entityManager,
         // private readonly RequestStack $requestStack,
-        private readonly TranslatorInterface $translator,
+        private TranslatorInterface $translator,
     ) {
     }
 

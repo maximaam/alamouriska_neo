@@ -13,14 +13,14 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 // #[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: User::class)]
 #[AsEntityListener(event: Events::preUpdate, method: 'preUpdate', entity: User::class)]
-final class UserChangedListener
+final readonly class UserChangedListener
 {
     public function __construct(
-        private readonly LiipCacheManager $lcm,
+        private LiipCacheManager $lcm,
         #[Autowire('%kernel.project_dir%/public')]
-        private readonly string $publicDir,
+        private string $publicDir,
         #[Autowire('%avatars_dir%')]
-        private readonly string $avatarsDir,
+        private string $avatarsDir,
     ) {
     }
 
