@@ -21,16 +21,16 @@ class UserForm extends AbstractType
                 'allow_delete' => true,
                 'download_uri' => false,
                 'help' => 'form.help.avatar_upload',
-                'row_attr' => ['class' => 'avatar-fieldset mb-3']
+                'row_attr' => ['class' => 'avatar-fieldset mb-3'],
             ])
             ->add('pseudo', null, [
                 'help' => 'label.pseudo_only_alnum',
             ])
             ->add('enableCommunityContact', null, [
-                'label' => 'user.enable_community_contact'
+                'label' => 'user.enable_community_contact',
             ])
             ->add('enablePostNotification', null, [
-                'label' => 'user.allow_post_notification'
+                'label' => 'user.allow_post_notification',
             ]);
     }
 

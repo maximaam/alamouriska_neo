@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Repository\PostRepository;
 use App\Entity\Post;
+use App\Repository\PostRepository;
 use App\Utils\PostUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,6 @@ final class HomeController extends AbstractController
     public function index(PostRepository $postRepo): Response
     {
         return $this->render('home/index.html.twig', [
-            
         ]);
     }
 
@@ -34,7 +33,6 @@ final class HomeController extends AbstractController
                 'titleSlug' => $post->getTitleSlug(),
             ]);
         }
-
 
         return $this->render('home/post.html.twig', [
             'post' => $post,

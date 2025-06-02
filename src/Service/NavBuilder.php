@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Knp\Menu\FactoryInterface;
+use App\Entity\Post;
+use App\Enum\PostType;
 use Doctrine\ORM\EntityManager;
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Enum\PostType;
-use App\Entity\Post;
 
 final class NavBuilder
 {
@@ -19,7 +19,7 @@ final class NavBuilder
         // private readonly EntityManager $entityManager,
         // private readonly RequestStack $requestStack,
         private readonly TranslatorInterface $translator,
-    ){
+    ) {
     }
 
     public function mainMenu(): ItemInterface

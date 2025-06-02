@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Post;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Enum\PostType;
-use Vich\UploaderBundle\Form\Type\VichImageType;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class PostForm extends AbstractType
 {
@@ -21,8 +21,8 @@ class PostForm extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'choices' => PostType::cases(),
-                'choice_label' => fn(PostType $type) => sprintf('post.%s.singular', $type->name),
-                'choice_value' => fn(?PostType $type) => $type?->value,
+                'choice_label' => fn (PostType $type) => sprintf('post.%s.singular', $type->name),
+                'choice_value' => fn (?PostType $type) => $type?->value,
             ])
             ->add('title')
             ->add('description')
@@ -33,7 +33,7 @@ class PostForm extends AbstractType
             ])
             ->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) {
                 $post = $event->getData();
-                if (in_array($post->getType(), [PostType::proverb->value, PostType::joke->value], true)){
+                if (in_array($post->getType(), [PostType::proverb->value, PostType::joke->value], true)) {
                     $post->setTitle(mb_strimwidth($post->getDescription(), 0, 100, '...'));
                 }
             })

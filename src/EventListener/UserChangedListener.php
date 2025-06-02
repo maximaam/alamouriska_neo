@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Entity\User;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager as LiipCacheManager;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -51,9 +51,9 @@ final class UserChangedListener
 
         $avatarFileNew = str_replace($previousPseudo, $newPseudo, $avatarFile);
         $avatarNameNew = str_replace($previousPseudo, $newPseudo, $user->getAvatarName());
-                
+
         // Remove Avatars with old name
-        $this->removeCachedAvatars($user);   
+        $this->removeCachedAvatars($user);
         rename($avatarFile, $avatarFileNew);
         $user->setAvatarName($avatarNameNew);
     }
