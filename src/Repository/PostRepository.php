@@ -22,6 +22,9 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    /**
+     * @return array<mixed, mixed>
+     */
     public function findLatests(int $maxResult = 10): array
     {
         return $this->createQueryBuilder(self::QB_ALIAS)
