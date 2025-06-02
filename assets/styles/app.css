@@ -204,6 +204,11 @@ main {
     padding: 0 1rem;
 }
 
+.card-post-image {
+    img {
+        width: 100%;
+    }   
+}
 
 .help-text {
     color: var(--mid-grey) !important;

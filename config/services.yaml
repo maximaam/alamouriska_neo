@@ -16,6 +16,7 @@ parameters:
     full_domain: 'https://www.alamouriska.com'
     public_dir: '%kernel.project_dir%/public'
     avatars_dir: 'uploads/images/avatars'
+    posts_dir: 'uploads/images/posts'
 
 services:
     # default configuration for services in *this* file

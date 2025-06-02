@@ -11,6 +11,13 @@
     <div class="card-body p-2">
          <h1>{{ post.title }}</h1>
          <p>{{ post.description }}</p>
+
+        {% if post.postImageName is not null %}
+            <div class="card-post-image">
+                <img src="{{ asset(posts_dir ~ '/' ~ post.postImageName) | imagine_filter('post_image') }}" alt="">
+            </div>
+        {% endif %}
+
     </div>
 
     <div class="card-footer">
