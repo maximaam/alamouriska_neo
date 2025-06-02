@@ -1,38 +1,48 @@
-{% extends 'layer_center.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
     {{ 'label.profile' | trans }}
     {{ parent() }}
 {% endblock %}
 
-{% block card_header %}
-    <h1>{{ 'label.profile' | trans }}</h1>
+{% block body %}
+    <div class="container">
+        <div class="row text-dark">
+            <div class="col-sm-6">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h1>{{ 'label.profile' | trans }}</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            {% include 'partials/_avatar.html.twig' with {'user': user, 'size': 128 } only %}
+                        </div>
+                        <div class="mb-3">
+                            <ul>
+                                <li>Email: {{ user.email }}</li>
+                                <li>Pseudo: {{ user.pseudo }}</li>
+                                <li>EnableCommunityContact: {{ user.enableCommunityContact ? 'Yes' : 'No' }}</li>
+                                <li>EnablePostNotification: {{ user.enablePostNotification ? 'Yes' : 'No' }}</li>
+                                <li>Email: {{ user.email }}</li>
+                                <li>Email: {{ user.email }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-end">
+                            <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
+                                {{ 'label.profile_edit' | trans }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                {%  for post in posts %}
+                    {%  include 'partials/_card-post.html.twig' with {'post': post } only %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
-{% block card_body %}
-
-    <div class="mb-3">
-        {% include 'partials/_avatar.html.twig' with {'user': user, 'size': 128 } only %}
-    </div>
-    <div class="mb-3">
-        <ul>
-            <li>Email: {{ user.email }}</li>
-            <li>Pseudo: {{ user.pseudo }}</li>
-            <li>EnableCommunityContact: {{ user.enableCommunityContact ? 'Yes' : 'No' }}</li>
-            <li>EnablePostNotification: {{ user.enablePostNotification ? 'Yes' : 'No' }}</li>
-            <li>Email: {{ user.email }}</li>
-            <li>Email: {{ user.email }}</li>
-        </ul>
-    </div>
-    <div class="text-end">
-        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
-            {{ 'label.profile_edit' | trans }}
-        </a>
-    </div>
-
-    {# include('user/_delete_form.html.twig') #}
-{% endblock %}
-
-
-{% block card_footer %}
-{% endblock %}

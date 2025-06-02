@@ -12,15 +12,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use App\Repository\PostRepository;
 
 #[Route('/user', name: 'app_user_', priority: 2)]
 final class UserController extends AbstractController
 {
     #[Route('/show', name: 'show', methods: ['GET'])]
-    public function show(#[CurrentUser] User $user): Response
+    public function show(#[CurrentUser] User $user, PostRepository $postRepository): Response
     {
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'posts' => $postRepository->findBy(['user' => $user]),
         ]);
     }
 
