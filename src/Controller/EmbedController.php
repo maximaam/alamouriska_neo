@@ -7,13 +7,10 @@ namespace App\Controller;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Requirement\Requirement;
 
-#[Route('/embed', name: 'app_embed_', priority: 5)]
+// No route for embed controller
 final class EmbedController extends AbstractController
 {
-    #[Route('/sidebar', name: 'sidebar', methods: ['GET'], requirements: ['typeSlug' => Requirement::ASCII_SLUG])]
     public function sidebar(PostRepository $postRepo): Response
     {
         return $this->render('embed/_sidebar.html.twig', [

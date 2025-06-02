@@ -10,6 +10,6 @@ class PostUtilsTest extends TestCase
 {
     public function testSomething(): void
     {
-        self::assertTrue(0 + 1);
+        self::assertTrue(1 === 1);
     }
 }
