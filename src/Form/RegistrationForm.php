@@ -66,8 +66,7 @@ class RegistrationForm extends AbstractType
                 'row_attr' => [
                     'class' => 'text-end',
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

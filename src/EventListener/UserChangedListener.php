@@ -17,7 +17,6 @@ final class UserChangedListener
 {
     public function __construct(
         private readonly LiipCacheManager $lcm,
-
         #[Autowire('%kernel.project_dir%/public')]
         private readonly string $publicDir,
         #[Autowire('%avatars_dir%')]
@@ -43,7 +42,7 @@ final class UserChangedListener
 
         $previousPseudo = $event->getOldValue('pseudo');
         $newPseudo = $event->getNewValue('pseudo');
-        $avatarFile = sprintf('%s/%s/%s', $this->publicDir, $this->avatarsDir, $user->getAvatarName());
+        $avatarFile = \sprintf('%s/%s/%s', $this->publicDir, $this->avatarsDir, $user->getAvatarName());
 
         if (!file_exists($avatarFile)) {
             return;
@@ -64,7 +63,7 @@ final class UserChangedListener
             return;
         }
 
-        $this->lcm->remove(sprintf('%s/%s', $this->avatarsDir, $avatarName));
-        $this->lcm->remove(sprintf('%s/%s', $this->avatarsDir, $avatarName.'.webp'));
+        $this->lcm->remove(\sprintf('%s/%s', $this->avatarsDir, $avatarName));
+        $this->lcm->remove(\sprintf('%s/%s', $this->avatarsDir, $avatarName.'.webp'));
     }
 }

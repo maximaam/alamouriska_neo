@@ -31,7 +31,6 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy(self::QB_ALIAS.'.id', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
-            ->getArrayResult()
-        ;
+            ->getArrayResult();
     }
 }

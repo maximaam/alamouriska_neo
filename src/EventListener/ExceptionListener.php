@@ -14,7 +14,7 @@ final class ExceptionListener
     {
         // You get the exception object from the received event
         $exception = $event->getThrowable();
-        $message = sprintf(
+        $message = \sprintf(
             'My Error says: %s with code: %s',
             $exception->getMessage(),
             $exception->getCode()
