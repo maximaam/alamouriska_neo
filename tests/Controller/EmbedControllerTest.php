@@ -14,8 +14,6 @@ final class EmbedControllerTest extends WebTestCase
     public function testSidebarFragmentRendersSuccessfully(): void
     {
         self::bootKernel();
-
-        /** @var HttpKernelInterface $kernel */
         $kernel = self::$kernel;
 
         $request = Request::create('', 'GET');
@@ -23,6 +21,6 @@ final class EmbedControllerTest extends WebTestCase
         $response = $kernel->handle($request, HttpKernelInterface::SUB_REQUEST);
 
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-        self::assertStringContainsString('Les publications récentes', $response->getContent());
+        self::assertStringContainsString('Les publications récentes', (string) $response->getContent());
     }
 }

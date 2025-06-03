@@ -5,7 +5,7 @@ parameters:
         - config/
         - public/
         - src/
-        - tests/
+        # - tests/
 
 includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
