@@ -109,6 +109,11 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
+        "static-code-check": [
+            "@cs-fixer:check",
+            "@phpstan:check",
+            "@rector:check"
+        ],
         "cs-fixer:fix": "php vendor/bin/php-cs-fixer fix",
         "cs-fixer:check": "php vendor/bin/php-cs-fixer fix --dry-run --diff",
         "phpstan:check": "phpstan analyse",
