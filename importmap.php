@@ -16,8 +16,8 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
-    'user_edit' => [
-        'path' => './assets/js/user_edit.js',
+    'form_image' => [
+        'path' => './assets/js/form_image.js',
         'entrypoint' => true,
     ],
     '@hotwired/stimulus' => [

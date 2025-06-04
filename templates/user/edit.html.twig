@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block importmap %}
-    {{ importmap(['app', 'user_edit']) }}
+    {{ importmap(['app', 'form_image']) }}
 {% endblock %}
 
 {% block card_header %}
@@ -15,12 +15,7 @@
 
 {% block card_body %}
     <div class="mb-3">
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <div class="text-end">
-            <button class="btn btn-secondary">{{ 'label.send' | trans }}</button>
-        </div>
-        {{ form_end(form) }}
+        {{ include('partials/_form.html.twig') }}
     </div>
 {% endblock %}
 

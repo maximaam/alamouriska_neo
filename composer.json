@@ -112,13 +112,15 @@
         "static-code-check": [
             "@cs-fixer:check",
             "@phpstan:check",
-            "@rector:check"
+            "@rector:check",
+            "@phpunit"
         ],
         "cs-fixer:fix": "php vendor/bin/php-cs-fixer fix",
         "cs-fixer:check": "php vendor/bin/php-cs-fixer fix --dry-run --diff",
         "phpstan:check": "phpstan analyse",
         "rector:check": "php vendor/bin/rector process --dry-run",
-        "rector:fix": "php vendor/bin/rector process"
+        "rector:fix": "php vendor/bin/rector process",
+        "phpunit": "php bin/phpunit"
     },
     "conflict": {
         "symfony/symfony": "*"

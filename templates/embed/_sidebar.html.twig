@@ -1,90 +1,63 @@
 <div class="col-sm-4">
-                <div class="card mb-3">
-                    <div class="card-header font-weight-bold">Les publications récentes</div>
-                    <div class="card-body">
-                        {%  for post in latest_posts %}
-                            <div class="media mb-2 pb-1 border-bottom">
-                                {%  include 'partials/_avatar.html.twig' with {'user': post.user } only %}
-                                <a href="{{ path('app_home_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}" class="media-body">
-                                    {{ post.title }}
-                                </a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="card-footer text-end">
-                        <a href="{{ path('app_post_new') }}" class="btn btn-primary">{{ 'post.label.create' | trans }}</a>
-                    <!--
-                        <label for="quick-post" class="d-block">
-                        
-                        {#
-                            <select name="quick-post" id="quick-post" class="form-control bg-happy" onchange="location.href=this.value">
-                                <option value="">Publier un mot, expression...</option>
-                                <option value="{{ path('post_index', {'domain':'mots-algeriens'}) }}#post-anchor">Publier Un Mot</option>
-                                <option value="{{ path('post_index', {'domain':'expressions-algeriennes'}) }}#post-anchor">Publier Une Expresion</option>
-                                <option value="{{ path('post_index', {'domain':'proverbes-algeriens'}) }}#post-anchor">Publier Un Proverbe</option>
-                                <option value="{{ path('post_index', {'domain':'blagues-algeriennes'}) }}#post-anchor">Publier Une Blague</option>
-                            </select>
-                            #}
-                        
-                        </label>
-                        -->
-                    </div>
+    <div class="card mb-3">
+        <div class="card-header font-weight-bold">Les publications récentes</div>
+        <div class="card-body">
+            {%  for post in latest_posts %}
+                <div class="media mb-2 pb-1 border-bottom">
+                    {%  include 'partials/_avatar.html.twig' with {'user': post.user } only %}
+                    <a href="{{ path('app_home_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}" class="media-body">
+                        {{ post.title }}
+                    </a>
                 </div>
+            {% endfor %}
+        </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('app_post_new') }}" class="btn btn-primary">{{ 'post.label.create' | trans }}</a>
+        </div>
+    </div>
 
-                <div class="card mb-3">
-                    <div class="card-header font-weight-bold">Les commentaires récents</div>
-                    <div class="card-body">
-                    <!--
-                    {#
-                        {%  for latest_comment in latest_comments %}
-                            <div class="media mb-2 pb-1 border-bottom">
-                                {%  include 'partials/avatar.html.twig' with {'username': latest_comment.user.username, 'size': 32, 'current_user': latest_comment.user } only %}
-                                <a class="media-body" href="{{ path('post_show', { 'domain': domain_by_post(latest_comment.post), 'id': latest_comment.post.id, 'slug': latest_comment.post.slug | default('slug') }) }}">
-                                    {{ latest_comment.message | truncate(70) | wordwrap }}
-                                </a>
-                            </div>
-                        {% endfor %}
-                        #}
-                        -->
-                    </div>
+    <div class="card mb-3">
+        <div class="card-header font-weight-bold">Les commentaires récents</div>
+        <div class="card-body">
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header font-weight-bold">Les plus énigmatiques</div>
+        <div class="card-body">
+            <ul class="pl-3 mb-2">
+                ...
+            </ul>
+            <p>
+                Des membres se posent des questions sur l'origine de certaines
+                tournures de langage ; aidez-les.
+            </p>
+        </div>
+    </div>
+
+    <div class="card bg-sky font-weight-bold mb-3">
+        <div class="card-header">Noter {{ app_name }}</div>
+
+        <div class="card-body">
+            <!-- Rating Stars Box -->
+            <div class="rating-stars text-center">
+                <div class="mb-2">
+                    Votes...
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="card mb-3">
-                    <div class="card-header font-weight-bold">Les plus énigmatiques</div>
-                    <div class="card-body">
-                        <ul class="pl-3 mb-2">
-                            ...
-                        </ul>
-                        <p>
-                            Des membres se posent des questions sur l'origine de certaines
-                            tournures de langage ; aidez-les.
-                        </p>
-                    </div>
-                </div>
+    {% if app.user is same as(null) %} {# For non users only #}
+        <div class="card bg-happy mb-3">
+            <div class="card-header font-weight-bold">{{ app_name }}, keskissik?</div>
 
-                <div class="card bg-sky font-weight-bold mb-3">
-                    <div class="card-header">Noter {{ app_name }}</div>
-
-                    <div class="card-body">
-                        <!-- Rating Stars Box -->
-                        <div class="rating-stars text-center">
-                            <div class="mb-2">
-                                Votes...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {% if app.user is same as(null) %} {# For non users only #}
-                    <div class="card bg-happy mb-3">
-                        <div class="card-header font-weight-bold">{{ app_name }}, keskissik?</div>
-
-                        <div class="card-body">
-                            {% if page is defined %}
-                                <p>{{ page.description | raw }}</p>
-                                <a href="{{ path('app_home_index', { alias: 'keskissik' }) }}" class="btn btn-primary">En savoir plus</a>
-                            {% endif %}
-                        </div>
-                    </div>
+            <div class="card-body">
+                {% if page is defined %}
+                    <p>{{ page.description | raw }}</p>
+                    <a href="{{ path('app_home_index', { alias: 'keskissik' }) }}" class="btn btn-primary">En savoir plus</a>
                 {% endif %}
             </div>
+        </div>
+    {% endif %}
+</div>

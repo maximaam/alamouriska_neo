@@ -17,7 +17,11 @@
                     <tr>
                         <td width="75%">{{ post.title }}</td>
                         <td>{{ ux_icon('bi:eye-fill', {class: 'basic-icon'}) }}</td>
-                        <td>{{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}</td>
+                        <td>
+                            <a title="{{ 'label.update' | trans }}" href="{{ path('app_post_edit', {'id': post.id} ) }}">
+                                {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
+                            </a>
+                        </td>
                         <td>{{ ux_icon('bi:trash-fill', {class: 'basic-icon'}) }}</td>
                     </tr>
                     {% endfor %}
