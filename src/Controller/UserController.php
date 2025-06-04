@@ -35,7 +35,9 @@ final class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_show', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'flash.profile_edit_success');
+
+            return $this->redirectToRoute('app_user_show');
         }
 
         return $this->render('user/edit.html.twig', [

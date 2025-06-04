@@ -1,19 +1,22 @@
 :root {
+    --white: #ffffff;
     --dark-grey: #333333;
     --mid-grey: #999999;
     --light-grey: #dddddd;
     --dark-blue: #0B4B85;
-    --light-blue: #1372A9;
     --purple: #a91372;
     --light-purple: #962173;
     --green: #72a913;
     --yellow: #ffdd00;
+    --yellow-light: #fcea73;
     --aqua: #0B4B85;
+    --aqua-light: #3d5f7e;
+    --braun: #853F0B;
 }
 
 body {
-    color: var(--bs-white);
-    background: var(--light-blue);
+    color: var(--white);
+    background: var(--dark-blue);
     font-family: "Roboto Light", sans-serif;
 }
 textarea, input {
@@ -22,11 +25,18 @@ textarea, input {
         outline: none !important;
     }
 }
+
+.bg-aqua {
+    background-color: var(--aqua);
+    color: var(--white) !important;
+    opacity: 0.9;
+}
+
 h1 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 h2 {
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 a, button {
     border: none !important;
@@ -76,12 +86,12 @@ a.no-underline:hover {
     margin: 2px;
     a {
         letter-spacing: 1px;
-        color: var(--bs-white);
+        color: var(--white);
         font-weight: bold;
     }
     &.current a, a:hover {
-        color: var(--light-blue);
-        background: var(--bs-white);
+        color: var(--aqua);
+        background: var(--white);
         border-radius: 0.25rem;
     }
 }
@@ -93,22 +103,26 @@ main {
     margin-top: 50px;
     min-height: 300px;
 }
-.btn-primary {
+.btn-primary, .btn-secondary {
     text-transform:uppercase;
-    color: var(--bs-white) !important;
-    background-color: var(--dark-blue) !important;
+    color: var(--white) !important;
     text-decoration: none !important;
+    font-weight: bold;
+}
+.btn-primary {
+    background-color: var(--aqua) !important;
     &:hover {
-        background-color: var(--light-blue) !important;
+        background-color: var(--aqua-light) !important;
     }
 }
 .btn-secondary {
     background-color: var(--yellow);
-    border: var(--yellow);
+    color: var(--dark-grey) !important;
     &:hover {
-        background-color: var(--green);
+        background-color: var(--yellow-light) !important;
     }
 }
+
 .basic-icon {
     background: var(--bs-white);
     font-size: 2rem;
@@ -135,12 +149,6 @@ main {
 .app-centered {
     width: 75%;
 }
-.image-preview {
-    display: block;
-    margin-top: 10px;
-    max-width: 128px;
-    max-height: 128px;
-}
 .card {
     color: var(--dark-grey);
     a {
@@ -153,11 +161,8 @@ main {
     }
     &.card-post {
         background-color: var(--yellow);
-        opacity: 0.8;
+        opacity: 0.9;
     }
-
-
-
     .card-header {
         position: relative;
         padding: 0.2rem 0.5rem;
@@ -200,7 +205,8 @@ main {
 }
 
 .avatar-fieldset {
-    background-color: var(--light-grey);
+    background-color: var(--white);
+    color: var(--dark-grey);
     padding: 0 1rem;
 }
 
@@ -211,7 +217,7 @@ main {
 }
 
 .help-text {
-    color: var(--mid-grey) !important;
+    color: var(--white) !important;
     text-align: right;
 }
 
@@ -224,7 +230,7 @@ main {
         background-size: cover;
     }
     .app-centered {
-        width: 50%;
+        width: 60%;
     }
     .user-container {
         margin-left: 1rem;

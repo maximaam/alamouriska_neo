@@ -27,7 +27,7 @@ class PostForm extends AbstractType
             ->add('title')
             ->add('description')
             ->add('postImageFile', VichImageType::class, [
-                'label' => 'Photo',
+                'label' => 'Photo (option)',
                 'required' => false,
                 'allow_delete' => true,
             ])

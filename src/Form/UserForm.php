@@ -27,10 +27,10 @@ class UserForm extends AbstractType
                 'help' => 'label.pseudo_only_alnum',
             ])
             ->add('enableCommunityContact', null, [
-                'label' => 'user.enable_community_contact',
+                'label' => 'label.enable_community_contact',
             ])
             ->add('enablePostNotification', null, [
-                'label' => 'user.allow_post_notification',
+                'label' => 'label.allow_post_notification',
             ]);
     }
 

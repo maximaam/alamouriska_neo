@@ -84,6 +84,15 @@
         <main>
             <div class="container">
                 <div class="row">
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label }}">
+                                {{ message | trans }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+                <div class="row">
                     {% block body %}{% endblock %}
                 </div>
             </div>

@@ -5,6 +5,7 @@ label:
   send: Envoyer
   user: Utilisateur
   pseudo: Pseudo
+  email: Email
   password: Mot de passe
   login: Connexion
   register: Inscription
@@ -25,6 +26,10 @@ label:
   login_facebook: Connexion avec Facebook
   no_account: Pas encore de compte? Incris-toi!
   search: Recherche
+  enable_community_contact: "Les membres peuvent me contacter"
+  allow_post_notification: "Me notifier à chaque publication"
+  yes: Oui
+  no: Non
 
 flash:
   registration_pre_confirmation: "Sahit ! Un email de confirmation a été envoyé. Ne pas oublier de confirmer en cliquant sur le lien inclus."
@@ -68,15 +73,6 @@ post:
       question: Je cherche l'explication
       image:
         help: Image est optionnelle
-
-
-user:
-  enable_community_contact: "Autoriser les autres utilisateurs à me contacter"
-  allow_post_notification: "Recevoir une notification à chaque nouvelle publication"
-
-layout:
-  post_by: "Par: "
-  post_on: "Le: "
 
 form:
   label:
