@@ -6,6 +6,7 @@ namespace App\EventListener;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+// use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager as LiipCacheManager;
@@ -17,7 +18,7 @@ final readonly class UserChangedListener
 {
     public function __construct(
         private LiipCacheManager $lcm,
-        #[Autowire('%kernel.project_dir%/public')]
+        #[Autowire('%public_dir%')]
         private string $publicDir,
         #[Autowire('%avatars_dir%')]
         private string $avatarsDir,
@@ -26,10 +27,23 @@ final readonly class UserChangedListener
 
     public function preUpdate(User $user, PreUpdateEventArgs $event): void
     {
-        $this->pseudoChanged($user, $event);
-        $this->removeCachedAvatars($user);
+        // $this->pseudoChanged($user, $event);
+        $this->removeCachedAvatars($user, $event);
     }
 
+    /*
+    public function postUpdate(User $user, PostUpdateEventArgs $event): void
+    {
+    }
+    */
+
+    /**
+     * Rename uploaded image when pseudo changes.
+     * This is with Vich config being: 
+     * service: Vich\UploaderBundle\Naming\PropertyNamer
+     * currently deactivated.
+     */
+    /*
     private function pseudoChanged(User $user, PreUpdateEventArgs $event): void
     {
         if (!$event->hasChangedField('pseudo')) {
@@ -56,10 +70,17 @@ final readonly class UserChangedListener
         rename($avatarFile, $avatarFileNew);
         $user->setAvatarName($avatarNameNew);
     }
+    */
 
-    private function removeCachedAvatars(User $user): void
+    private function removeCachedAvatars(User $user, PreUpdateEventArgs $event): void
     {
-        if (null === $avatarName = $user->getAvatarName()) {
+        $avatarName = $user->getAvatarName();
+
+        if (!$avatarName && $event->hasChangedField('avatarName')) {
+            $avatarName = $event->getOldValue('avatarName');
+        }
+
+        if (!$avatarName) {
             return;
         }
 

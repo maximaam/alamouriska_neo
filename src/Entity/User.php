@@ -76,14 +76,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'avatarName')]
     #[Assert\Image(
-        allowLandscape: false,
-        allowPortrait: false,
+        allowLandscape: true,
+        allowPortrait: true,
         maxSize: '1M',
         mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
         minWidth: 128,
         minHeight: 128,
-        maxWidth: 1024,
-        maxHeight: 1024,
+        maxWidth: 2048,
+        maxHeight: 2048,
         minWidthMessage: 'avatar_min_width',
         minHeightMessage: 'avatar_min_height',
         maxWidthMessage: 'avatar_max_width',
