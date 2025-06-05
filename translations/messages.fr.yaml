@@ -30,6 +30,7 @@ label:
   allow_post_notification: "Me notifier à chaque publication"
   yes: Oui
   no: Non
+  posts_page_h1: "Liste des %post_type% en derja (درجة)"
 
 flash:
   registration_pre_confirmation: "Sahit ! Un email de confirmation a été envoyé. Ne pas oublier de confirmer en cliquant sur le lien inclus."
@@ -48,6 +49,7 @@ post:
     plural: Mots
     title_hint: Insérer le mot...
     seo_route: mots-algeriens
+  mots-algeriens: Mots Algériens
   expression:
     singular: Expression
     plural: Expressions

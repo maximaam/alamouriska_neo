@@ -20,8 +20,14 @@ class UserForm extends AbstractType
                 'required' => false,
                 'allow_delete' => true,
                 'download_uri' => false,
+                'image_uri' => true,
+                'attr' => [
+                    'data-controller' => 'image-upload',
+                ],
                 'help' => 'form.help.avatar_upload',
-                'row_attr' => ['class' => 'avatar-fieldset mb-3'],
+                'row_attr' => [
+                    'class' => 'avatar-fieldset mb-3',
+                ],
             ])
             ->add('pseudo', null, [
                 'help' => 'label.pseudo_only_alnum',

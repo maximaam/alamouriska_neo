@@ -16,10 +16,12 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
+    /*
     'form_image' => [
         'path' => './assets/js/form_image.js',
         'entrypoint' => true,
     ],
+    */
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],

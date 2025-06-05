@@ -217,8 +217,15 @@ main {
 }
 
 .help-text {
-    color: var(--white) !important;
     text-align: right;
+}
+
+.vich-image {
+    img {
+        margin-top: 10px;
+        width: 128px;
+        height: 128px;
+    }
 }
 
 @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */

@@ -13,14 +13,11 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="container start-page">
         <div class="row text-dark">
-
             {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
-
             <div class="col-sm-8">
-                <h1>Header</h1>
+                <h1>{{ 'home_h1' | trans }}</h1>
                 <div class="card mb-3" id="journal-public">
                     <div class="card-header font-weight-bold">Journal public</div>
                     <div class="card-body p-2">
@@ -35,17 +32,13 @@
                         </ul>
                     </div>
                 </div>
-
                 <div class="card" id="latest-users">
                     <div class="card-header font-weight-bold">Membres récents</div>
                     <ul class="card-body p-2">
                         latest udrtd....
                     </ul>
                 </div>
-
             </div>
-
         </div>
     </div>
-
 {% endblock %}
