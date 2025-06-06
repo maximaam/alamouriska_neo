@@ -60,8 +60,8 @@
                             <label for="search_input">
                             <input class="form-control search-input" type="search" name="search_input" id="search_input" placeholder="{{ 'label.search'|trans }}..." aria-label="Search">
                             </label>
-                            <button class="btn btn-secondary search-btn" type="submit">
-                                {{ ux_icon('bi:search', {class: 'basic-icon search-icon'}) }}
+                            <button class="btn search-btn" type="submit">
+                                {{ ux_icon('bi:search', {class: 'basic-icon'}) }}
                             </button>
                         </form>
 
@@ -83,15 +83,18 @@
 
         <main>
             <div class="container">
-                <div class="row">
-                    {% for label, messages in app.flashes %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ label }}">
-                                {{ message | trans }}
-                            </div>
+                {% set flashes = app.flashes %}
+                {% if flashes is not empty %}
+                    <div class="row">
+                        {% for label, messages in flashes %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ label }}">
+                                    {{ message | trans }}
+                                </div>
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endif %}
                 <div class="row">
                     {% block body %}{% endblock %}
                 </div>

@@ -1,18 +1,20 @@
-<div class="col-sm-4">
+<div class="sidebar col-sm-4">
     <div class="card mb-3">
         <div class="card-header font-weight-bold">Les publications récentes</div>
         <div class="card-body">
-            {%  for post in latest_posts %}
-                <div class="media mb-2 pb-1 border-bottom">
+            {% for post in latest_posts %}
+                <div class="mb-2 pb-1 card-list">
                     {%  include 'partials/_avatar.html.twig' with {'user': post.user } only %}
-                    <a href="{{ path('app_home_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}" class="media-body">
+                    <a href="{{ path('app_home_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}">
                         {{ post.title }}
                     </a>
                 </div>
             {% endfor %}
-        </div>
-        <div class="card-footer text-end">
-            <a href="{{ path('app_post_new') }}" class="btn btn-primary">{{ 'post.label.create' | trans }}</a>
+            <div class="text-end mt-3">
+                 <a href="{{ path('app_post_new') }}" class="btn btn-primary">
+                    {{ 'post.label.create' | trans }}
+                </a>
+            </div>
         </div>
     </div>
 
