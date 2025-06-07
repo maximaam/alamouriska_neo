@@ -1,0 +1,20 @@
+{% extends 'layer_center.html.twig' %}
+
+{% block title %}
+    {{ 'label.post_delete' | trans }}
+    {{ parent() }}
+{% endblock %}
+
+{% block card_header %}
+    <h1>{{ 'label.post_delete' | trans }}</h1>
+{% endblock %}
+
+{% block card_body %}
+    {% include 'partials/_card-post.html.twig' with {'post': post} only %}
+{% endblock %}
+
+{% block card_footer %}
+    <div class="text-end">
+        {{ include('partials/_delete_form.html.twig', {'warning_msg': 'flash.post_delete_warning' | trans }) }}
+    </div>
+{% endblock %}
