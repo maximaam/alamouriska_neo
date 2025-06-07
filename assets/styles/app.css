@@ -134,7 +134,9 @@ main {
 .card {
     a {
         color: var(--rocher) !important;
-        &.btn-primary {
+        &.btn-primary, 
+        &.btn-secondary,
+        &.btn-danger {
             color: var(--bs-white) !important;
         }
     }

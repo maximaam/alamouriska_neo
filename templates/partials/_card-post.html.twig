@@ -1,10 +1,19 @@
 <div class="card mb-3 card-post">
-    <div class="card-header">
-        <a href="{{ path('app_profile_index', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="no-underline">
-        {% include 'partials/_avatar.html.twig' with {'user': post.user } only %}
-        {{ post.user.pseudo }}
-        </a>
-         | {{ post.createdAt | date('d.m.Y') }}
+    <div class="row card-header">
+        <div class="col-6">
+            <a href="{{ path('app_profile_index', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="no-underline">
+                {% include 'partials/_avatar.html.twig' with {'user': post.user } only %}
+                {{ post.user.pseudo }}
+            </a>
+            | {{ post.createdAt | date('d.m.Y') }}
+        </div>
+        <div class="col-6 text-end">
+            {% if app.user == post.user %}
+                <a title="{{ 'label.post_update' | trans }}" href="{{ path('app_post_show', {'id': post.id} ) }}">
+                    {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
+                </a>
+            {% endif %}
+        </div>
     </div>
     <div class="card-body p-2">
          <h1>{{ post.title }}</h1>
@@ -15,12 +24,9 @@
                 <img src="{{ asset(posts_dir ~ '/' ~ post.postImageName) | imagine_filter('post_image') }}" alt="">
             </div>
         {% endif %}
-
     </div>
 
-    <!--
     <div class="card-footer">
     footer...
     </div>
-    -->
 </div>

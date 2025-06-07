@@ -38,7 +38,7 @@ final readonly class PostChangedListener
 
     private function removeCachedImages(Post $post): void
     {
-        if (null !== $image = $post->getPostImageName()) {
+        if (null === $image = $post->getPostImageName()) {
             return;
         }
 

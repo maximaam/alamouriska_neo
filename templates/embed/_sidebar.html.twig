@@ -1,6 +1,11 @@
 <div class="sidebar col-sm-4">
     <div class="card mb-3">
-        <div class="card-header font-weight-bold">Les publications récentes</div>
+        <div class="card-header">
+            Les publications récentes
+            <a title="{{ 'label.post_create' | trans }}" href="{{ path('app_post_new') }}">
+                {{ ux_icon('bi:journal-plus', {class: 'basic-icon'}) }}
+            </a>
+        </div>
         <div class="card-body">
             {% for post in latest_posts %}
                 <div class="mb-2 pb-1 card-list">
@@ -10,7 +15,7 @@
                     </a>
                 </div>
             {% endfor %}
-            <div class="text-end mt-3">
+            <div class="text-center mt-3">
                  <a href="{{ path('app_post_new') }}" class="btn btn-primary">
                     {{ 'post.label.create' | trans }}
                 </a>

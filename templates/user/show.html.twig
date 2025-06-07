@@ -35,6 +35,12 @@
                     {% endfor %}
                 </table>
             </div>
+
+            <div class="card-footer text-end">
+                <a title="{{ 'label.post_create' | trans }}" href="{{ path('app_post_new') }}" class="btn btn-primary">
+                    {{ ux_icon('bi:journal-plus', {class: 'basic-icon'}) }}
+                </a>
+            </div>
         </div>
      </div>
 
@@ -68,12 +74,19 @@
                     </ul>
                 </div>
             </div>
-            <div class="card-footer">
-                <div class="text-end">
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
-                        {{ 'label.profile_edit' | trans }}
-                    </a>
-                </div>
+            <div class="card-footer text-end">
+                <a title="{{ 'label.account_delete' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-danger">
+                    {{ ux_icon('bi:person-x', {class: 'basic-icon'}) }}
+                </a>
+                <a title="{{ 'label.password_edit' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
+                    {{ ux_icon('bi:lock-fill', {class: 'basic-icon'}) }}
+                </a>
+                <a title="{{ 'label.email_edit' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
+                    {{ ux_icon('bi:envelope-at', {class: 'basic-icon'}) }}
+                </a>
+                <a title="{{ 'label.profile_edit' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
+                    {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
+                </a>
             </div>
         </div>
     </div>

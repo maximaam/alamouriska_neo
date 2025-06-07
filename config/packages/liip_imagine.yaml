@@ -31,7 +31,7 @@ liip_imagine:
         avatar_thumb_128:
 
             # adjust the image quality to 75%
-            quality: 80
+            quality: 75
 
             # list of transformations to apply (the "filters")
             filters:
@@ -49,6 +49,7 @@ liip_imagine:
                 # background: { size: [132, 132], position: center, color: '#000000' }
         
         avatar_thumb_64:
+            quality: 75
             filters:
                 #thumbnail: { size: [64, 64] }
                 fixed:
@@ -56,6 +57,7 @@ liip_imagine:
                     height: 64
 
         avatar_thumb_32:
+            quality: 75
             filters:
                 # thumbnail: { size: [32, 32] }
                 fixed:
@@ -63,7 +65,7 @@ liip_imagine:
                     height: 32
 
         post_image:
-            quality: 80
+            quality: 75
             filters:
                 # thumbnail: { size: [640, 480], mode: outbound }
                 fixed:
