@@ -1,34 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'layer_center.html.twig' %}
 
-{% block title %}Post{% endblock %}
+{% block title %}
+    {{ 'label.post_show' | trans }}
+    {{ parent() }}
+{% endblock %}
 
-{% block body %}
-    <h1>Post</h1>
+{% block card_header %}
+    <h1>{{ 'label.post_show' | trans }}</h1>
+{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ post.id }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ post.type }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ post.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ post.description }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block card_body %}
+    {% include 'partials/_card-post.html.twig' with {'post': post} only %}
+{% endblock %}
 
-    <a href="{{ path('app_post_index') }}">back to list</a>
-
-    <a href="{{ path('app_post_edit', {'id': post.id}) }}">edit</a>
-
-    {{ include('post/_delete_form.html.twig') }}
+{% block card_footer %}
+    <div class="text-end">
+        <a class="btn btn-primary" href="{{ path('app_post_edit', {'id': post.id} ) }}">
+            {{ 'label.post_edit' | trans }}
+        </a>
+        <a class="btn btn-primary" href="{{ path('app_post_delete', {'id': post.id} ) }}">
+            {{ 'label.post_delete' | trans }}
+        </a>
+    </div>
 {% endblock %}

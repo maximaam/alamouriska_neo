@@ -16,13 +16,21 @@
                     {%  for post in posts %}
                     <tr>
                         <td width="75%">{{ post.title }}</td>
-                        <td>{{ ux_icon('bi:eye-fill', {class: 'basic-icon'}) }}</td>
                         <td>
-                            <a title="{{ 'label.update' | trans }}" href="{{ path('app_post_edit', {'id': post.id} ) }}">
+                            <a title="{{ 'label.post_show' | trans }}" href="{{ path('app_post_show', {'id': post.id} ) }}">
+                                {{ ux_icon('bi:eye-fill', {class: 'basic-icon'}) }}
+                            </a>
+                        </td>                        
+                        <td>
+                            <a title="{{ 'label.post_update' | trans }}" href="{{ path('app_post_edit', {'id': post.id} ) }}">
                                 {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
                             </a>
                         </td>
-                        <td>{{ ux_icon('bi:trash-fill', {class: 'basic-icon'}) }}</td>
+                        <td>
+                            <a title="{{ 'label.post_delete' | trans }}" href="{{ path('app_post_delete', {'id': post.id} ) }}">
+                                {{ ux_icon('bi:trash-fill', {class: 'basic-icon'}) }}
+                            </a>                        
+                        </td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -43,8 +51,20 @@
                     <ul class="ml-0 pl-0">
                         <li>{{ 'label.email' | trans }}: {{ user.email }}</li>
                         <li>{{ 'label.pseudo' | trans }}: {{ user.pseudo }}</li>
-                        <li>{{ 'label.enable_community_contact' | trans }}: {{ user.enableCommunityContact ? 'label.yes'|trans : 'label.no'|trans }}</li>
-                        <li>{{ 'label.allow_post_notification' | trans }}: {{ user.enablePostNotification ? 'label.yes'|trans : 'label.no'|trans }}</li>
+                        <li>{{ 'label.enable_community_contact' | trans }}: 
+                            {% if user.enableCommunityContact %}
+                                <span title="{{ 'label.yes'|trans }}">{{ ux_icon('bi:check', {class: 'basic-icon'}) }}</span>
+                            {% else %}
+                                <span title="{{ 'label.no'|trans }}">{{ ux_icon('bi:x', {class: 'basic-icon'}) }}</span>
+                            {% endif %}
+                        </li>
+                        <li>{{ 'label.allow_post_notification' | trans }}: 
+                            {% if user.enablePostNotification %}
+                                <span title="{{ 'label.yes'|trans }}">{{ ux_icon('bi:check', {class: 'basic-icon'}) }}</span>
+                            {% else %}
+                                <span title="{{ 'label.no'|trans }}">{{ ux_icon('bi:x', {class: 'basic-icon'}) }}</span>
+                            {% endif %}
+                        </li>
                     </ul>
                 </div>
             </div>

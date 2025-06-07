@@ -60,5 +60,6 @@ help: ## Show this help
 liip-cc: ## Clears uploaded images cache
 	$(PHP) $(CONSOLE) liip:imagine:cache:remove
 
+# https://ux.symfony.com/icons?set=bi&query=
 icon-import: ## Import icons from the BI lib using SF UX
 	$(PHP) $(CONSOLE) ux:icons:import bi:$(ICON)

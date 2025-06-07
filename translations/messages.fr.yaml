@@ -31,6 +31,9 @@ label:
   yes: Oui
   no: Non
   posts_page_h1: "Liste des %post_type% en derja (درجة)"
+  confirm: Confirmer
+  cancel: Annuler
+  my_posts: Mes publications
 
 flash:
   registration_pre_confirmation: "Sahit ! Un email de confirmation a été envoyé. Ne pas oublier de confirmer en cliquant sur le lien inclus."
@@ -38,6 +41,8 @@ flash:
   reset_password_invalid_link: "Le lien n'est plus valide. Essaie de nouveau."
   reset_password_invalid_user: "Utilisateur introuvable."
   profile_edit_success: "Le profile a été actualisé"
+  post_delete_warning: "Tu confirmes vouloir éffacer cetee publication?"
+  post_deleted_success: "La publication a bien été éffacée."
 
 email:
   registration_subject: "Alamouriska - Confirmation de ton inscription"

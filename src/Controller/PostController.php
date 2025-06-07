@@ -68,14 +68,24 @@ final class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'delete', methods: ['GET', 'POST'])]
     public function delete(Request $request, Post $post, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($post);
-            $entityManager->flush();
+        if (Request::METHOD_POST === $request->getMethod()) {
+            if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->getPayload()->getString('_token'))) {
+                $entityManager->remove($post);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'flash.post_deleted_success');
+
+                return $this->redirectToRoute('app_user_show', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
-        return $this->redirectToRoute('app_user_show', [], Response::HTTP_SEE_OTHER);
+        $this->addFlash('warning', 'flash.post_delete_warning');
+
+        return $this->render('post/delete.html.twig', [
+            'post' => $post,
+        ]);
     }
 }
