@@ -18,8 +18,6 @@ final readonly class UserChangedListener
 {
     public function __construct(
         private LiipCacheManager $lcm,
-        #[Autowire('%public_dir%')]
-        private string $publicDir,
         #[Autowire('%avatars_dir%')]
         private string $avatarsDir,
     ) {
@@ -39,7 +37,7 @@ final readonly class UserChangedListener
 
     /**
      * Rename uploaded image when pseudo changes.
-     * This is with Vich config being: 
+     * This is with Vich config being:
      * service: Vich\UploaderBundle\Naming\PropertyNamer
      * currently deactivated.
      */
@@ -76,11 +74,11 @@ final readonly class UserChangedListener
     {
         $avatarName = $user->getAvatarName();
 
-        if (!$avatarName && $event->hasChangedField('avatarName')) {
+        if (null === $avatarName && $event->hasChangedField('avatarName')) {
             $avatarName = $event->getOldValue('avatarName');
         }
 
-        if (!$avatarName) {
+        if (null === $avatarName) {
             return;
         }
 

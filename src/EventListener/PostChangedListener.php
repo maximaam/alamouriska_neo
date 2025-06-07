@@ -18,15 +18,13 @@ final readonly class PostChangedListener
 {
     public function __construct(
         private LiipCacheManager $lcm,
-        #[Autowire('%public_dir%')]
-        private string $publicDir,
         #[Autowire('%posts_dir%')]
         private string $postsDir,
     ) {
     }
 
     /**
-     * Always clears cache on update
+     * Always clears cache on update.
      */
     public function preUpdate(Post $post): void
     {
@@ -40,7 +38,7 @@ final readonly class PostChangedListener
 
     private function removeCachedImages(Post $post): void
     {
-        if (!$image = $post->getPostImageName()) {
+        if (null !== $image = $post->getPostImageName()) {
             return;
         }
 
