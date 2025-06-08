@@ -1,7 +1,7 @@
 <div class="sidebar col-sm-4">
     <div class="card mb-3">
-        <div class="card-header">
-            Les publications récentes
+        <div class="card-header fs-5 fw-bold">
+            {{ 'label.newest_posts' | trans }}
             <a title="{{ 'label.post_create' | trans }}" href="{{ path('app_post_new') }}">
                 {{ ux_icon('bi:journal-plus', {class: 'basic-icon'}) }}
             </a>
@@ -16,7 +16,7 @@
                 </div>
             {% endfor %}
             <div class="text-center mt-3">
-                 <a href="{{ path('app_post_new') }}" class="btn btn-primary">
+                 <a href="{{ path('app_post_new') }}" class="btn btn-secondary">
                     {{ 'post.label.create' | trans }}
                 </a>
             </div>

@@ -1,6 +1,6 @@
 :root {
     --bahra: #0B4B85; /* bahra : mer */
-    --rocher: #0a4b85;
+    --rocher: #0a4b85; /* rgb(10, 75, 133); */
     --rocher-light: rgba(10, 75, 133, 0.5);
     --rmila: #e99e09; /* rmila : sable */
     --rmila-light: #dbaa48; /* rmila : sable */
@@ -119,9 +119,10 @@ main {
 .sidebar {
     .card {
         color: var(--bs-white) !important;
-        background-color: rgba(255, 255, 255, 0.15);
+        /*background-color: rgba(122, 233, 88, 0.15);*/
+        background-color: var(--rocher);
         backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        /*border: 1px solid rgba(255, 255, 255, 0.2);*/
         a {
             margin-left: 0.5rem;
             color: var(--bs-white) !important;

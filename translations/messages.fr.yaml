@@ -34,6 +34,7 @@ label:
   confirm: Confirmer
   cancel: Annuler
   my_posts: Mes publications
+  newest_posts: Publications récentes
 
 flash:
   registration_pre_confirmation: "Sahit ! Un email de confirmation a été envoyé. Ne pas oublier de confirmer en cliquant sur le lien inclus."
