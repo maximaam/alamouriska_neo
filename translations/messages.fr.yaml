@@ -60,16 +60,19 @@ post:
     plural: Expressions
     title_hint: Insérer l'expression...
     seo_route: expressions-algeriennes
+  expressions-algeriennes: Expressions Algériennes
   proverb:
     singular: Proverbe
     plural: Proverbes
     title_hint: Insérer le proverbe...
     seo_route: proverbes-algeriens
+  proverbes-algeriens: Proverbes Algériens
   joke:
     singular: Blague
     plural: Blagues
     title_hint: Insérer la blegue...
     seo_route: blagues-algeriennes
+  blagues-algeriennes: Blagues Algériennes
   label:
     create: Créer une publication
   form:

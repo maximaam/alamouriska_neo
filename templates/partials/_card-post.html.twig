@@ -6,6 +6,7 @@
                 {{ post.user.pseudo }}
             </a>
             | {{ post.createdAt | date('d.m.Y') }}
+            | {{ ('post.' ~ post.type.name ~ '.singular') | trans }}
         </div>
         <div class="col-6 text-end">
             {% if app.user == post.user %}
