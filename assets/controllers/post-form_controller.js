@@ -25,6 +25,10 @@ export default class extends Controller {
 
             title.disabled = isHidden;
             title.parentNode.style.display = isHidden ? 'none' : 'block';
+            if (isHidden) {
+                title.removeAttribute('required');
+            }
+
 
             if (!isHidden && title.labels?.[0]) {
                 title.labels[0].innerText = postTypeText;

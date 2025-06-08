@@ -13,11 +13,13 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[UniqueEntity(fields: ['title'], message: 'post_title_exists')]
 #[Vich\Uploadable]
+#[Assert\Callback('validateTitle')]
 class Post
 {
     use TimestampableEntity;
@@ -32,7 +34,6 @@ class Post
     private ?PostType $type = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -141,5 +142,14 @@ class Post
         $this->titleSlug = $titleSlug;
 
         return $this;
+    }
+
+    public function validateTitle(ExecutionContextInterface $context): void
+    {
+        if (!\in_array($this->type, [PostType::proverb, PostType::joke], true) && '' === $this->title) {
+            $context->buildViolation('Requis.')
+                ->atPath('title')
+                ->addViolation();
+        }
     }
 }

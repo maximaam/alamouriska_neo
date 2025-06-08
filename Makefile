@@ -30,8 +30,11 @@ cache-warmup: ## Warm up Symfony cache
 
 cc: cache-clear ## Alias for cache-clear
 
+mk-mig: ## Make migration migrations
+	$(PHP) $(CONSOLE) make:migration
+
 migrate: ## Run Doctrine migrations
-	$(PHP) $(CONSOLE) doctrine:migrations:migrate --no-interaction
+	$(PHP) $(CONSOLE) doctrine:migrations:migrate
 
 fixtures: ## Load Doctrine fixtures
 	$(PHP) $(CONSOLE) doctrine:fixtures:load --no-interaction

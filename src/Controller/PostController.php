@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\User;
+use App\Enum\PostType;
 use App\Form\PostForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\TruncateMode;
+
+use function Symfony\Component\String\u;
 
 #[Route('/post', name: 'app_post_', priority: 1)]
 #[IsGranted('ROLE_USER')]
@@ -28,6 +32,11 @@ final class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (\in_array($post->getType(), [PostType::proverb, PostType::joke], true)) {
+                $title = u($post->getDescription())->truncate(50, '…', cut: TruncateMode::WordBefore);
+                $post->setTitle((string) $title);
+            }
+
             $entityManager->persist($post);
             $entityManager->flush();
 
