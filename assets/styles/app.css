@@ -247,3 +247,23 @@ main {
         margin-left: 1rem;
     }
 }
+
+
+.cloud-marquee {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  .cloud-track {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 60s linear infinite;
+    font-size: 2rem;
+    }
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}

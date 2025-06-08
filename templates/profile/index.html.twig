@@ -1,21 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}member{% endblock %}
+{% block title %}
+    {{ user.pseudo }}
+    {{ parent() }}
+{% endblock %}
 
 {% block body %}
-    <h1>member</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header fs-4 fw-bold">
+                        {{ 'label.profile_stats' | trans }}
+                    </div>
+                    <div class="card-body">
+                        <h1>
+                            {%  include 'partials/_avatar.html.twig' with {'user': user } only %}
+                            {{ user.pseudo }}
+                        </h1>
+                        <p>{{ 'label.profile_since' | trans }}: {{ user.createdAt | date('Y-m-d')}}</p>
+                        <p>{{ 'label.profile_posts_count' | trans }}: {{ posts_count }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                {% for post in posts %}
+                    {% include 'partials/_card-post.html.twig' with {'post': post} only %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
