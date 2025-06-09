@@ -71,3 +71,10 @@ liip_imagine:
                 fixed:
                     width: 640
                     height: 480
+
+        page_image:
+            quality: 75
+            filters:
+                fixed:
+                    width: 640
+                    height: 480

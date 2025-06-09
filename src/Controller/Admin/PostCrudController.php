@@ -22,20 +22,22 @@ class PostCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        /** @var string $postsDir */
+        $postsDir = $this->getParameter('posts_dir');
+
         return [
-            // IdField::new('id'),
+            IdField::new('id')->onlyOnIndex(),
             DateField::new('createdAt'),
             ChoiceField::new('type'),
             TextField::new('title'),
             TextEditorField::new('description'),
-            // ImageField::new('postImageName'),
             ImageField::new('postImageName', 'Image')
-                ->setBasePath('/uploads/images/posts')
+                ->setBasePath($postsDir)
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
                 ->setFormTypeOptions(['required' => false])
-                // ->onlyOnIndex()
-                ->setUploadDir('/public/uploads/images/posts')
-                ->setTemplatePath('admin/fields/liip_image.html.twig'),
+                ->setUploadDir(\sprintf('public/%s', $postsDir))
+                ->setTemplatePath('admin/fields/liip_image.html.twig')
+                ->setCustomOption('liip_filter', 'post_image'),
         ];
     }
 }

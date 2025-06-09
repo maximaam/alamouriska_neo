@@ -21,9 +21,9 @@ class DashboardController extends AbstractDashboardController
 {
     public function index(): Response
     {
-        $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+        $urlGenerator = $this->container->get(AdminUrlGenerator::class);
 
-        return $this->redirect($adminUrlGenerator->setController(PostCrudController::class));
+        return $this->redirect($urlGenerator->setController(PostCrudController::class)->generateUrl());
 
         // return parent::index();
 
@@ -58,7 +58,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Pages', 'fas fa-book', Page::class);
-        yield MenuItem::linkToCrud('Posts', 'fas fa-post', Post::class);
+        yield MenuItem::linkToCrud('Posts', 'fas fa-newspaper', Post::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class);
     }
 }
