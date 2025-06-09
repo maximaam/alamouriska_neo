@@ -21,6 +21,6 @@ final class EmbedControllerTest extends WebTestCase
         $response = $kernel->handle($request, HttpKernelInterface::SUB_REQUEST);
 
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-        self::assertStringContainsString('Les publications récentes', (string) $response->getContent());
+        self::assertStringContainsString('Publications récentes', (string) $response->getContent());
     }
 }

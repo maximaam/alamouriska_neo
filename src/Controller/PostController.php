@@ -19,7 +19,7 @@ use Symfony\Component\String\TruncateMode;
 use function Symfony\Component\String\u;
 
 #[Route('/post', name: 'app_post_', priority: 1)]
-#[IsGranted('ROLE_USER')]
+#[IsGranted(User::ROLE_USER)]
 final class PostController extends AbstractController
 {
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]

@@ -26,7 +26,7 @@ final class ProfileController extends AbstractController
         return $this->render('profile/index.html.twig', [
             'user' => $user,
             'posts' => $posts,
-            'posts_count' => count($posts),
+            'posts_count' => \count($posts),
         ]);
     }
 }

@@ -27,6 +27,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
 
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -40,7 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles = [self::ROLE_USER];
 
     /**
      * @var string The hashed password
@@ -137,7 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }

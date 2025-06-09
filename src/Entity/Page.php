@@ -7,9 +7,9 @@ namespace App\Entity;
 use App\Repository\PageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation\Slug;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[UniqueEntity(fields: ['title'], message: 'page_title_exists')]
 #[ORM\Entity(repositoryClass: PageRepository::class)]
