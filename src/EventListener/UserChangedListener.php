@@ -7,6 +7,7 @@ namespace App\EventListener;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 // use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager as LiipCacheManager;
@@ -14,6 +15,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 // #[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: User::class)]
 #[AsEntityListener(event: Events::preUpdate, method: 'preUpdate', entity: User::class)]
+#[AsEntityListener(event: Events::preRemove, method: 'preRemove', entity: User::class)]
 final readonly class UserChangedListener
 {
     public function __construct(
@@ -26,6 +28,11 @@ final readonly class UserChangedListener
     public function preUpdate(User $user, PreUpdateEventArgs $event): void
     {
         // $this->pseudoChanged($user, $event);
+        $this->removeCachedAvatars($user, $event);
+    }
+
+    public function preRemove(User $user, PreRemoveEventArgs $event): void
+    {
         $this->removeCachedAvatars($user, $event);
     }
 
@@ -70,12 +77,14 @@ final readonly class UserChangedListener
     }
     */
 
-    private function removeCachedAvatars(User $user, PreUpdateEventArgs $event): void
+    private function removeCachedAvatars(User $user, PreUpdateEventArgs|PreRemoveEventArgs $event): void
     {
         $avatarName = $user->getAvatarName();
 
-        if (null === $avatarName && $event->hasChangedField('avatarName')) {
-            $avatarName = $event->getOldValue('avatarName');
+        if (null === $avatarName) {
+            if ($event instanceof PreUpdateEventArgs && $event->hasChangedField('avatarName')) {
+                $avatarName = $event->getOldValue('avatarName');
+            }
         }
 
         if (null === $avatarName) {

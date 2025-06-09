@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/user', name: 'app_user_', priority: 2)]
@@ -45,14 +46,28 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/delete', name: 'delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    #[Route('/delete', name: 'delete', methods: ['GET', 'POST'])]
+    public function delete(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
+        if (Request::METHOD_POST === $request->getMethod()) {
+            if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
+                $entityManager->remove($user);
+                $entityManager->flush();
+
+                // Clear the runnig session
+                $tokenStorage->setToken(null);
+                $request->getSession()->invalidate();
+
+                $this->addFlash('success', 'flash.user_deleted_success');
+
+                return $this->redirectToRoute('app_home_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
-        return $this->redirectToRoute('app_user_show', [], Response::HTTP_SEE_OTHER);
+        $this->addFlash('warning', 'flash.user_delete_warning');
+
+        return $this->render('user/delete.html.twig', [
+            'user' => $user,
+        ]);
     }
 }

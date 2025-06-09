@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Page;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 use App\Utils\PostUtils;
@@ -19,6 +20,14 @@ final class HomeController extends AbstractController
     public function index(PostRepository $postRepo): Response
     {
         return $this->render('home/index.html.twig', [
+        ]);
+    }
+
+    #[Route('/page/{alias:page}', name: 'page')]
+    public function page(Page $page): Response
+    {
+        return $this->render('home/page.html.twig', [
+            'page' => $page,
         ]);
     }
 

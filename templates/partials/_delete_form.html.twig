@@ -1,5 +1,5 @@
-<form method="post" action="{{ path('app_post_delete', {'id': post.id}) }}" onsubmit="return confirm('{{ warning_msg }}');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+<form method="post" onsubmit="return confirm('{{ warning_msg }}');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity_id) }}">
     <a class="btn btn-primary" href="{{ path('app_user_show') }}">
         {{ 'label.cancel' | trans }}
     </a>

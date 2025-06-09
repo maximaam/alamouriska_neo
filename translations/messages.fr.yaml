@@ -24,7 +24,7 @@ label:
   profile: Profil
   logout: Déconnexion
   login_facebook: Connexion avec Facebook
-  no_account: Pas encore de compte? Incris-toi!
+  no_account: Pas de compte? Incris-toi!
   search: Recherche
   enable_community_contact: "Les membres peuvent me contacter"
   allow_post_notification: "Me notifier à chaque publication"

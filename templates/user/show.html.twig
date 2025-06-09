@@ -75,7 +75,7 @@
                 </div>
             </div>
             <div class="card-footer text-end">
-                <a title="{{ 'label.account_delete' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-danger">
+                <a title="{{ 'label.user_delete' | trans }}" href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger">
                     {{ ux_icon('bi:person-x', {class: 'basic-icon'}) }}
                 </a>
                 <a title="{{ 'label.password_edit' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">

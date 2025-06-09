@@ -69,7 +69,7 @@
                         </form>
 
                         <div class="user-container">
-                            {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                                 <a href="{{ path('app_user_show') }}" title="{{ app.user.pseudo }} - {{ 'label.profile'|trans }}">
                                     {%  include 'partials/_avatar.html.twig' with {'user': app.user } only %}
                                 </a>
@@ -107,18 +107,18 @@
         <footer class="main-footer py-3 py-3">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4 text-center">
-                        sdfsdfsdfs
-                        {# {{ knp_menu_render('footer') }} #}
+                    <div class="col-md-4">
+                        {{ knp_menu_render('footer') }}
                     </div>
                     <div class="col-md-4">
+                    centre
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 text-end">
                         <a href="https://www.facebook.com/alamouriska/" target="_blank" rel="noreferrer" class="display-4 text-white">
-                            <i class="fa fa-facebook-official" title="{{ app_name }} Facebook page"></i>
+                            {{ ux_icon('bi:facebook', {class: 'basic-icon'}) }}
                         </a>
-                        <a href="https://www.twitter.com/alamouriska" target="_blank" rel="noreferrer" class="display-4 text-white">
-                            <i class="fa fa-twitter" title="{{ app_name }} Twitter page"></i>
+                        <a href="https://www.x.com/alamouriska" target="_blank" rel="noreferrer" class="display-4 text-white">
+                            {{ ux_icon('bi:twitter', {class: 'basic-icon'}) }}
                         </a>
                     </div>
                 </div>

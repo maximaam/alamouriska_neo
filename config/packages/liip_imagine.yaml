@@ -47,14 +47,6 @@ liip_imagine:
                 # create a 2px black border: center the thumbnail on a black background
                 # 4px larger to create a 2px border around the final image
                 # background: { size: [132, 132], position: center, color: '#000000' }
-        
-        avatar_thumb_64:
-            quality: 75
-            filters:
-                #thumbnail: { size: [64, 64] }
-                fixed:
-                    width: 64
-                    height: 64
 
         avatar_thumb_32:
             quality: 75

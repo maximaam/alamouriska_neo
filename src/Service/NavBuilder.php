@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Post;
+use App\Entity\Page;
 use App\Enum\PostType;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+// use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class NavBuilder
 {
     public function __construct(
         private FactoryInterface $factory,
-        // private readonly EntityManager $entityManager,
+        private readonly EntityManagerInterface $entityManager,
         // private readonly RequestStack $requestStack,
         private TranslatorInterface $translator,
     ) {
@@ -42,25 +42,23 @@ final readonly class NavBuilder
         return $menu;
     }
 
-    /*
     public function footerMenu(): ItemInterface
     {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'footer-nav list-unstyled text-right');
-        $pages = $this->entityManager->getRepository(Post::class)->findBy(['embedded' => false]);
+        $pages = $this->entityManager->getRepository(Page::class)->findAll();
 
         foreach ($pages as $page) {
-            $menu->addChild($page->getTitle(), [
-                'route' => 'index_page',
+            $menu->addChild((string) $page->getTitle(), [
+                'route' => 'app_home_page',
                 'attributes' => ['class' => ''],
                 'linkAttributes' => ['class' => 'footer'],
                 'routeParameters' => [
-                    'alias' => '$page->getAlias()',
-                ]
+                    'alias' => $page->getAlias(),
+                ],
             ]);
         }
 
         return $menu;
     }
-    */
 }

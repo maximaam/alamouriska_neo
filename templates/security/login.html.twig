@@ -24,17 +24,24 @@
         <div class="mb-3">
             <label for="password">{{ 'label.password'|trans }}</label>
             <input type="password" name="_password" id="password" placeholder="{{ 'label.password'|trans }}" class="form-control" autocomplete="current-password" required>
-            <div id="emailHelp" class="form-text">
-            <a href="{{ path('app_registration_register') }}">{{ 'label.no_account'|trans }}</a>
+            
             {#
                 <a href="{{ path('app_forgot_password_request') }}">{{ 'label.forgot_password'|trans }}</a> |
                 
             </div>
             #}
         </div>
-        <div class="text-end">
-            <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-            <button class="btn btn-lg btn-primary" type="submit">{{ 'label.login'|trans }}</button>
+        <div class="row">
+            <div class="col-6">
+                <a href="{{ path('app_registration_register') }}" class="btn btn-secondary">
+                    {{ 'label.no_account'|trans }}
+                </a>
+            </div>
+            <div class="col-6 text-end">
+                <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+                <button class="btn btn-lg btn-primary" type="submit">{{ 'label.login'|trans }}</button>
+            </div>
         </div>
+        
     </form>
 {% endblock %}
