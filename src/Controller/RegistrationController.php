@@ -20,7 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 #[Route(name: 'app_registration_', priority: 7)]
-class RegistrationController extends AbstractController
+final class RegistrationController extends AbstractController
 {
     public function __construct(private readonly EmailVerifier $emailVerifier)
     {
@@ -88,9 +88,8 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_registration_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'flash.registration_email_verification_success');
 
-        return $this->redirectToRoute('app_registration_register');
+        return $this->redirectToRoute('app_security_login');
     }
 }

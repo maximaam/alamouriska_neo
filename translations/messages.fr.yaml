@@ -38,6 +38,7 @@ label:
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
+  email_not_verified: "Ton adresse email est invalide. Clique sur le lien envoyé par email lors de l'inscription. Vérifie le dossier spam."
 
 flash:
   registration_pre_confirmation: "Sahit ! Un email de confirmation a été envoyé. Ne pas oublier de confirmer en cliquant sur le lien inclus."
