@@ -34,6 +34,7 @@ class SecurityControllerTest extends WebTestCase
         $user = new User();
         $user->setEmail('email@example.com')
             ->setPseudo('samingo')
+            ->setIsVerified(true)
             ->setPassword($passwordHasher->hashPassword($user, 'password'));
 
         $em->persist($user);

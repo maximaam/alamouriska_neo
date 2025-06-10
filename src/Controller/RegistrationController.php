@@ -46,12 +46,18 @@ final class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $template = sprintf('emails/registration_confirmation.%s.html.twig', $request->getLocale());
+            $template = \sprintf('emails/registration_confirmation.%s.html.twig', $request->getLocale());
+
+            /** @var string $appNotifier */
+            $appNotifier = $this->getParameter('app_notifier_email');
+            /** @var string $appName */
+            $appName = $this->getParameter('app_name');
+
             $this->emailVerifier->sendEmailConfirmation(
                 'app_registration_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address($this->getParameter('app_notifier_email'), $this->getParameter('app_name')))
+                    ->from(new Address($appNotifier, $appName))
                     ->to((string) $user->getEmail())
                     ->subject($this->translator->trans('email.registration_confirmation.subject', ['%app_name%' => $this->getParameter('app_name')]))
                     ->htmlTemplate($template)

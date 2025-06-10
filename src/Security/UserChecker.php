@@ -10,11 +10,10 @@ use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class UserChecker implements UserCheckerInterface
+final readonly class UserChecker implements UserCheckerInterface
 {
-    public function __construct(private readonly TranslatorInterface $translator)
+    public function __construct(private TranslatorInterface $translator)
     {
-        
     }
 
     public function checkPreAuth(UserInterface $user): void
