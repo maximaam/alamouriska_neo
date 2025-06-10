@@ -48,10 +48,7 @@ flash:
   profile_edit_success: "Le profile a été actualisé"
   post_delete_warning: "Tu confirmes vouloir éffacer cetee publication?"
   post_deleted_success: "La publication a bien été éffacée."
-
-email:
-  registration_subject: "Alamouriska - Confirmation de ton inscription"
-  reset_password_request_subject: "Alamouriska - Réinitialiser le mot de passe"
+  registration_email_verification_success: "Ton adresse email a été validée."
 
 post:
   word:
@@ -94,3 +91,8 @@ form:
     avatar: Photo de profil
   help:
     avatar_upload: "Taile max 1 MB, min 128x128PX max 1024x1024PX."
+
+
+email:
+  registration_confirmation:
+    subject: "Ton inscription sur %app_name%"

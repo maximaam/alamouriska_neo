@@ -22,8 +22,10 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 #[Route(name: 'app_registration_', priority: 7)]
 final class RegistrationController extends AbstractController
 {
-    public function __construct(private readonly EmailVerifier $emailVerifier)
-    {
+    public function __construct(
+        private readonly EmailVerifier $emailVerifier,
+        private readonly TranslatorInterface $translator,
+    ) {
     }
 
     #[Route('/register', name: 'register')]
@@ -44,17 +46,19 @@ final class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
+            $template = sprintf('emails/registration_confirmation.%s.html.twig', $request->getLocale());
             $this->emailVerifier->sendEmailConfirmation(
                 'app_registration_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('app@alamouriska.com', 'Alamouriska App'))
+                    ->from(new Address($this->getParameter('app_notifier_email'), $this->getParameter('app_name')))
                     ->to((string) $user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->subject($this->translator->trans('email.registration_confirmation.subject', ['%app_name%' => $this->getParameter('app_name')]))
+                    ->htmlTemplate($template)
+                    ->context([
+                        'pseudo' => $user->getPseudo(),
+                    ])
             );
-
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_security_login');
         }
