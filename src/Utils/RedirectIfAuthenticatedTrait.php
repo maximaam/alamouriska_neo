@@ -11,7 +11,7 @@ trait RedirectIfAuthenticatedTrait
 {
     protected function redirectIfAuthenticated(Security $security, string $routeName = 'app_home_index'): ?RedirectResponse
     {
-        if ($security->getUser()) {
+        if (null !== $security->getUser()) {
             return new RedirectResponse($this->generateUrl($routeName));
         }
 

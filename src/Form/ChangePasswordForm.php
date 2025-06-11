@@ -11,8 +11,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
-use Symfony\Component\Validator\Constraints\PasswordStrength;
+
+// use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
+// use Symfony\Component\Validator\Constraints\PasswordStrength;
 
 class ChangePasswordForm extends AbstractType
 {
@@ -25,6 +26,9 @@ class ChangePasswordForm extends AbstractType
                     'attr' => [
                         'autocomplete' => 'new-password',
                     ],
+                    'label_attr' => [
+                        'class' => 'd-none',
+                    ],
                 ],
                 'first_options' => [
                     'constraints' => [
@@ -32,18 +36,29 @@ class ChangePasswordForm extends AbstractType
                             'message' => 'Please enter a password',
                         ]),
                         new Length([
-                            'min' => 12,
+                            'min' => 6,
                             'minMessage' => 'Your password should be at least {{ limit }} characters',
                             // max length allowed by Symfony for security reasons
-                            'max' => 4096,
+                            'max' => 32,
                         ]),
-                        new PasswordStrength(),
-                        new NotCompromisedPassword(),
+                        // new PasswordStrength(),
+                        // new NotCompromisedPassword(),
                     ],
-                    'label' => 'New password',
+                    'label' => 'label.new_password',
+                    'attr' => [
+                        'placeholder' => 'label.new_password',
+                        'title' => 'label.new_password',
+                    ],
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password',
+                    'label' => 'label.repeat_password',
+                    'attr' => [
+                        'placeholder' => 'label.repeat_password',
+                        'title' => 'label.repeat_password',
+                    ],
+                    'label_attr' => [
+                        'class' => 'd-none',
+                    ],
                 ],
                 'invalid_message' => 'The password fields must match.',
                 // Instead of being set onto the object directly,

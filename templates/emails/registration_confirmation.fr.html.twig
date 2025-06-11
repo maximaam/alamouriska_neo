@@ -7,8 +7,6 @@
     Merci pour ton inscription.<br><br>
     Clique sur le lien suivant afin de valider ton addresse email: <br>
     <a href="{{ signedUrl|raw }}" target="_blank">{{ signedUrl|raw }}</a>.<br><br>
-    Ce lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.<br><br>
-    À bientôt,<br>
-    L'équipe {{ app_name}}
+    Ce lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
     </p>
 {% endblock %}

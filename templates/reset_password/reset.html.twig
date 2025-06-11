@@ -1,12 +1,12 @@
 {% extends 'layer_center.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block card_header %}
+    <h1 class="text-center">{{ 'label.reset_password'|trans }}</h1>
+{% endblock %}
 
-{% block body %}
-    <h1>Reset your password</h1>
+{% block card_body %}
+    {{ include('partials/_form.html.twig') }}
+{% endblock %}
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
+{% block card_footer %}
 {% endblock %}

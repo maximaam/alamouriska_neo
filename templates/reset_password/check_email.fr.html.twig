@@ -1,0 +1,16 @@
+{% extends 'layer_center.html.twig' %}
+
+{% block card_header %}
+    <h1 class="text-center">{{ 'label.reset_password_email_sent'|trans }}</h1>
+{% endblock %}
+
+{% block card_body %}
+    <p>
+        Si un compte avec cette adresse email existe, alors un email a été envoyé contenant un lien pour changer le mot de passe.<br>
+        Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+    </p>
+    <p>Si tu ne reçois pas d'email, merci de vérifier ton spam, sinon <a href="{{ path('app_forgot_password_request') }}">essaie encore</a>.</p>
+{% endblock %}
+
+{% block card_footer %}
+{% endblock %}

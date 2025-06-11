@@ -12,9 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class LoginForm extends AbstractType
 {
@@ -26,7 +23,7 @@ class LoginForm extends AbstractType
                 'label' => 'label.email_address',
                 'required' => true,
                 'attr' => [
-                    'autocomplete' => "email",
+                    'autocomplete' => 'email',
                     'autofocus' => true,
                 ],
             ])
@@ -39,11 +36,11 @@ class LoginForm extends AbstractType
                 ],
             ])
              ->add('_csrf_token', HiddenType::class, [
-                'trim' => true,
-                'attr' => [
-                    'data-controller' => 'csrf-protection',
-                ],
-            ])
+                 'trim' => true,
+                 'attr' => [
+                     'data-controller' => 'csrf-protection',
+                 ],
+             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'label.login',
                 'row_attr' => [

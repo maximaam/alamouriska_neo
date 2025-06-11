@@ -95,18 +95,17 @@ class RegistrationForm extends AbstractType
                 'row_attr' => [
                     'class' => 'text-end',
                 ],
-            ])
-            /*
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
-                ],
-            ])
-            */
-        ;
+            ]);
+        /*
+        ->add('agreeTerms', CheckboxType::class, [
+            'mapped' => false,
+            'constraints' => [
+                new IsTrue([
+                    'message' => 'You should agree to our terms.',
+                ]),
+            ],
+        ])
+        */
     }
 
     public function configureOptions(OptionsResolver $resolver): void

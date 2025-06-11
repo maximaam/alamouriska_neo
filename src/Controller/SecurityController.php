@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route(name: 'app_security_', priority: 6)]
-class SecurityController extends AbstractController
+final class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->getUser() instanceof User) {
+            return $this->redirectToRoute('app_home_index');
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -28,7 +33,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/logout', name: 'logout')]
-    public function logout(): void
+    public function logout(): never
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }

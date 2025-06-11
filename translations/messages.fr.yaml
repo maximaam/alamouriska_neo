@@ -35,6 +35,7 @@ label:
   cancel: Annuler
   my_posts: Mes publications
   newest_posts: Publications récentes
+  reset_password_email_sent: Email envoyé
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -49,6 +50,7 @@ flash:
   post_delete_warning: "Tu confirmes vouloir éffacer cetee publication?"
   post_deleted_success: "La publication a bien été éffacée."
   registration_email_verification_success: "Ton adresse email a été validée."
+  registration_success: "Un email t'a été envoyé, merci de cliquer sur le lien pour valider ton inscription."
 
 post:
   word:
@@ -87,3 +89,5 @@ form:
 email:
   registration_confirmation:
     subject: "Ton inscription sur %app_name%"
+  change_password_request:
+    subject: "Demande de changement de mot de passe"

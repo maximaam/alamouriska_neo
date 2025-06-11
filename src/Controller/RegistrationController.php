@@ -8,25 +8,25 @@ use App\Entity\User;
 use App\Form\RegistrationForm;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
-// use App\Utils\RedirectIfAuthenticatedTrait;
+use App\Utils\RedirectIfAuthenticatedTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+// use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-// use Symfony\Bundle\SecurityBundle\Security;
 
-#[IsGranted('IS_ANONYMOUS')]
+// #[IsGranted('IS_ANONYMOUS')]
 #[Route(name: 'app_registration_', priority: 7)]
 final class RegistrationController extends AbstractController
 {
-    // use RedirectIfAuthenticatedTrait;
+    use RedirectIfAuthenticatedTrait;
 
     public function __construct(
         private readonly EmailVerifier $emailVerifier,
@@ -35,13 +35,11 @@ final class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Security $security): Response
     {
-        /*
-        if ($redirect = $this->redirectIfAuthenticated($security)) {
+        if (null !== $redirect = $this->redirectIfAuthenticated($security)) {
             return $redirect;
         }
-        */
 
         $user = new User();
         $form = $this->createForm(RegistrationForm::class, $user);
@@ -78,7 +76,9 @@ final class RegistrationController extends AbstractController
                     ])
             );
 
-            return $this->redirectToRoute('app_security_login');
+            $this->addFlash('success', 'flash.registration_success');
+
+            return $this->redirectToRoute('app_home_index');
         }
 
         return $this->render('registration/register.html.twig', [
