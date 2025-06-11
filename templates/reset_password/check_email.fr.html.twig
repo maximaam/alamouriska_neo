@@ -1,5 +1,10 @@
 {% extends 'layer_center.html.twig' %}
 
+{% block title %}
+    {{ 'label.reset_password_email_sent'|trans }}
+    {{ parent() }}
+{% endblock %}
+
 {% block card_header %}
     <h1 class="text-center">{{ 'label.reset_password_email_sent'|trans }}</h1>
 {% endblock %}

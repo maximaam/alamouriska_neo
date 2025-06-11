@@ -12,7 +12,6 @@ label:
   email_address: Adresse Email
   reset_password: Réinitialiser le mot de passe
   reset_password_help: Mets ton Adresse Email et tu receveras un message pour changer ton mot de passe
-  change_password: Modifier le mot de passe
   new_password: Nouveau mot de passe
   repeat_password: Repeter le mot de passe
   forgot_password: Mot de passe oublié?
@@ -36,6 +35,7 @@ label:
   my_posts: Mes publications
   newest_posts: Publications récentes
   reset_password_email_sent: Email envoyé
+  reset_password_request: Modifier le mot de passe
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
