@@ -16,11 +16,11 @@ label:
   new_password: Nouveau mot de passe
   repeat_password: Repeter le mot de passe
   forgot_password: Mot de passe oublié?
-  pseudo_only_alnum: Chiffres, lettres et - seulement
+  pseudo_only_alnum: Pseudo. Chiffres, lettres et - seulement
   email_private: L'adresse Email reste privée
   password_constraints: Mot de passe entre 6 et 64 caractères
   profile_edit: Modifier le profil
-  profile_image: Image de profil
+  avatar: Image de profil
   profile: Profil
   logout: Déconnexion
   login_facebook: Connexion avec Facebook
@@ -77,20 +77,11 @@ post:
   blagues-algeriennes: Blagues Algériennes
   label:
     create: Créer une publication
-  form:
-    label:
-      type: --- Type de publication *
-      title: La publication *
-      description: Explication *
-      question: Je cherche l'explication
-      image:
-        help: Image est optionnelle
 
 form:
-  label:
-    avatar: Photo de profil
   help:
-    avatar_upload: "Taile max 1 MB, min 128x128PX max 1024x1024PX."
+    avatar_upload: "Photo de profil (optionnel). 1 MB max, 128x128 pixel min"
+    reset_password_request: "Enter your email address, and we will send you a link to reset your password."
 
 
 email:

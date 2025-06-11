@@ -113,12 +113,7 @@ main {
     width: 75%;
 }
 
-.bg-rocher {
-    color: var(--bs-white) !important;
-    background-color: var(--rocher-light);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
+
 
 .sidebar {
     .card {
@@ -148,6 +143,20 @@ main {
     .card-body {
         .card-list {
             border-bottom: rgba(255, 255, 255, 0.2) solid;
+        }
+    }
+}
+
+.bg-rocher {
+    color: var(--bs-white) !important;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    a {
+        color: var(--bs-white) !important;
+        font-weight: bold;
+        &:hover {
+            text-decoration: underline;
         }
     }
 }
@@ -209,14 +218,6 @@ main {
 }
 */
 
-.avatar-fieldset {
-    background-color: var(--bs-white);
-    padding: 0 1rem;
-    border-radius: 0.24rem;
-    .help-text {
-        color: var(--bs-gray) !important;
-    }
-}
 .card-post-image {
     img {
         width: 100%;

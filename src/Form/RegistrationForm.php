@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class RegistrationForm extends AbstractType
 {
@@ -21,34 +22,32 @@ class RegistrationForm extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'trim' => true,
+                'attr' => [
+                    'placeholder' => 'label.email_address',
+                    'title' => 'label.email_address',
+                    'autocomplete' => 'email',
+                ],
                 'label' => 'label.email_address',
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
                 'help' => 'label.email_private',
             ])
-            ->add('pseudo', null, [
-                'trim' => true,
-                'label' => 'label.pseudo',
-                'help' => 'label.pseudo_only_alnum',
-            ])
-
-            /*
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
-                ],
-            ])
-            */
-
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'trim' => true,
+                'attr' => [
+                    'placeholder' => 'label.password',
+                    'title' => 'label.password',
+                    'autocomplete' => 'new-password',
+                ],
                 'label' => 'label.password',
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
                 'help' => 'label.password_constraints',
-                'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'password_required',
@@ -61,12 +60,53 @@ class RegistrationForm extends AbstractType
                     ]),
                 ],
             ])
+            ->add('pseudo', null, [
+                'trim' => true,
+                'attr' => [
+                    'placeholder' => 'label.pseudo',
+                    'title' => 'label.pseudo',
+                ],
+                'label' => 'label.pseudo',
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
+                'help' => 'label.pseudo_only_alnum',
+            ])
+            ->add('avatarFile', VichImageType::class, [
+                'label' => 'form.label.avatar',
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => false,
+                'image_uri' => true,
+                'attr' => [
+                    'data-controller' => 'image-upload',
+                    'placeholder' => 'form.label.avatar',
+                ],
+                'help' => 'form.help.avatar_upload',
+                'row_attr' => [
+                    'class' => 'avatar-fieldset mb-3',
+                ],
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'label.register',
                 'row_attr' => [
                     'class' => 'text-end',
                 ],
-            ]);
+            ])
+            /*
+            ->add('agreeTerms', CheckboxType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'You should agree to our terms.',
+                    ]),
+                ],
+            ])
+            */
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

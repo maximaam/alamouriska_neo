@@ -1,0 +1,9 @@
+{% macro horizontal_row(field, labelClass='col-sm-2', inputClass='col-sm-10') %}
+    <div class="row mb-3">
+        <label class="{{ labelClass }} col-form-label">{{ form_label(field) }}</label>
+        <div class="{{ inputClass }}">
+            {{ form_widget(field) }}
+            {{ form_errors(field) }}
+        </div>
+    </div>
+{% endmacro %}

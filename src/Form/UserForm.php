@@ -16,7 +16,10 @@ class UserForm extends AbstractType
     {
         $builder
             ->add('avatarFile', VichImageType::class, [
-                'label' => 'form.label.avatar',
+                'label' => 'label.avatar',
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
                 'required' => false,
                 'allow_delete' => true,
                 'download_uri' => false,
@@ -30,6 +33,9 @@ class UserForm extends AbstractType
                 ],
             ])
             ->add('pseudo', null, [
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
                 'help' => 'label.pseudo_only_alnum',
             ])
             ->add('enableCommunityContact', null, [

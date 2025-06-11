@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\RegistrationForm;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+// use App\Utils\RedirectIfAuthenticatedTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,10 +19,15 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+// use Symfony\Bundle\SecurityBundle\Security;
 
+#[IsGranted('IS_ANONYMOUS')]
 #[Route(name: 'app_registration_', priority: 7)]
 final class RegistrationController extends AbstractController
 {
+    // use RedirectIfAuthenticatedTrait;
+
     public function __construct(
         private readonly EmailVerifier $emailVerifier,
         private readonly TranslatorInterface $translator,
@@ -31,6 +37,12 @@ final class RegistrationController extends AbstractController
     #[Route('/register', name: 'register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        /*
+        if ($redirect = $this->redirectIfAuthenticated($security)) {
+            return $redirect;
+        }
+        */
+
         $user = new User();
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);

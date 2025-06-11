@@ -87,6 +87,9 @@
                 <a title="{{ 'label.profile_edit' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
                     {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
                 </a>
+                <a title="{{ 'label.logout' | trans }}" href="{{ path('app_security_logout') }}" class="btn btn-warning">
+                    {{ ux_icon('bi:person-x', {class: 'basic-icon'}) }}
+                </a>
             </div>
         </div>
     </div>
