@@ -1,0 +1,12 @@
+{% extends 'email.html.twig' %}
+
+{% block header %}Bonjour {{ pseudo }}!{% endblock %}
+
+{% block body %}
+    <p>
+    Tu as souhaité changer ton email.<br><br>
+    Clique sur le lien suivant afin de valider ton addresse email: <br>
+    <a href="{{ signedUrl|raw }}" target="_blank">{{ signedUrl|raw }}</a>.<br><br>
+    Ce lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+    </p>
+{% endblock %}

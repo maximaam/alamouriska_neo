@@ -37,6 +37,8 @@ label:
   newest_posts: Publications récentes
   reset_password_email_sent: Email envoyé
   reset_password_request: Modifier le mot de passe
+  change_email: Modifier l'email
+  email_address_new: Nouveau email...
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -47,11 +49,13 @@ flash:
   registration_confirmation: "Ton inscription est confirmée !"
   reset_password_invalid_link: "Le lien n'est plus valide. Essaie de nouveau."
   reset_password_invalid_user: "Utilisateur introuvable."
-  profile_edit_success: "Le profile a été actualisé"
+  profile_edit_success: "Ton profile a été actualisé."
   post_delete_warning: "Tu confirmes vouloir éffacer cetee publication?"
   post_deleted_success: "La publication a bien été éffacée."
   registration_email_verification_success: "Ton adresse email a été validée."
   registration_success: "Un email t'a été envoyé, merci de cliquer sur le lien pour valider ton inscription."
+  new_email_verification_success: "Ton email a été modifié."
+  new_email_verification_sent: "Un email t'a été envoyé. Merci de cliquer sur le lien pour valider ton nouveau email."
 
 post:
   word:

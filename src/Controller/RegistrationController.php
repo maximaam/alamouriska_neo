@@ -69,7 +69,7 @@ final class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address($appNotifier, $appName))
                     ->to((string) $user->getEmail())
-                    ->subject($this->translator->trans('email.registration_confirmation.subject', ['%app_name%' => $this->getParameter('app_name')]))
+                    ->subject($this->translator->trans('email.registration_confirmation.subject', ['%app_name%' => $appName]))
                     ->htmlTemplate($template)
                     ->context([
                         'pseudo' => $user->getPseudo(),

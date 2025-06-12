@@ -1,0 +1,19 @@
+{% extends 'layer_center.html.twig' %}
+
+{% block title %}
+    {{ 'label.change_email' | trans }}
+    {{ parent() }}
+{% endblock %}
+
+{% block card_header %}
+    <h1>{{ 'label.change_email' | trans }}</h1>
+{% endblock %}
+
+{% block card_body %}
+    <div class="mb-3">
+        {{ include('partials/_form.html.twig') }}
+    </div>
+{% endblock %}
+
+{% block card_footer %}
+{% endblock %}

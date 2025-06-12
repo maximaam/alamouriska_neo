@@ -21,6 +21,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'email_exists')]
+#[UniqueEntity(fields: ['pendingEmail'], message: 'email_exists')]
 #[UniqueEntity(fields: ['pseudo'], message: 'pseudo_exists')]
 #[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -101,6 +102,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $posts;
+
+    #[ORM\Column(length: 180, nullable: true, unique: true)]
+    #[Assert\Email]
+    private ?string $pendingEmail = null;
 
     public function __construct()
     {
@@ -299,5 +304,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __unserialize(array $data): void
     {
         [$this->id, $this->email, $this->password] = $data;
+    }
+
+    public function getPendingEmail(): ?string
+    {
+        return $this->pendingEmail;
+    }
+
+    public function setPendingEmail(?string $pendingEmail): static
+    {
+        $this->pendingEmail = $pendingEmail;
+
+        return $this;
     }
 }
