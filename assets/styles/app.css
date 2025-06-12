@@ -218,6 +218,13 @@ main {
 }
 */
 
+/* Symfony errors */
+.invalid-feedback {
+    background-color: var(--bs-red);
+    color: var(--bs-white);
+    padding: 0.5rem;
+}
+
 .card-post-image {
     img {
         width: 100%;
