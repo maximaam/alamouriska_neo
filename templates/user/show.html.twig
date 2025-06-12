@@ -76,7 +76,7 @@
             </div>
             <div class="card-footer text-end">
                 <a title="{{ 'label.user_delete' | trans }}" href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger">
-                    {{ ux_icon('bi:person-x', {class: 'basic-icon'}) }}
+                    {{ ux_icon('bi:person-fill-dash', {class: 'basic-icon'}) }}
                 </a>
                 <a title="{{ 'label.password_edit' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
                     {{ ux_icon('bi:lock-fill', {class: 'basic-icon'}) }}
@@ -85,10 +85,10 @@
                     {{ ux_icon('bi:envelope-at', {class: 'basic-icon'}) }}
                 </a>
                 <a title="{{ 'label.profile_edit' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
-                    {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
+                    {{ ux_icon('bi:person-fill-gear', {class: 'basic-icon'}) }}
                 </a>
                 <a title="{{ 'label.logout' | trans }}" href="{{ path('app_security_logout') }}" class="btn btn-warning">
-                    {{ ux_icon('bi:person-x', {class: 'basic-icon'}) }}
+                    {{ ux_icon('bi:person-fill-lock', {class: 'basic-icon'}) }}
                 </a>
             </div>
         </div>

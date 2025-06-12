@@ -10,17 +10,22 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-header fs-4 fw-bold">
-                        {{ 'label.profile_stats' | trans }}
-                    </div>
+                <div class="card mb-3">
+                    {% block card_header %}
+                    {% endblock %}
                     <div class="card-body">
-                        <h1>
-                            {%  include 'partials/_avatar.html.twig' with {'user': user } only %}
-                            {{ user.pseudo }}
-                        </h1>
-                        <p>{{ 'label.profile_since' | trans }}: {{ user.createdAt | date('Y-m-d')}}</p>
-                        <p>{{ 'label.profile_posts_count' | trans }}: {{ posts_count }}</p>
+                        <div class="mt-2 mb-4 text-center">
+                            {% include 'partials/_avatar.html.twig' with {'user': user, 'size': 128 } only %}
+                        </div>
+                        <h1 class="mb-4 text-center display-5">{{ user.pseudo }}</h1>
+                        <dl class="row">
+                            <dt class="col-sm-6">{{ 'label.profile_since' | trans }}</dt>
+                            <dd class="col-sm-6">{{ user.createdAt | date('d-m-Y') }}</dd>
+                            <dt class="col-sm-6">{{ 'label.profile_posts_count' | trans }}</dt>
+                            <dd class="col-sm-6">{{ posts_count }}</dd>
+                            <dt class="col-sm-6">{{ 'label.profile_comments_count' | trans }}</dt>
+                            <dd class="col-sm-6">{{ posts_count }}</dd>
+                        </dl>
                     </div>
                 </div>
             </div>
