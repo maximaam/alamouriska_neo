@@ -28,6 +28,14 @@
     </div>
 
     <div class="card-footer">
-    footer...
+        <a role="button" href="#"
+            data-controller="post-like"
+            data-action="click->post-like#like"
+            data-post-like-url-value="{{ path('app_async_post_like', { id: post.id }) }}"
+            data-post-like-csrf-token-value="{{ csrf_token('like-post') }}">
+        {{ ux_icon('bi:heart-fill', {class: 'basic-icon'}) }}
+        {{ 'label.i_like' | trans }}
+        <span>{{ post.postLikes | length }}</span>
+        </a>
     </div>
 </div>

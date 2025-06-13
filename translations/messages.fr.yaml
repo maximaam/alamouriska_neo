@@ -38,7 +38,8 @@ label:
   reset_password_email_sent: Email envoyé
   reset_password_request: Modifier le mot de passe
   change_email: Modifier l'email
-  email_address_new: Nouveau email...
+  email_address_new: Nouveau email
+  i_like: "J'aime"
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

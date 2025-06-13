@@ -6,6 +6,8 @@ namespace App\Entity;
 
 use App\Enum\PostType;
 use App\Repository\PostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
@@ -52,6 +54,17 @@ class Post
     #[ORM\Column(length: 255, unique: true)]
     #[Slug(fields: ['title'])]
     private ?string $titleSlug = null;
+
+    /**
+     * @var Collection<int, PostLike>
+     */
+    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'post', orphanRemoval: true)]
+    private Collection $postLikes;
+
+    public function __construct()
+    {
+        $this->postLikes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -151,5 +164,35 @@ class Post
                 ->atPath('title')
                 ->addViolation();
         }
+    }
+
+    /**
+     * @return Collection<int, PostLike>
+     */
+    public function getPostLikes(): Collection
+    {
+        return $this->postLikes;
+    }
+
+    public function addPostLike(PostLike $postLike): static
+    {
+        if (!$this->postLikes->contains($postLike)) {
+            $this->postLikes->add($postLike);
+            $postLike->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostLike(PostLike $postLike): static
+    {
+        if ($this->postLikes->removeElement($postLike)) {
+            // set the owning side to null (unless already changed)
+            if ($postLike->getPost() === $this) {
+                $postLike->setPost(null);
+            }
+        }
+
+        return $this;
     }
 }
