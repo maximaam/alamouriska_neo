@@ -225,10 +225,9 @@ main {
     padding: 0.5rem;
 }
 .btn-likes {
-    svg {
-        &:hover {
-            background-color: var(--bs-red);
-        }
+    background-color: var(--bs-gray-300);
+    &:hover {
+        background-color: var(--bs-gray-400);
     }
 }
 

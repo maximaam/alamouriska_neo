@@ -12,6 +12,8 @@ export default class extends Controller {
         csrfToken: String,
     }
 
+    static targets = ['icon', 'count']
+
     initialize() {
         // alert('ok');
         // Called once when the controller is first instantiated (per element)
@@ -53,12 +55,15 @@ export default class extends Controller {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'error') {
-                alert(data.msg);
-                return false;
-            }
-
-            this.element.querySelector('span').textContent = data.likes
+            this.countTarget.textContent = data.likes;
+            const icon = data.action === 'like'
+                ? this.getIcon('currentColor', 'evenodd', 'M8 1.314C12.438-3.248 23.534 4.735 8 15C-7.534 4.736 3.562-3.248 8 1.314')
+                : this.getIcon('currentColor', '', 'm8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385c.92 1.815 2.834 3.989 6.286 6.357c3.452-2.368 5.365-4.542 6.286-6.357c.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15');
+            this.iconTarget.innerHTML = icon;
         });
+    }
+
+    getIcon(fill, fillRule, data) {
+        return '<svg viewBox="0 0 16 16" fill="' + fill + '" class="basic-icon text-danger" aria-hidden="true"><path fill="' + fill + '" fill-rule="' + fillRule + '" d="' + data + '"></path></svg>';
     }
 }

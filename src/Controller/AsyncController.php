@@ -42,6 +42,7 @@ final class AsyncController extends AbstractController
 
             return $this->json([
                 'status' => 'success',
+                'action' => 'dislike',
                 'likes' => \count($post->getPostLikes()),
             ]);
         }
@@ -55,6 +56,7 @@ final class AsyncController extends AbstractController
 
         return $this->json([
             'status' => 'success',
+            'action' => 'like',
             'likes' => \count($post->getPostLikes()),
         ]);
     }
