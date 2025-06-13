@@ -107,9 +107,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email]
     private ?string $pendingEmail = null;
 
+    /**
+     * @var Collection<int, PostLike>
+     */
+    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'user')]
+    private Collection $postLikes;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->postLikes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -314,6 +321,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPendingEmail(?string $pendingEmail): static
     {
         $this->pendingEmail = $pendingEmail;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PostLike>
+     */
+    public function getPostLikes(): Collection
+    {
+        return $this->postLikes;
+    }
+
+    public function addPostLike(PostLike $postLike): static
+    {
+        if (!$this->postLikes->contains($postLike)) {
+            $this->postLikes->add($postLike);
+            $postLike->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostLike(PostLike $postLike): static
+    {
+        if ($this->postLikes->removeElement($postLike)) {
+            // set the owning side to null (unless already changed)
+            if ($postLike->getUser() === $this) {
+                $postLike->setUser(null);
+            }
+        }
 
         return $this;
     }

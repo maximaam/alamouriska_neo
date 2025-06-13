@@ -224,6 +224,13 @@ main {
     color: var(--bs-white);
     padding: 0.5rem;
 }
+.btn-likes {
+    svg {
+        &:hover {
+            background-color: var(--bs-red);
+        }
+    }
+}
 
 .card-post-image {
     img {

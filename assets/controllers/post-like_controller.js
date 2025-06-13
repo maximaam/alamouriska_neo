@@ -53,6 +53,11 @@ export default class extends Controller {
         })
         .then(response => response.json())
         .then(data => {
+            if (data.status === 'error') {
+                alert(data.msg);
+                return false;
+            }
+
             this.element.querySelector('span').textContent = data.likes
         });
     }

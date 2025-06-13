@@ -13,6 +13,6 @@ final class AsyncControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/async');
 
-        self::assertResponseIsSuccessful();
+        self::assertResponseRedirects('/');
     }
 }

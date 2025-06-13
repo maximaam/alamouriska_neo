@@ -28,14 +28,19 @@
     </div>
 
     <div class="card-footer">
-        <a role="button" href="#"
+        <a role="button" href="#" title="{{ 'label.i_like' | trans }}" class="btn-likes"
             data-controller="post-like"
             data-action="click->post-like#like"
             data-post-like-url-value="{{ path('app_async_post_like', { id: post.id }) }}"
             data-post-like-csrf-token-value="{{ csrf_token('like-post') }}">
-        {{ ux_icon('bi:heart-fill', {class: 'basic-icon'}) }}
-        {{ 'label.i_like' | trans }}
-        <span>{{ post.postLikes | length }}</span>
+
+            {% if app.user is not null and post.id in likedPostIds %}
+                {{ ux_icon('bi:heart-fill', {class: 'basic-icon text-danger'}) }}
+            {% else %}
+                {{ ux_icon('bi:heart', {class: 'basic-icon text-danger'}) }}
+            {% endif %}
+            
+            <span>{{ post.postLikes | length }}</span>
         </a>
     </div>
 </div>
