@@ -58,7 +58,6 @@ final class HomeController extends AbstractController
             'post' => $post,
             'likedPostIds' => $likedPostIds,
             'commentPostIds' => $commentPostIds,
-
         ]);
     }
 

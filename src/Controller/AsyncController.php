@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\PostComment;
 use App\Entity\PostLike;
 use App\Entity\User;
+use App\Form\PostCommentForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -61,39 +64,48 @@ final class AsyncController extends AbstractController
         ]);
     }
 
-    #[Route('/post-comment/{id}/comment', name: 'post_comment', methods: ['POST'])]
-    public function postComment(#[CurrentUser] User $user, Request $request, Post $post, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
+    #[Route('/post-comment/{id}/comment', name: 'post_comment', methods: ['GET', 'POST'])]
+    public function postComment(#[CurrentUser] User $user, Request $request, Post $post, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse|Response
     {
+        /*
         if (!$csrfTokenManager->isTokenValid(new CsrfToken('like-post', $request->headers->get('X-CSRF-TOKEN')))) {
             throw new AccessDeniedHttpException('Invalid CSRF token.');
         }
+        */
 
-        $hasLiked = $this->entityManager
-            ->getRepository(PostLike::class)
-            ->findOneBy(['user' => $user, 'post' => $post]);
+        $form = $this->createForm(PostCommentForm::class);
+        $form->handleRequest($request);
 
-        if ($hasLiked instanceof PostLike) {
-            $this->entityManager->remove($hasLiked);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = (new PostComment())
+                ->setPost($post)
+                ->setUser($user)
+                ->setComment($form->get('comment')->getData());
+
+            $this->entityManager->persist($comment);
             $this->entityManager->flush();
 
-            return $this->json([
-                'status' => 'success',
-                'action' => 'dislike',
-                'likes' => \count($post->getPostLikes()),
-            ]);
+            return $this->json(['status' => 'success']);
         }
 
-        $postLike = (new PostLike())
-            ->setPost($post)
-            ->setUser($user);
+        return $this->render('partials/_post-comment-form.html.twig', [
+            'post' => $post,
+            'form' => $form->createView(),
+        ]);
+    }
 
-        $this->entityManager->persist($postLike);
+    #[Route('/post-comment/{id}/delete', name: 'post_comment_delete', methods: ['POST'])]
+    public function postCommentDelete(Request $request, PostComment $postComment, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
+    {
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('comment-delete', $request->headers->get('X-CSRF-TOKEN')))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token.');
+        }
+
+        $this->entityManager->remove($postComment);
         $this->entityManager->flush();
 
         return $this->json([
             'status' => 'success',
-            'action' => 'like',
-            'likes' => \count($post->getPostLikes()),
         ]);
     }
 }

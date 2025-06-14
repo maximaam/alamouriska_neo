@@ -1,0 +1,27 @@
+
+<div class="comments mb-3">
+    {% for postComment in post.postComments %}
+        <section class="comment-item p-1 bg-gray-300 mb-1">
+            <h3>
+                {{ postComment.user.pseudo }}
+                | Le: {{ postComment.createdAt | date('d-m-Y') }}
+                {% if postComment.user == app.user %}
+                    <button role="button" title="{{ 'label.comment_delete' | trans }}"
+                        data-action="click->post-comment-delete#delete"
+                        data-post-comment-delete-target="button"
+                        data-csrf="{{ csrf_token('comment-delete') }}"
+                        data-id="{{ postComment.id }}"
+                        data-confirm="{{ 'label.comment_delete_confirm_msg' | trans }}"
+                        data-url="{{ path('app_async_post_comment_delete', { id: postComment.id }) }}">
+                        {{ ux_icon('bi:trash-fill', {class: 'basic-icon text-danger'}) }}
+                    </button>
+                {% endif %}
+            </h3>
+            <p>{{ postComment.comment}}</p>
+        </section>
+    {% endfor %}
+</div>
+
+<div class="comment-form mb-3 bg-rocher">
+    {{ include('partials/_form.html.twig') }}
+</div>
