@@ -10,26 +10,16 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="container start-page">
         <div class="row text-dark">
-
             {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
-
             <div class="col-sm-8">
-
-                {% include 'partials/_card-post.html.twig' with {'post': post, 'likedPostIds': likedPostIds} only %}
-
-                <div class="card" id="latest-users">
-                    <div class="card-header font-weight-bold">Membres récents</div>
-                    <ul class="card-body p-2">
-                        latest udrtd....
-                    </ul>
-                </div>
-
+                {% include 'partials/_card-post.html.twig' with {
+                    post: post,
+                    likedPostIds: likedPostIds,
+                    commentPostIds: commentPostIds
+                } only %}
             </div>
-
         </div>
     </div>
-
 {% endblock %}

@@ -28,13 +28,14 @@
     </div>
 
     <div class="card-footer">
+    <div>
         {% set likeCount= '<span data-post-like-target="count">' ~ post.postLikes|length ~ '</span>' %}
-        {% set iconName = (app.user and post.id in likedPostIds) ? 'bi:heart-fill' : 'bi:heart' %}
-        {% set icon = '<span data-post-like-target="icon">' ~ ux_icon(iconName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
+        {% set iconLikeName = (app.user and post.id in likedPostIds) ? 'bi:heart-fill' : 'bi:heart' %}
+        {% set iconLike = '<span data-post-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
 
         {% if app.user is null %}
             <a href="{{ path('app_security_login') }}" title="{{ 'label.i_like' | trans }}">
-                {{ icon|raw }}
+                {{ iconLike|raw }}
                 {{ likeCount|raw }}
             </a>
         {% else %}
@@ -43,9 +44,52 @@
             data-action="click->post-like#like"
             data-post-like-url-value="{{ path('app_async_post_like', { id: post.id }) }}"
             data-post-like-csrf-token-value="{{ csrf_token('like-post') }}">
-                {{ icon|raw }}
+                {{ iconLike|raw }}
                 {{ likeCount|raw }}
             </a>
         {% endif %}
+
+        {% set commentCount= '<span data-post-comment-target="count">' ~ post.postComments|length ~ '</span>' %}
+        {% set iconCommentName = (app.user and post.id in commentPostIds) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
+        {% set iconComment = '<span data-post-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon text-primary'}) ~ '</span>' %}
+
+        {% if app.user is null %}
+            <a href="{{ path('app_security_login') }}" title="{{ 'label.i_comment' | trans }}">
+                {{ iconComment|raw }}
+                {{ commentCount|raw }}
+            </a>
+        {% else %}
+            <a role="button" href="#" title="{{ 'label.i_comment' | trans }}" class="btn-likes p-2 rounded"
+            data-controller="post-comment"
+            data-action="click->post-comment#comment"
+            data-post-comment-url-value="{{ path('app_async_post_comment', { id: post.id }) }}"
+            data-post-comment-csrf-token-value="{{ csrf_token('like-comment') }}">
+                {{ iconComment|raw }}
+                {{ commentCount|raw }}
+            </a>
+        {% endif %}
+        </div>
+
+
+        <div class="comments-box mt-2">
+        <div class="comments-list ">
+            asdasdas
+        </div>
+        <div class="comments-form p-2 bg-secondary bg-gradient rounded">
+            <form method="post">
+                <div class="mb-3">
+                    <textarea name="comment" cols="" rows="4" class="form-control p-2 rounded w-100"></textarea>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">{{'labelsubmit' | trans }}</button>
+                </div>
+            </form>
+        </div>
     </div>
+    </div>
+
+    
+
 </div>
+
+

@@ -60,4 +60,40 @@ final class AsyncController extends AbstractController
             'likes' => \count($post->getPostLikes()),
         ]);
     }
+
+    #[Route('/post-comment/{id}/comment', name: 'post_comment', methods: ['POST'])]
+    public function postComment(#[CurrentUser] User $user, Request $request, Post $post, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
+    {
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('like-post', $request->headers->get('X-CSRF-TOKEN')))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token.');
+        }
+
+        $hasLiked = $this->entityManager
+            ->getRepository(PostLike::class)
+            ->findOneBy(['user' => $user, 'post' => $post]);
+
+        if ($hasLiked instanceof PostLike) {
+            $this->entityManager->remove($hasLiked);
+            $this->entityManager->flush();
+
+            return $this->json([
+                'status' => 'success',
+                'action' => 'dislike',
+                'likes' => \count($post->getPostLikes()),
+            ]);
+        }
+
+        $postLike = (new PostLike())
+            ->setPost($post)
+            ->setUser($user);
+
+        $this->entityManager->persist($postLike);
+        $this->entityManager->flush();
+
+        return $this->json([
+            'status' => 'success',
+            'action' => 'like',
+            'likes' => \count($post->getPostLikes()),
+        ]);
+    }
 }

@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Page;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Repository\PostCommentRepository;
 use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
 use App\Utils\PostUtils;
@@ -34,7 +35,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['seoTypeSlug' => Requirement::ASCII_SLUG])]
-    public function postById(Post $post, string $seoTypeSlug, string $titleSlug, PostLikeRepository $postLikeRepo, #[CurrentUser] ?User $user = null): Response
+    public function postById(Post $post, string $seoTypeSlug, string $titleSlug, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo, #[CurrentUser] ?User $user = null): Response
     {
         // URL manipulation, like changing the ID
         if ($titleSlug !== $post->getTitleSlug()) {
@@ -49,14 +50,20 @@ final class HomeController extends AbstractController
             ? $postLikeRepo->findLikedPostIdsByUser($post, $user)
             : [];
 
+        $commentPostIds = ($user instanceof User)
+            ? $postCommentRepo->findCommentPostIdsByUser($post, $user)
+            : [];
+
         return $this->render('home/post.html.twig', [
             'post' => $post,
             'likedPostIds' => $likedPostIds,
+            'commentPostIds' => $commentPostIds,
+
         ]);
     }
 
     #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => Requirement::ASCII_SLUG], condition: "service('post_utils').getValidSeoSlugs()")]
-    public function postsByType(PostRepository $postRepo, PostLikeRepository $postLikeRepo, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
+    public function postsByType(PostRepository $postRepo, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
     {
         if (null === $type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) {
             return $this->redirectToRoute('app_home_index');
@@ -67,9 +74,14 @@ final class HomeController extends AbstractController
             ? $postLikeRepo->findLikedPostIdsByUser($posts, $user)
             : [];
 
+        $commentPostIds = ($user instanceof User)
+            ? $postCommentRepo->findCommentPostIdsByUser($posts, $user)
+            : [];
+
         return $this->render('home/posts.html.twig', [
             'posts' => $posts,
             'likedPostIds' => $likedPostIds,
+            'commentPostIds' => $commentPostIds,
         ]);
     }
 }

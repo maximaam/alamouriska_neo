@@ -21,7 +21,8 @@
                 {% for post in posts %}
                     {% include 'partials/_card-post.html.twig' with {
                         post: post,
-                        likedPostIds: likedPostIds
+                        likedPostIds: likedPostIds,
+                        commentPostIds: commentPostIds
                     } only %}
                 {% else %}
                     <p class="text-center text-muted">No posts found.</p>

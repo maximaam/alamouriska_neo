@@ -226,6 +226,7 @@ main {
 }
 .btn-likes {
     background-color: var(--bs-gray-300);
+    margin-right: 0.5rem;
     &:hover {
         background-color: var(--bs-gray-400);
     }
