@@ -10,7 +10,11 @@
 {% endblock %}
 
 {% block card_body %}
-    {% include 'partials/_card-post.html.twig' with {'post': post} only %}
+    {% include 'partials/_card-post.html.twig' with {
+        'post': post, 
+        'likedPostIds': likedPostIds,
+        'commentPostIds': commentPostIds
+    } only %}
 {% endblock %}
 
 {% block card_footer %}

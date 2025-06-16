@@ -8,11 +8,14 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Enum\PostType;
 use App\Form\PostForm;
+use App\Repository\PostCommentRepository;
+use App\Repository\PostLikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\TruncateMode;
 
@@ -23,10 +26,8 @@ use function Symfony\Component\String\u;
 final class PostController extends AbstractController
 {
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
         $post = (new Post())->setUser($user);
         $form = $this->createForm(PostForm::class, $post);
         $form->handleRequest($request);
@@ -49,11 +50,13 @@ final class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'show', methods: ['GET'])]
-    public function show(Post $post): Response
+    #[Route('/{id}/show', name: 'show', methods: ['GET'])]
+    public function show(#[CurrentUser] User $user, Post $post, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo): Response
     {
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            'likedPostIds' => $postLikeRepo->findLikedPostIdsByUser($post, $user),
+            'commentPostIds' => $postCommentRepo->findCommentPostIdsByUser($post, $user),
         ]);
     }
 
@@ -78,7 +81,7 @@ final class PostController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'delete', methods: ['GET', 'POST'])]
-    public function delete(Request $request, Post $post, EntityManagerInterface $entityManager): Response
+    public function delete(#[CurrentUser] User $user, Request $request, Post $post, EntityManagerInterface $entityManager, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo): Response
     {
         if (Request::METHOD_POST === $request->getMethod()) {
             if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->getPayload()->getString('_token'))) {
@@ -95,6 +98,8 @@ final class PostController extends AbstractController
 
         return $this->render('post/delete.html.twig', [
             'post' => $post,
+            'likedPostIds' => $postLikeRepo->findLikedPostIdsByUser($post, $user),
+            'commentPostIds' => $postCommentRepo->findCommentPostIdsByUser($post, $user),
         ]);
     }
 }

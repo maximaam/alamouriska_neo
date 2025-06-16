@@ -48,7 +48,8 @@ export default class extends Controller {
         .then(res => res.json())
         .then(data => {
             if (data.status === 'success') {
-                const commentsContainer = document.querySelector('.comments');
+                const commentsWrapper = document.getElementById('comment-container-' + this.idValue);
+                const commentsContainer = commentsWrapper.querySelector('.comments');
                 commentsContainer?.insertAdjacentHTML('beforeend', data.comment_item);
                 
                 const actionsWrapper = commentsContainer
