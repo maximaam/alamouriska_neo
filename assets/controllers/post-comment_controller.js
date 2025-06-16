@@ -36,6 +36,7 @@ export default class extends Controller {
 
     submitForm(event) {
         event.preventDefault();
+
         const form = event.target;
         const formData = new FormData(form);
 
@@ -46,16 +47,33 @@ export default class extends Controller {
         })
         .then(res => res.json())
         .then(data => {
-
-            /*
             if (data.status === 'success') {
-                this.containerTarget.innerHTML = "<p>Comment added!</p>";
-            } else {
-                this.containerTarget.innerHTML = data.form;
-                const form = this.containerTarget.querySelector('form');
-                form.addEventListener('submit', this.submitForm.bind(this));
+                const commentsContainer = document.querySelector('.comments');
+                commentsContainer?.insertAdjacentHTML('beforeend', data.comment_item);
+                
+                const actionsWrapper = commentsContainer
+                    ?.closest('[data-controller="post-comment-delete"]')
+                    ?.previousElementSibling; // class="actions"
+                
+                const counter = actionsWrapper
+                    ?.querySelector('[data-post-comment-target="count"]');
+
+                if (counter) {
+                    counter.innerText = Number(counter.innerText) + 1;
+                }
             }
-                */
+
+            const formContainer = document.querySelector('.comment-form');
+            if (!formContainer) return;
+
+            formContainer.innerHTML = data.form;
+
+            const newForm = formContainer.querySelector('form');
+            if (newForm) {
+                newForm.removeEventListener('submit', this.submitFormBound); // prevent double bind
+                this.submitFormBound = this.submitFormBound || this.submitForm.bind(this);
+                newForm.addEventListener('submit', this.submitFormBound);
+            }
         });
     }
 }

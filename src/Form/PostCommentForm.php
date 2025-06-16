@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class PostCommentForm extends AbstractType
 {
@@ -21,6 +22,14 @@ class PostCommentForm extends AbstractType
                 ],
                 'label_attr' => [
                     'class' => 'd-none',
+                ],
+                'constraints' => [
+                    new Length([
+                        'min' => 10,
+                        'max' => 1000,
+                        'minMessage' => 'Your comment must be at least {{ limit }} characters long.',
+                        'maxMessage' => 'Your comment cannot be longer than {{ limit }} characters.',
+                    ]),
                 ],
             ]);
     }

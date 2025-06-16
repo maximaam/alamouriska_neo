@@ -76,21 +76,44 @@ final class AsyncController extends AbstractController
         $form = $this->createForm(PostCommentForm::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment = (new PostComment())
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $comment = (new PostComment())
                 ->setPost($post)
                 ->setUser($user)
                 ->setComment($form->get('comment')->getData());
 
-            $this->entityManager->persist($comment);
-            $this->entityManager->flush();
+                $this->entityManager->persist($comment);
+                $this->entityManager->flush();
 
-            return $this->json(['status' => 'success']);
+                return $this->json([
+                    'status' => 'success',
+                    'comment_item' => $this->renderView('partials/_post-comment-item.html.twig', [
+                        'postComment' => $comment,
+                    ]),
+                    // Resend a fresh form, in case the previous contains errors
+                    'form' => $this->renderView('partials/_post-comment-form.html.twig', [
+                        'form' => $this->createForm(PostCommentForm::class)->createView(),
+                        'post' => $post,
+                        'with_comments' => false,
+                    ]),
+                ]);
+            }
+
+            return $this->json([
+                'status' => 'validation_error',
+                'form' => $this->renderView('partials/_post-comment-form.html.twig', [
+                    'form' => $form->createView(),
+                    'post' => $post,
+                    'with_comments' => false,
+                ]),
+            ]);
         }
 
         return $this->render('partials/_post-comment-form.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
+            'with_comments' => true,
         ]);
     }
 

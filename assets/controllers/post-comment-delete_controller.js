@@ -10,17 +10,13 @@ export default class extends Controller {
     static targets = ["button"]
 
     delete(event) {
-        const button = event.currentTarget;
-        const confirmMsg = button.dataset.confirm;
-
-        if (!confirm(confirmMsg)) {
-            return false;
-        }
-
-        const csrf = button.dataset.csrf,
-            url = button.dataset.url;
-
         event.preventDefault();
+
+        const button = event.currentTarget;
+        const { confirm: confirmMsg, csrf, url } = button.dataset;
+        
+        if (!confirm(confirmMsg)) return;
+
         fetch(url, {
             method: 'POST',
             headers: {
@@ -33,11 +29,16 @@ export default class extends Controller {
         .then(data => {
             if ('success' === data.status) {
                 const commentItem = button.closest('.comment-item');
-                if (commentItem) {
-                    commentItem.remove();
-                }
-            }
-        });
+                const actionsWrapper = button.closest('[data-controller="post-comment-delete"]')
+                    ?.previousElementSibling; // class="actions"
+                const counter = actionsWrapper?.querySelector('[data-post-comment-target="count"]');
 
+                if (commentItem) commentItem.remove();
+                if (counter) counter.innerText = Number(counter.innerText) - 1;
+            }
+        })
+        .catch(error => {
+            console.error('Erratum!', error);
+        });
     }
 }

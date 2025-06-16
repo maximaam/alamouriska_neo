@@ -29,7 +29,7 @@
 
     <div class="card-footer">
         <div class="post-actions">
-            {% set likeCount= '<span data-post-like-target="count">' ~ post.postLikes|length ~ '</span>' %}
+            {% set likeCount= '<span id="likes-counter-' ~ post.id ~ '" data-post-like-target="count">' ~ post.postLikes|length ~ '</span>' %}
             {% set iconLikeName = (app.user and post.id in likedPostIds) ? 'bi:heart-fill' : 'bi:heart' %}
             {% set iconLike = '<span data-post-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
 
@@ -50,7 +50,7 @@
             {% endif %}
 
             <!-- Comment -->
-            {% set commentCount= '<span data-post-comment-target="count">' ~ post.postComments|length ~ '</span>' %}
+            {% set commentCount= '<span id="comment-counter-' ~ post.id ~ '" data-post-comment-target="count">' ~ post.postComments|length ~ '</span>' %}
             {% set iconCommentName = (app.user and post.id in commentPostIds) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
             {% set iconComment = '<span data-post-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon text-info'}) ~ '</span>' %}
 
