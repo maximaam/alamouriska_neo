@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\PostComment;
+use App\Entity\PostLike;
 use App\Entity\User;
 use App\Enum\PostType;
 use App\Form\PostForm;
-use App\Repository\PostCommentRepository;
-use App\Repository\PostLikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,23 +25,30 @@ use function Symfony\Component\String\u;
 #[IsGranted(User::ROLE_USER)]
 final class PostController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager): Response
+    public function new(#[CurrentUser] User $user, Request $request): Response
     {
         $post = (new Post())->setUser($user);
-        $form = $this->createForm(PostForm::class, $post);
-        $form->handleRequest($request);
+        $form = $this->createForm(PostForm::class, $post)
+            ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (\in_array($post->getType(), [PostType::proverb, PostType::joke], true)) {
+            
+            // Joke has no title, so we create a truncated title from the description.
+            if (PostType::joke === $post->getType()) {
                 $title = u($post->getDescription())->truncate(50, '…', cut: TruncateMode::WordBefore);
                 $post->setTitle((string) $title);
             }
 
-            $entityManager->persist($post);
-            $entityManager->flush();
+            $this->em->persist($post);
+            $this->em->flush();
 
-            return $this->redirectToRoute('app_home_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home_index', status: Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('post/new.html.twig', [
@@ -51,27 +58,26 @@ final class PostController extends AbstractController
     }
 
     #[Route('/{id}/show', name: 'show', methods: ['GET'])]
-    public function show(#[CurrentUser] User $user, Post $post, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo): Response
+    public function show(#[CurrentUser] User $user, Post $post): Response
     {
         return $this->render('post/show.html.twig', [
             'post' => $post,
-            'likedPostIds' => $postLikeRepo->findLikedPostIdsByUser($post, $user),
-            'commentPostIds' => $postCommentRepo->findCommentPostIdsByUser($post, $user),
+            'likedPostIds' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
+            'commentPostIds' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
         ]);
     }
 
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Post $post, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Post $post): Response
     {
-        $form = $this->createForm(PostForm::class, $post);
-        $form->handleRequest($request);
+        $form = $this->createForm(PostForm::class, $post)
+            ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
+            $this->em->flush();
             $this->addFlash('success', 'flash.post_edit_success');
 
-            return $this->redirectToRoute('app_user_show', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_show', status: Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('post/edit.html.twig', [
@@ -81,25 +87,22 @@ final class PostController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'delete', methods: ['GET', 'POST'])]
-    public function delete(#[CurrentUser] User $user, Request $request, Post $post, EntityManagerInterface $entityManager, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo): Response
+    public function delete(#[CurrentUser] User $user, Request $request, Post $post): Response
     {
-        if (Request::METHOD_POST === $request->getMethod()) {
-            if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->getPayload()->getString('_token'))) {
-                $entityManager->remove($post);
-                $entityManager->flush();
+        if ($request->isMethod(Request::METHOD_POST) && $this->isCsrfTokenValid('delete'.$post->getId(), $request->getPayload()->getString('_token'))) {
+            $this->em->remove($post);
+            $this->em->flush();
+            $this->addFlash('success', 'flash.post_deleted_success');
 
-                $this->addFlash('success', 'flash.post_deleted_success');
-
-                return $this->redirectToRoute('app_user_show', [], Response::HTTP_SEE_OTHER);
-            }
+            return $this->redirectToRoute('app_user_show', status: Response::HTTP_SEE_OTHER);
         }
 
         $this->addFlash('warning', 'flash.post_delete_warning');
 
         return $this->render('post/delete.html.twig', [
             'post' => $post,
-            'likedPostIds' => $postLikeRepo->findLikedPostIdsByUser($post, $user),
-            'commentPostIds' => $postCommentRepo->findCommentPostIdsByUser($post, $user),
+            'likedPostIds' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
+            'commentPostIds' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
         ]);
     }
 }

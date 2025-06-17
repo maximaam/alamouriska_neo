@@ -28,7 +28,7 @@
     </div>
 
     <div class="card-footer">
-        <div class="post-actions">
+        <div class="post-actions mt-2">
             {% set likeCount= '<span id="likes-counter-' ~ post.id ~ '" data-post-like-target="count">' ~ post.postLikes|length ~ '</span>' %}
             {% set iconLikeName = (app.user and post.id in likedPostIds) ? 'bi:heart-fill' : 'bi:heart' %}
             {% set iconLike = '<span data-post-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}

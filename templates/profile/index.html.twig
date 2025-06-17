@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
@@ -31,10 +30,13 @@
             </div>
             <div class="col-sm-8">
                 {% for post in posts %}
-                    {% include 'partials/_card-post.html.twig' with {'post': post} only %}
+                    {% include 'partials/_card-post.html.twig' with {
+                        'post': post, 
+                        'likedPostIds': likedPostIds,
+                        'commentPostIds': commentPostIds
+                    } only %}
                 {% endfor %}
             </div>
         </div>
     </div>
-
 {% endblock %}

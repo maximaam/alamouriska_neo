@@ -21,7 +21,7 @@ export default class extends Controller {
             const { value, options, selectedIndex } = event.target,
                 postTypeValue = Number(value),
                 postTypeText = options[selectedIndex]?.text,
-                isHidden = postTypeValue === 3 || postTypeValue === 4;
+                isHidden = postTypeValue === 4;
 
             title.disabled = isHidden;
             title.parentNode.style.display = isHidden ? 'none' : 'block';
