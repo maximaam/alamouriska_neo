@@ -67,6 +67,9 @@ class Post
     #[ORM\OneToMany(targetEntity: PostComment::class, mappedBy: 'post', orphanRemoval: true)]
     private Collection $postComments;
 
+    #[ORM\Column]
+    private bool $question = false;
+
     public function __construct()
     {
         $this->postLikes = new ArrayCollection();
@@ -229,6 +232,18 @@ class Post
                 $postComment->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isQuestion(): bool
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(bool $question): static
+    {
+        $this->question = $question;
 
         return $this;
     }

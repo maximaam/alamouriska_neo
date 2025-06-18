@@ -8,7 +8,7 @@ use App\Entity\Page;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class PageCrudController extends AbstractCrudController
@@ -26,7 +26,7 @@ class PageCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('title'),
-            TextEditorField::new('description'),
+            TextareaField::new('description'),
             ImageField::new('pageImageName', 'Image')
                 ->setBasePath($pagesDir)
                 ->setUploadedFileNamePattern('[randomhash].[extension]')

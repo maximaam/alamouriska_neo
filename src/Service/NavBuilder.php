@@ -49,6 +49,10 @@ final readonly class NavBuilder
         $pages = $this->entityManager->getRepository(Page::class)->findAll();
 
         foreach ($pages as $page) {
+            if ('home' === $page->getAlias()) {
+                continue;
+            }
+
             $menu->addChild((string) $page->getTitle(), [
                 'route' => 'app_home_page',
                 'attributes' => ['class' => ''],

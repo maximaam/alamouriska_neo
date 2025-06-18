@@ -1,9 +1,9 @@
-<form method="post" onsubmit="return confirm('{{ warning_msg }}');">
+<form method="post" onsubmit="return confirm('{{ warning_msg }}');" class="mb-3 me-3">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity_id) }}">
     <a class="btn btn-primary" href="{{ path('app_user_show') }}">
         {{ 'label.cancel' | trans }}
     </a>
-    <button type="submit" class="btn btn-primary">
+    <button type="submit" class="btn btn-danger">
         {{ 'label.confirm' | trans }}
     </button>
 </form>

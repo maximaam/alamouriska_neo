@@ -17,6 +17,12 @@
         </div>
     </div>
     <div class="card-body p-2">
+        {% if post.question is true %}
+            <div class="bg-warning p-2 mb-3">
+                {{ ux_icon('bi:question', {class: 'basic-icon'}) }}
+                {{ 'label.post_is_question' | trans }}
+            </div>
+        {% endif %}
          <h2>{{ post.title }}</h2>
          <p>{{ post.description }}</p>
 
@@ -52,7 +58,7 @@
             <!-- Comment -->
             {% set commentCount= '<span id="comment-counter-' ~ post.id ~ '" data-post-comment-target="count">' ~ post.postComments|length ~ '</span>' %}
             {% set iconCommentName = (app.user and post.id in commentPostIds) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
-            {% set iconComment = '<span data-post-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon text-info'}) ~ '</span>' %}
+            {% set iconComment = '<span data-post-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon text-warning'}) ~ '</span>' %}
 
             {% if app.user is null %}
                 <a href="{{ path('app_security_login') }}" title="{{ 'label.i_comment' | trans }}">

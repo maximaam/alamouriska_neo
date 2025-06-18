@@ -1,8 +1,7 @@
-welcome: Bienvenue, Merhba Bikoum!
-slogan: L'appel de la langue algérienne !
-
 label:
   welcome: Bienvenue, Merhba Bikoum!
+  welcome_h1: Bienvenue, Merhba Bikoum sur %app_name% !
+  slogan: L'appel de la langue algérienne !
   send: Envoyer
   user: Utilisateur
   pseudo: Pseudo
@@ -40,6 +39,12 @@ label:
   change_email: Modifier l'email
   email_address_new: Nouveau email
   i_like: "J'aime"
+  post_is_question: "Publication en forme de question aux membres"
+  description: Description
+  title: Titre
+  select_type: "Choisir un type : Mot, Expresion..."
+  delete: Supprimer
+  edit: Modifier
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

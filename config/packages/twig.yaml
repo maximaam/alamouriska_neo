@@ -6,6 +6,7 @@ twig:
         app_name: '%app_name%'
         avatars_dir: '%avatars_dir%'
         posts_dir: '%posts_dir%'
+        pages_dir: '%pages_dir%'
     date:
         format: d-m-Y H:i
 

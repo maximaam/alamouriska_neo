@@ -12,6 +12,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\String\TruncateMode;
+
+use function Symfony\Component\String\u;
+
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -25,12 +29,33 @@ class PostForm extends AbstractType
                 'choices' => PostType::cases(),
                 'choice_label' => fn (PostType $type) => \sprintf('post.%s.singular', $type->name),
                 'choice_value' => fn (?PostType $type) => $type?->value,
+                'placeholder' => 'label.select_type',
                 'attr' => [
                     'data-controller' => 'post-form',
                 ],
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
             ])
-            ->add('title')
-            ->add('description')
+            ->add('title', null, [
+                'attr' => [
+                    'class' => '',
+                    'placeholder' => 'label.title',
+                ],
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
+            ])
+            ->add('description', null, [
+                'attr' => [
+                    'class' => '',
+                    'placeholder' => 'label.description',
+                    'rows' => 7,
+                ],
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
+            ])
             ->add('postImageFile', VichImageType::class, [
                 'label' => 'Photo (option)',
                 'required' => false,
@@ -39,12 +64,17 @@ class PostForm extends AbstractType
                 'image_uri' => true,
                 'attr' => [
                     'data-controller' => 'image-upload',
+                    'accept' => 'image/*',
                 ],
+            ])
+            ->add('question', null, [
+                'label' => 'label.post_is_question',
             ])
             ->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event): void {
                 $post = $event->getData();
-                if (\in_array($post->getType(), [PostType::proverb->value, PostType::joke->value], true)) {
-                    $post->setTitle(mb_strimwidth((string) $post->getDescription(), 0, 100, '...'));
+                if (PostType::proverb->value === $post->getType()) {
+                    $title = u($post->getDescription())->truncate(50, '…', cut: TruncateMode::WordBefore);
+                    $post->setTitle($title);
                 }
             });
     }
@@ -62,7 +92,7 @@ class PostForm extends AbstractType
     public static function validateInputs(Post $post, ExecutionContextInterface $context): void
     {
         if (PostType::word === $post->getType() && str_contains((string) $post->getTitle(), ' ')) {
-            $context->buildViolation('input_2 should not contain spaces when input_1 is "mot".')
+            $context->buildViolation('word_contains_spaces')
             ->atPath('title')
             ->addViolation();
         }

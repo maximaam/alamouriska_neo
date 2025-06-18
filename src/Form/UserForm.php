@@ -26,6 +26,7 @@ class UserForm extends AbstractType
                 'image_uri' => true,
                 'attr' => [
                     'data-controller' => 'image-upload',
+                    'accept' => 'image/*',
                 ],
                 'help' => 'form.help.avatar_upload',
                 'row_attr' => [

@@ -27,8 +27,8 @@ class PostCommentForm extends AbstractType
                     new Length([
                         'min' => 10,
                         'max' => 1000,
-                        'minMessage' => 'Your comment must be at least {{ limit }} characters long.',
-                        'maxMessage' => 'Your comment cannot be longer than {{ limit }} characters.',
+                        'minMessage' => 'post_comment_min',
+                        'maxMessage' => 'post_comment_max',
                     ]),
                 ],
             ]);

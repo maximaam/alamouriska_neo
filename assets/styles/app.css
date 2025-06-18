@@ -89,7 +89,7 @@ main {
     backdrop-filter: blur(8px);
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
-.btn-primary, .btn-secondary {
+.btn-primary, .btn-secondary, .btn-danger, .btn-warning {
     text-transform:uppercase;
     color: var(--bs-white) !important;
     text-decoration: none !important;

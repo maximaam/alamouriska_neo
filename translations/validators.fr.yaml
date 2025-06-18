@@ -11,3 +11,8 @@ avatar_max_width: "La photo doit faire maximum {{ max_width }} de largeur."
 avatar_max_height: "La photo doit faire maximum {{ max_height }} de hauteur."
 avatar_max_size: "La photo ({{ size }} {{ suffix }}) ne doit pas dépasser {{ limit }} {{ suffix }}."
 avatar_mime_types_allowed: "Seules les formats images sont autorisés."
+
+post_comment_min: "Le commentaire doit contenir au minimum {{ limit }} caractères."
+post_comment_max: "Le commentaire doit contenir au maximum {{ limit }} caractères."
+post_title_exists: "Une publication similaire existe déjà"
+word_contains_spaces: "Le type 'MOT' be doit pas contenir d'espace. Peut-être EXPRESSION irait mieux."

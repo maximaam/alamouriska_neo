@@ -38,12 +38,13 @@ final class PostController extends AbstractController
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             // Joke has no title, so we create a truncated title from the description.
+            /*
             if (PostType::joke === $post->getType()) {
                 $title = u($post->getDescription())->truncate(50, '…', cut: TruncateMode::WordBefore);
                 $post->setTitle((string) $title);
             }
+                */
 
             $this->em->persist($post);
             $this->em->flush();

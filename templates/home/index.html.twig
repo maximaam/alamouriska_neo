@@ -9,15 +9,18 @@
 {% endblock %}
 
 {% block opengraph_title %}
-    <meta property="og:title" content="{{ 'welcome_title' | trans }} - {{ app_name }}" />
+    <meta property="og:title" content="{{ 'label.welcome' | trans }} - {{ app_name }}" />
 {% endblock %}
 
 {% block body %}
-    <div class="container start-page">
-        <div class="row text-dark">
+    <div class="container">
+        <div class="row">
             {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
             <div class="col-sm-8">
-                <h1>{{ 'home_h1' | trans }}</h1>
+                <h1>{{ 'label.welcome_h1' | trans({'%app_name%': app_name}) }}</h1>
+                <div class="page-content mb-5">
+                    {{ page.description | raw }}
+                </div>
                 <div class="card mb-3" id="journal-public">
                     <div class="card-header font-weight-bold">Journal public</div>
                     <div class="card-body p-2">

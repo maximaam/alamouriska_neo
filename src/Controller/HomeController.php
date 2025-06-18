@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Page;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Repository\PageRepository;
 use App\Repository\PostCommentRepository;
 use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
@@ -21,9 +22,11 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(PageRepository $pageRepo): Response
     {
-        return $this->render('home/index.html.twig');
+        return $this->render('home/index.html.twig', [
+            'page' => $pageRepo->findOneBy(['alias' => 'home']),
+        ]);
     }
 
     #[Route('/page/{alias:page}', name: 'page')]

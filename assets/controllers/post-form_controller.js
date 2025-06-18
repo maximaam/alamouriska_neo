@@ -2,36 +2,29 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     connect() {
-        // controller targets the "type" element
         this.form = this.element.form;
         this.title = document.getElementById('post_form_title');
         this.description = document.getElementById('post_form_description');
 
-        this.presetForm();
-        this.hideTitle();
+        this.handleTypeChange(); // set up event listener
     }
 
-    presetForm() {
-        this.title.labels[0].innerText = this.element.options[this.element.selectedIndex].text;
-    }
-
-    hideTitle() {
-        const title = this.title;
+    handleTypeChange() {
         this.element.addEventListener('change', (event) => {
-            const { value, options, selectedIndex } = event.target,
-                postTypeValue = Number(value),
-                postTypeText = options[selectedIndex]?.text,
-                isHidden = postTypeValue === 4;
+            const { value, options, selectedIndex } = event.target;
+            const postTypeValue = Number(value);
+            const postTypeText = options[selectedIndex]?.text || '';
+            const shouldHide = postTypeValue === 4;
 
-            title.disabled = isHidden;
-            title.parentNode.style.display = isHidden ? 'none' : 'block';
-            if (isHidden) {
-                title.removeAttribute('required');
-            }
+            if (this.title) {
+                this.title.disabled = shouldHide;
+                this.title.parentNode.style.display = shouldHide ? 'none' : 'block';
 
-
-            if (!isHidden && title.labels?.[0]) {
-                title.labels[0].innerText = postTypeText;
+                if (shouldHide) {
+                    this.title.removeAttribute('required');
+                } else {
+                    this.title.placeholder = `${postTypeText}...`;
+                }
             }
         });
     }

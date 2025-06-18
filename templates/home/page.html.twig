@@ -10,12 +10,21 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
-            <div class="col-sm-8">
+    {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
+    <div class="col-sm-8">
+        <div class="card">
+            <div class="card-header">
                 <h1>{{ page.title }}</h1>
-                <p>{{ page.description }}</p>
+            </div>
+            <div class="card-body">
+                <div class="page-content">
+                    {% if page.pageImageName is not null %}
+                        <img class="float-end rounded border border-5 border-white ms-3 mb-2" src="{{ asset(pages_dir ~ '/' ~ page.pageImageName) | imagine_filter('page_image') }}" alt="{{ page.title }}" width="300" height="">
+                    {% endif %}
+                    {{ page.description|raw }}
+                </div>
+            </div>
+            <div class="card-footer">
             </div>
         </div>
     </div>
