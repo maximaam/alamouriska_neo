@@ -30,6 +30,7 @@ final class HomeControllerTest extends WebTestCase
         self::assertPageTitleContains('Bienvenue, Merhba Bikoum! - Alamouriska');
         self::assertSelectorCount(1, 'h1');
         self::assertSelectorTextContains('h1', 'Bienvenue, Merhba Bikoum sur Alamouriska !');
+        self::assertSelectorTextContains('.page-content', 'Welcome to the homepage.');
     }
 
     private function createPage(): void
