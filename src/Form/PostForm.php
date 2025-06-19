@@ -69,14 +69,16 @@ class PostForm extends AbstractType
             ])
             ->add('question', null, [
                 'label' => 'label.post_is_question',
-            ])
-            ->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event): void {
-                $post = $event->getData();
-                if (PostType::proverb->value === $post->getType()) {
-                    $title = u($post->getDescription())->truncate(50, '…', cut: TruncateMode::WordBefore);
-                    $post->setTitle($title);
-                }
-            });
+            ]);
+
+        // Joke has no title, so we create a truncated title from the description.
+        $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event): void {
+            $post = $event->getData();
+            if (PostType::joke === $post->getType()) {
+                $title = u($post->getDescription())->truncate(50, '…', cut: TruncateMode::WordBefore);
+                $post->setTitle((string) $title);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -28,7 +28,7 @@ final readonly class NavBuilder
         $menu->setChildrenAttribute('class', 'navbar-nav me-auto mb-2 mb-lg-0');
 
         foreach (PostType::cases() as $type) {
-            $child = strtoupper($this->translator->trans(\sprintf('post.%s.plural', $type->name)));
+            $child = strtoupper($this->translator->trans(\sprintf('post.%s.singular', $type->name)));
             $menu->addChild($child, [
                 'route' => 'app_home_posts',
                 'routeParameters' => [
