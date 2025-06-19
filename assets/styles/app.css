@@ -133,6 +133,7 @@ main {
     &.login-icon {
         width: 2.2rem;
         height: 2.2rem;
+        color: var(--bs-white);
     }
 }
 .app-centered {

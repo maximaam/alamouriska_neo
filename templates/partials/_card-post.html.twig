@@ -1,7 +1,7 @@
 <div class="card mb-3 card-post">
     <div class="row card-header">
         <div class="col-6">
-            <a href="{{ path('app_profile_index', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="no-underline">
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="no-underline">
                 {% include 'partials/_avatar.html.twig' with {'user': post.user } only %}
                 {{ post.user.pseudo }}
             </a>

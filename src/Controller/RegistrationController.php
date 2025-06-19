@@ -78,7 +78,7 @@ final class RegistrationController extends AbstractController
 
             $this->addFlash('success', 'flash.registration_success');
 
-            return $this->redirectToRoute('app_home_index');
+            return $this->redirectToRoute('app_frontend_index');
         }
 
         return $this->render('registration/register.html.twig', [

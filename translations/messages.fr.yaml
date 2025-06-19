@@ -49,6 +49,7 @@ label:
   profile_posts_count: Publications
   profile_since: Actif depuis
   comment_delete_confirm_msg: Confirmer la suppression?
+  contact_member: Contacter le membre
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -67,6 +68,7 @@ flash:
   new_email_verification_success: "Ton email a été modifié."
   new_email_verification_sent: "Un email t'a été envoyé. Merci de cliquer sur le lien pour valider ton nouveau email."
   password_changed_success: "Ton mot de passe a été modifié."
+  post_edit_success: "La publication a bien été actualisée."
 
 post:
   word:

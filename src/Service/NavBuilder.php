@@ -30,7 +30,7 @@ final readonly class NavBuilder
         foreach (PostType::cases() as $type) {
             $child = strtoupper($this->translator->trans(\sprintf('post.%s.singular', $type->name)));
             $menu->addChild($child, [
-                'route' => 'app_home_posts',
+                'route' => 'app_frontend_posts',
                 'routeParameters' => [
                     'seoTypeSlug' => $this->translator->trans(\sprintf('post.%s.seo_route', $type->name)),
                 ],
@@ -54,7 +54,7 @@ final readonly class NavBuilder
             }
 
             $menu->addChild((string) $page->getTitle(), [
-                'route' => 'app_home_page',
+                'route' => 'app_frontend_page',
                 // 'attributes' => ['class' => ''],
                 'linkAttributes' => ['class' => 'white-u'],
                 'routeParameters' => [

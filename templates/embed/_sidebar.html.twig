@@ -10,7 +10,7 @@
             {% for post in latest_posts %}
                 <div class="mb-2 pb-1 card-list">
                     {%  include 'partials/_avatar.html.twig' with {'user': post.user } only %}
-                    <a href="{{ path('app_home_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}">
+                    <a href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}">
                         {{ post.title }}
                     </a>
                 </div>
@@ -62,7 +62,7 @@
             <div class="card-body">
                 {% if page is defined %}
                     <p>{{ page.description | raw }}</p>
-                    <a href="{{ path('app_home_index', { alias: 'keskissik' }) }}" class="btn btn-primary">En savoir plus</a>
+                    <a href="{{ path('app_frontend_index', { alias: 'keskissik' }) }}" class="btn btn-primary">En savoir plus</a>
                 {% endif %}
             </div>
         </div>
