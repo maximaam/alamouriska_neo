@@ -50,6 +50,7 @@ label:
   profile_since: Actif depuis
   comment_delete_confirm_msg: Confirmer la suppression?
   contact_member: Contacter le membre
+  user_delete: Supprimer le compte
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -69,6 +70,7 @@ flash:
   new_email_verification_sent: "Un email t'a été envoyé. Merci de cliquer sur le lien pour valider ton nouveau email."
   password_changed_success: "Ton mot de passe a été modifié."
   post_edit_success: "La publication a bien été actualisée."
+  user_delete_warning: "Aya barka! Tu veux vraiment supprimer ton compte et toutes tes publications?"
 
 post:
   word:

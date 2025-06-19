@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/post', name: 'app_post_', priority: 1)]
+#[Route('/post', name: 'app_post_', priority: 2)]
 #[IsGranted(User::ROLE_USER)]
 final class PostController extends AbstractController
 {
@@ -37,7 +37,7 @@ final class PostController extends AbstractController
             $this->em->persist($post);
             $this->em->flush();
 
-            return $this->redirectToRoute('app_home_index', status: Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_frontend_index', status: Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('post/new.html.twig', [

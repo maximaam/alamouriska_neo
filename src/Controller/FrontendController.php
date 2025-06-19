@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-#[Route(name: 'app_frontend_', priority: -10)]
+#[Route(name: 'app_frontend_', priority: 1)]
 final class FrontendController extends AbstractController
 {
     public function __construct(

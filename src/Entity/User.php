@@ -110,7 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, PostLike>
      */
-    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $postLikes;
 
     /**

@@ -10,14 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-#[Route(name: 'app_security_', priority: 6)]
+#[Route(name: 'app_security_', priority: 4)]
 final class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser() instanceof User) {
-            return $this->redirectToRoute('app_home_index');
+            return $this->redirectToRoute('app_frontend_index');
         }
 
         // get the login error if there is one

@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
-#[Route('/user', name: 'app_user_', priority: 2)]
+#[Route('/user', name: 'app_user_', priority: 3)]
 final class UserController extends AbstractController
 {
     public function __construct(
@@ -142,7 +142,7 @@ final class UserController extends AbstractController
 
                 $this->addFlash('success', 'flash.user_deleted_success');
 
-                return $this->redirectToRoute('app_home_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_frontend_index', [], Response::HTTP_SEE_OTHER);
             }
         }
 
