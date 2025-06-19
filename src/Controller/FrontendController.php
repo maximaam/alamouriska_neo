@@ -10,16 +10,12 @@ use App\Entity\PostComment;
 use App\Entity\PostLike;
 use App\Entity\User;
 use App\Repository\PageRepository;
-use App\Repository\PostCommentRepository;
-use App\Repository\PostLikeRepository;
-use App\Repository\PostRepository;
 use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -27,6 +23,8 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route(name: 'app_frontend_', priority: 1)]
 final class FrontendController extends AbstractController
 {
+    public const PAGE_MAX_POSTS = 3;
+
     public function __construct(
         private readonly EntityManagerInterface $em,
     ) {
@@ -40,21 +38,17 @@ final class FrontendController extends AbstractController
         ]);
     }
 
-    #[Route('/membre/{pseudo}', name: 'member_profile')]
-    public function memberProfile(string $pseudo): Response
+    #[Route('/membre/{pseudo:user}', name: 'member_profile')]
+    public function memberProfile(User $user): Response
     {
-        if (null === $member = $this->em->getRepository(User::class)->findOneBy(['pseudo' => $pseudo])) {
-            throw new NotFoundHttpException('profile_not_found');
-        }
-
-        $posts = $this->em->getRepository(Post::class)->findBy(['user' => $member]);
+        $posts = $this->em->getRepository(Post::class)->findBy(['user' => $user]);
 
         return $this->render('frontend/member_profile.html.twig', [
-            'member' => $member,
+            'member' => $user,
             'posts' => $posts,
-            'comments_count' => $this->em->getRepository(PostComment::class)->count(['user' => $member]),
-            'likedPostIds' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $member),
-            'commentPostIds' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $member),
+            'comments_count' => $this->em->getRepository(PostComment::class)->count(['user' => $user]),
+            'likedPostIds' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user),
+            'commentPostIds' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user),
         ]);
     }
 
@@ -67,10 +61,9 @@ final class FrontendController extends AbstractController
     }
 
     #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['seoTypeSlug' => Requirement::ASCII_SLUG])]
-    public function postById(Post $post, string $seoTypeSlug, string $titleSlug, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo, #[CurrentUser] ?User $user = null): Response
+    public function postById(Post $post, string $seoTypeSlug, string $titleSlug, #[CurrentUser] ?User $user = null): Response
     {
         // URL manipulation, like changing the ID
-        /*
         if ($titleSlug !== $post->getTitleSlug()) {
             return $this->redirectToRoute('app_frontend_post', [
                 'seoTypeSlug' => $seoTypeSlug,
@@ -78,14 +71,13 @@ final class FrontendController extends AbstractController
                 'titleSlug' => $post->getTitleSlug(),
             ]);
         }
-            */
 
         $likedPostIds = ($user instanceof User)
-            ? $postLikeRepo->findLikedPostIdsByUser($post, $user)
+            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user)
             : [];
 
         $commentPostIds = ($user instanceof User)
-            ? $postCommentRepo->findCommentPostIdsByUser($post, $user)
+            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user)
             : [];
 
         return $this->render('frontend/post.html.twig', [
@@ -96,27 +88,27 @@ final class FrontendController extends AbstractController
     }
 
     #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => Requirement::ASCII_SLUG], condition: "service('post_utils').getValidSeoSlugs()")]
-    public function postsByType(PaginatorInterface $paginator, Request $request, PostRepository $postRepo, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
+    public function postsByType(PaginatorInterface $paginator, Request $request, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
     {
         if (null === $type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) {
             return $this->redirectToRoute('app_frontend_index');
         }
 
         $pagination = $paginator->paginate(
-            $postRepo->findPaginatedQuery($type),
+            $this->em->getRepository(Post::class)->findPaginatedQuery($type),
             $request->query->getInt('page', 1),
-            3
+            self::PAGE_MAX_POSTS,
         );
 
         /** @var Post[] $posts */
         $posts = $pagination->getItems();
 
         $likedPostIds = ($user instanceof User)
-            ? $postLikeRepo->findLikedPostIdsByUser($posts, $user)
+            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user)
             : [];
 
         $commentPostIds = ($user instanceof User)
-            ? $postCommentRepo->findCommentPostIdsByUser($posts, $user)
+            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user)
             : [];
 
         return $this->render('frontend/posts.html.twig', [
