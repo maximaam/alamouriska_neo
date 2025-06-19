@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Enum\PostType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -32,5 +34,17 @@ class PostRepository extends ServiceEntityRepository
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();
+    }
+
+    /**
+     * @return Query<array<int, Post>>
+     */
+    public function findPaginatedQuery(PostType $type): Query
+    {
+        return $this->createQueryBuilder(self::QB_ALIAS)
+            ->where(self::QB_ALIAS.'.type = :type')
+            ->setParameter('type', $type)
+            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+            ->getQuery();
     }
 }

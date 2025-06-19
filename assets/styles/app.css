@@ -30,18 +30,26 @@ h3 {
     font-size: 1rem;
 }
 a, button {
-    color: var(--bs-white) !important;
-    border: none !important;
     text-decoration: none;
+}
+button {
+    border: none;
+    color: var(--bs-white);
+    background: transparent;
+}
+.footer-nav li {
+    a {
+        color: var(--bs-white);
+    }
+    &.current a, &:hover {
+        text-decoration: underline;
+    }
 }
 .navbar-brand span {
     display: inline-block;
     color: var(--bs-white);
     line-height: 1.2rem;
     vertical-align: middle;
-    em {
-        font-weight: bold;
-    }
     small {
         font-size: 0.78rem;
     }
@@ -58,8 +66,10 @@ a, button {
     border: none !important;
 }
 .search-btn {
-    border-radius: 0 0.25rem 0.25rem 0 !important;
-    background-color: var(--rocher) !important;
+    border-radius: 0 0.25rem 0.25rem 0;
+    background-color: var(--rocher);
+    color: var(--bs-white);
+    border: none;
 }
 .logo {
     border: 1px solid var(--bs-white);
@@ -67,12 +77,14 @@ a, button {
 .nav-item {
     margin: 2px;
     a {
+        color: var(--bs-white);
         letter-spacing: 0.1rem;
         font-weight: bold;
         padding-left: 0.8rem !important;
         padding-right: 0.8rem !important;
     }
     &.current a, a:hover {
+        color: var(--bs-white);
         background: var(--rocher);
         border-radius: 0.25rem;
     }
@@ -80,6 +92,14 @@ a, button {
 main {
     margin-top: 20px;
     min-height: 500px;
+}
+.pagination {
+    a {
+        color: var(--rocher);
+    }
+    li.active .page-link {
+        background-color: var(--rocher);
+    }
 }
 .main-footer {
     margin-top: 50px;
@@ -109,7 +129,7 @@ main {
 }
 .basic-icon {
     width: 1.5rem;
-    height: 1.5rem;
+    height: 1rem;
     &.login-icon {
         width: 2.2rem;
         height: 2.2rem;
@@ -118,8 +138,6 @@ main {
 .app-centered {
     width: 75%;
 }
-
-
 
 .sidebar {
     .card {
@@ -166,63 +184,6 @@ main {
         }
     }
 }
-
-
-/*
-.card {
-    a {
-        color: var(--dark-blue);
-        text-decoration: none;
-        &:hover {
-            color: var(--light-blue);
-            text-decoration: underline;
-        }
-    }
-    &.card-post {
-        background-color: var(--yellow);
-        opacity: 0.9;
-    }
-    .card-header {
-        position: relative;
-        padding: 0.2rem 0.5rem;
-        .post-type {
-            position: absolute;
-            right: 30px;
-            top: -2px;
-            background: var(--green);
-            color: var(--bs-white);
-            padding: 0.2rem 0.5rem;
-            border-radius: 0 0 0.25rem 0.25rem;
-        }
-    }
-    &.post-show {
-        .card-body {
-            padding: 0;
-            .post-title {
-                padding: 1rem;
-            }
-            .post-image {
-                background: var(--bs-gray);
-                text-align: center;
-                img {
-                    max-width: 100%;
-                    height: auto;
-                }
-            }
-        }
-    }
-
-    .card-body {
-        #post {
-            > div:not(.text-end), > fieldset {
-                padding: 0.5rem;
-                background-color: var(--mid-grey);
-                border-radius: 0.25rem;
-            }
-        }
-    }
-}
-*/
 
 /* Symfony errors */
 .invalid-feedback {

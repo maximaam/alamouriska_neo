@@ -45,6 +45,10 @@ label:
   select_type: "Choisir un type : Mot, Expresion..."
   delete: Supprimer
   edit: Modifier
+  profile_comments_count: Commentaires
+  profile_posts_count: Publications
+  profile_since: Actif depuis
+  comment_delete_confirm_msg: Confirmer la suppression?
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

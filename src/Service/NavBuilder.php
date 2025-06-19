@@ -45,7 +45,7 @@ final readonly class NavBuilder
     public function footerMenu(): ItemInterface
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'footer-nav list-unstyled text-right');
+        $menu->setChildrenAttribute('class', 'footer-nav list-unstyled');
         $pages = $this->entityManager->getRepository(Page::class)->findAll();
 
         foreach ($pages as $page) {
@@ -55,8 +55,8 @@ final readonly class NavBuilder
 
             $menu->addChild((string) $page->getTitle(), [
                 'route' => 'app_home_page',
-                'attributes' => ['class' => ''],
-                'linkAttributes' => ['class' => 'footer'],
+                // 'attributes' => ['class' => ''],
+                'linkAttributes' => ['class' => 'white-u'],
                 'routeParameters' => [
                     'alias' => $page->getAlias(),
                 ],

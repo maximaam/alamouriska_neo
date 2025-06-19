@@ -74,6 +74,9 @@
     "knplabs/knp-menu-bundle": {
         "version": "v3.5.0"
     },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v6.8.1"
+    },
     "liip/imagine-bundle": {
         "version": "2.13",
         "recipe": {

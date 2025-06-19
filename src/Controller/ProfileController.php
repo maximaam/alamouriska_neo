@@ -36,7 +36,7 @@ final class ProfileController extends AbstractController
         return $this->render('profile/index.html.twig', [
             'user' => $user,
             'posts' => $posts,
-            'posts_count' => \count($posts),
+            'comments_count' => $this->em->getRepository(PostComment::class)->count(['user' => $user]),
             'likedPostIds' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user),
             'commentPostIds' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user),
         ]);

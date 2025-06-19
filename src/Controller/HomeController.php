@@ -12,7 +12,9 @@ use App\Repository\PostCommentRepository;
 use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
 use App\Utils\PostUtils;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
@@ -65,13 +67,21 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => Requirement::ASCII_SLUG], condition: "service('post_utils').getValidSeoSlugs()")]
-    public function postsByType(PostRepository $postRepo, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
+    public function postsByType(PaginatorInterface $paginator, Request $request, PostRepository $postRepo, PostLikeRepository $postLikeRepo, PostCommentRepository $postCommentRepo, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
     {
         if (null === $type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) {
             return $this->redirectToRoute('app_home_index');
         }
 
-        $posts = $postRepo->findBy(['type' => $type], ['id' => 'DESC']);
+        $pagination = $paginator->paginate(
+            $postRepo->findPaginatedQuery($type),
+            $request->query->getInt('page', 1),
+            3
+        );
+
+        /** @var Post[] $posts */
+        $posts = $pagination->getItems();
+
         $likedPostIds = ($user instanceof User)
             ? $postLikeRepo->findLikedPostIdsByUser($posts, $user)
             : [];
@@ -81,7 +91,7 @@ final class HomeController extends AbstractController
             : [];
 
         return $this->render('home/posts.html.twig', [
-            'posts' => $posts,
+            'pagination' => $pagination,
             'likedPostIds' => $likedPostIds,
             'commentPostIds' => $commentPostIds,
         ]);

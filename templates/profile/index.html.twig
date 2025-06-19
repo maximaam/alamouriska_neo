@@ -21,9 +21,9 @@
                             <dt class="col-sm-6">{{ 'label.profile_since' | trans }}</dt>
                             <dd class="col-sm-6">{{ user.createdAt | date('d-m-Y') }}</dd>
                             <dt class="col-sm-6">{{ 'label.profile_posts_count' | trans }}</dt>
-                            <dd class="col-sm-6">{{ posts_count }}</dd>
+                            <dd class="col-sm-6">{{ posts | length }}</dd>
                             <dt class="col-sm-6">{{ 'label.profile_comments_count' | trans }}</dt>
-                            <dd class="col-sm-6">{{ posts_count }}</dd>
+                            <dd class="col-sm-6">{{ comments_count }}</dd>
                         </dl>
                     </div>
                 </div>
