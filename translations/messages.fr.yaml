@@ -71,6 +71,7 @@ flash:
   password_changed_success: "Ton mot de passe a été modifié."
   post_edit_success: "La publication a bien été actualisée."
   user_delete_warning: "Aya barka! Tu veux vraiment supprimer ton compte et toutes tes publications?"
+  contact_member_email_sent: "Message envoyé !"
 
 post:
   word:

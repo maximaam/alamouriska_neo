@@ -16,3 +16,5 @@ post_comment_min: "Le commentaire doit contenir au minimum {{ limit }} caractèr
 post_comment_max: "Le commentaire doit contenir au maximum {{ limit }} caractères."
 post_title_exists: "Une publication similaire existe déjà"
 word_contains_spaces: "Le type 'MOT' be doit pas contenir d'espace. Peut-être EXPRESSION irait mieux."
+contact_member_message_min: "Le message doit contenir au minimum {{ limit }} caractères."
+contact_member_message_max: "Le message doit contenir au maximum {{ limit }} caractères."

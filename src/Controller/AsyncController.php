@@ -8,19 +8,27 @@ use App\Entity\Post;
 use App\Entity\PostComment;
 use App\Entity\PostLike;
 use App\Entity\User;
+use App\Form\ContactMemberForm;
 use App\Form\PostCommentForm;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/async', name: 'app_async_', condition: 'request.isXmlHttpRequest()')]
+#[IsGranted(User::ROLE_USER)]
 final class AsyncController extends AbstractController
 {
     public function __construct(
@@ -64,51 +72,46 @@ final class AsyncController extends AbstractController
         ]);
     }
 
-    #[Route('/contact-member', name: 'contact_member', methods: ['POST'])]
-    public function contactMember(#[CurrentUser] User $user, Request $request, Post $post, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
+    #[Route('/contact-member/{id}', name: 'contact_member', methods: ['POST'])]
+    public function contactMember(#[CurrentUser] User $user, User $member, Request $request, NormalizerInterface $normalizer, TranslatorInterface $translator, MailerInterface $mailer): JsonResponse
     {
-        if (!$csrfTokenManager->isTokenValid(new CsrfToken('like-post', $request->headers->get('X-CSRF-TOKEN')))) {
-            throw new AccessDeniedHttpException('Invalid CSRF token.');
-        }
+        $form = $this->createForm(ContactMemberForm::class);
+        $form->handleRequest($request);
 
-        $hasLiked = $this->entityManager
-            ->getRepository(PostLike::class)
-            ->findOneBy(['user' => $user, 'post' => $post]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var string $appNotifier */
+            $appNotifier = $this->getParameter('app_notifier_email');
+            /** @var string $appName */
+            $appName = $this->getParameter('app_name');
 
-        if ($hasLiked instanceof PostLike) {
-            $this->entityManager->remove($hasLiked);
-            $this->entityManager->flush();
+            $email = (new TemplatedEmail())
+                ->from(new Address($appNotifier, $appName))
+                ->to((string) $member->getEmail())
+                ->subject($translator->trans('email.contact_member.subject'))
+                ->htmlTemplate('emails/contact_member.fr.html.twig')
+                ->context([
+                    'sender' => $user,
+                    'receiver' => $member,
+                    'message' => $form->get('message')->getData(),
+                ]);
+
+            $mailer->send($email);
 
             return $this->json([
                 'status' => 'success',
-                'action' => 'dislike',
-                'likes' => \count($post->getPostLikes()),
+                'flash' => 'flash.contact_member_email_sent',
             ]);
         }
 
-        $postLike = (new PostLike())
-            ->setPost($post)
-            ->setUser($user);
-
-        $this->entityManager->persist($postLike);
-        $this->entityManager->flush();
-
         return $this->json([
-            'status' => 'success',
-            'action' => 'like',
-            'likes' => \count($post->getPostLikes()),
+            'status' => 'error',
+            'error' => $normalizer->normalize($form, null, ['groups' => ['Default']]),
         ]);
     }
 
     #[Route('/post-comment/{id}/comment', name: 'post_comment', methods: ['GET', 'POST'])]
     public function postComment(#[CurrentUser] User $user, Request $request, Post $post, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse|Response
     {
-        /*
-        if (!$csrfTokenManager->isTokenValid(new CsrfToken('like-post', $request->headers->get('X-CSRF-TOKEN')))) {
-            throw new AccessDeniedHttpException('Invalid CSRF token.');
-        }
-        */
-
         $form = $this->createForm(PostCommentForm::class);
         $form->handleRequest($request);
 

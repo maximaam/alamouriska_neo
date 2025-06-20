@@ -8,26 +8,29 @@ import { Controller } from '@hotwired/stimulus';
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
     static values = {
-        url: String,
-        csrfToken: String,
+        url: String
     }
-
-    static targets = ['icon', 'count']
 
     contact(event) {
         event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+
         fetch(this.urlValue, {
             method: 'POST',
+            body: formData,
             headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': this.csrfTokenValue
+                'X-Requested-With': 'XMLHttpRequest'
             },
         })
         .then(response => response.json())
         .then(data => {
-            this.countTarget.textContent = data.likes;
-            this.iconTarget.innerHTML = icon;
-        });
+            if ('error' === data.status) {
+                const errors = data.error?.children?.message?.errors;
+                const errorMessage = errors?.[0]?.message ?? 'Une erreur est survenue.';
+                alert(errorMessage); // or display in the UI
+            }
+        })
+        .catch(err => console.error('Request error', err));
     }
 }

@@ -9,6 +9,7 @@ use App\Entity\Post;
 use App\Entity\PostComment;
 use App\Entity\PostLike;
 use App\Entity\User;
+use App\Form\ContactMemberForm;
 use App\Repository\PageRepository;
 use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,9 +42,11 @@ final class FrontendController extends AbstractController
     #[Route('/membre/{pseudo:user}', name: 'member_profile')]
     public function memberProfile(User $user): Response
     {
+        $form = $this->createForm(ContactMemberForm::class);
         $posts = $this->em->getRepository(Post::class)->findBy(['user' => $user]);
 
         return $this->render('frontend/member_profile.html.twig', [
+            'form' => $form,
             'member' => $user,
             'posts' => $posts,
             'comments_count' => $this->em->getRepository(PostComment::class)->count(['user' => $user]),

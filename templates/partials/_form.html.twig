@@ -1,6 +1,6 @@
-{{ form_start(form) }}
+{{ form_start(form, { attr: attr|default({}) }) }}
     {{ form_widget(form) }}
     <div class="text-end">
-        <button type="submit" id="submit-form" class="btn btn-primary">{{ 'label.send' | trans }}</button>
+        <button type="submit" id="submit-form" class="btn btn-primary">{{ 'label.send'|trans }}</button>
     </div>
 {{ form_end(form) }}
