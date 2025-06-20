@@ -33,6 +33,7 @@ final class AsyncController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -73,7 +74,7 @@ final class AsyncController extends AbstractController
     }
 
     #[Route('/contact-member/{id}', name: 'contact_member', methods: ['POST'])]
-    public function contactMember(#[CurrentUser] User $user, User $member, Request $request, NormalizerInterface $normalizer, TranslatorInterface $translator, MailerInterface $mailer): JsonResponse
+    public function contactMember(#[CurrentUser] User $user, User $member, Request $request, NormalizerInterface $normalizer, MailerInterface $mailer): JsonResponse
     {
         $form = $this->createForm(ContactMemberForm::class);
         $form->handleRequest($request);
@@ -87,7 +88,7 @@ final class AsyncController extends AbstractController
             $email = (new TemplatedEmail())
                 ->from(new Address($appNotifier, $appName))
                 ->to((string) $member->getEmail())
-                ->subject($translator->trans('email.contact_member.subject'))
+                ->subject($this->translator->trans('email.contact_member.subject'))
                 ->htmlTemplate('emails/contact_member.fr.html.twig')
                 ->context([
                     'sender' => $user,
@@ -99,7 +100,7 @@ final class AsyncController extends AbstractController
 
             return $this->json([
                 'status' => 'success',
-                'flash' => 'flash.contact_member_email_sent',
+                'msg' => $this->translator->trans('flash.contact_member_email_sent'),
             ]);
         }
 

@@ -1,6 +1,6 @@
 <div class="sidebar col-sm-4">
     <div class="card mb-3">
-        <div class="card-header fs-5 fw-bold">
+        <div class="card-header fw-bold">
             {{ 'label.newest_posts' | trans }}
             <a title="{{ 'label.post_create' | trans }}" href="{{ path('app_post_new') }}">
                 {{ ux_icon('bi:journal-plus', {class: 'basic-icon'}) }}
@@ -24,13 +24,13 @@
     </div>
 
     <div class="card mb-3">
-        <div class="card-header font-weight-bold">Les commentaires récents</div>
+        <div class="card-header fw-bold">Les commentaires récents</div>
         <div class="card-body">
         </div>
     </div>
 
     <div class="card mb-3">
-        <div class="card-header font-weight-bold">Les plus énigmatiques</div>
+        <div class="card-header fw-bold">Les plus énigmatiques</div>
         <div class="card-body">
             <ul class="pl-3 mb-2">
                 ...
@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    <div class="card bg-sky font-weight-bold mb-3">
+    <div class="card fw-bold mb-3">
         <div class="card-header">Noter {{ app_name }}</div>
 
         <div class="card-body">

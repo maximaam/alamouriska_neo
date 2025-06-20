@@ -25,6 +25,21 @@ export default class extends Controller {
         })
         .then(response => response.json())
         .then(data => {
+            if ('success' === data.status) {
+                const msg = data.msg ?? 'Message envoyé.';
+
+                // Create success message element
+                const successEl = document.createElement('div');
+                successEl.className = 'alert alert-success mt-3';
+                successEl.textContent = msg;
+
+                // Append after form
+                form.insertAdjacentElement('afterend', successEl);
+
+                // Disable all form fields
+                Array.from(form.elements).forEach(el => el.disabled = true);
+            }
+
             if ('error' === data.status) {
                 const errors = data.error?.children?.message?.errors;
                 const errorMessage = errors?.[0]?.message ?? 'Une erreur est survenue.';
