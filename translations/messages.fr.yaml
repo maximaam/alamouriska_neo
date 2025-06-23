@@ -53,6 +53,7 @@ label:
   contact_member: Contacter le membre
   user_delete: Supprimer le compte
   newest_comments: Commentaires récents
+  facebook_share: Partager sur Facebook
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

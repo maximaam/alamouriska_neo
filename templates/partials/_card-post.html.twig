@@ -1,29 +1,32 @@
 <div class="card mb-3 card-post">
     <div class="row card-header">
-        <div class="col-6">
+        <div class="col">
             <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="no-underline">
                 {% include 'partials/_avatar.html.twig' with {'user': post.user } only %}
                 {{ post.user.pseudo }}
             </a>
             | {{ post.createdAt | date('d.m.Y') }}
-            | {{ ('post.' ~ post.type.name ~ '.singular') | trans }}
         </div>
-        <div class="col-6 text-end">
+        <div class="col text-end">
+            {% set post_type = ('post.' ~ post.type.name ~ '.singular') | trans %}
+            <span class="bg-warning p-2 rounded post-type-{{post_type}}">{{ post_type }}</span>
+        </div>
+    </div>
+    <div class="card-body p-2">
+        {% if post.question is true %}
+            <div class="bg-gray-300 rounded p-2 mb-3">
+                {{ ux_icon('bi:question', {class: 'basic-icon'}) }}
+                {{ 'label.post_is_question' | trans }}
+            </div>
+        {% endif %}
+         <h2>
+            {{ post.title }}
             {% if app.user == post.user %}
                 <a title="{{ 'label.post_update' | trans }}" href="{{ path('app_post_show', {'id': post.id} ) }}">
                     {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
                 </a>
             {% endif %}
-        </div>
-    </div>
-    <div class="card-body p-2">
-        {% if post.question is true %}
-            <div class="bg-warning p-2 mb-3">
-                {{ ux_icon('bi:question', {class: 'basic-icon'}) }}
-                {{ 'label.post_is_question' | trans }}
-            </div>
-        {% endif %}
-         <h2>{{ post.title }}</h2>
+        </h2>
          <p>{{ post.description }}</p>
 
         {% if post.postImageName is not null %}
@@ -35,7 +38,7 @@
 
     <div class="card-footer">
         <div class="row mt-2">
-            <div class="col-6 post-actions">
+            <div class="col post-actions">
             {% set likeCount= '<span id="likes-counter-' ~ post.id ~ '" data-post-like-target="count">' ~ post.postLikes|length ~ '</span>' %}
             {% set iconLikeName = (app.user and post.id in likedPostIds) ? 'bi:heart-fill' : 'bi:heart' %}
             {% set iconLike = '<span data-post-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
@@ -46,14 +49,17 @@
                     {{ likeCount|raw }}
                 </a>
             {% else %}
-                <a role="button" href="#" title="{{ 'label.i_like' | trans }}" class="btn-likes p-2 rounded"
-                data-controller="post-like"
-                data-action="click->post-like#like"
-                data-post-like-url-value="{{ path('app_async_post_like', { id: post.id }) }}"
-                data-post-like-csrf-token-value="{{ csrf_token('like-post') }}">
+                <button
+                    type="button"
+                    title="{{ 'label.i_like' | trans }}"
+                    class="btn-likes p-2 rounded"
+                    data-controller="post-like"
+                    data-action="click->post-like#like"
+                    data-post-like-url-value="{{ path('app_async_post_like', { id: post.id }) }}"
+                    data-post-like-csrf-token-value="{{ csrf_token('like-post') }}">
                     {{ iconLike|raw }}
                     {{ likeCount|raw }}
-                </a>
+                </button>
             {% endif %}
 
             <!-- Comment -->
@@ -67,23 +73,34 @@
                     {{ commentCount|raw }}
                 </a>
             {% else %}
-                <a role="button" href="#" title="{{ 'label.i_comment' | trans }}" class="btn-likes p-2 rounded"
+                <button
+                    type="button"
+                    title="{{ 'label.i_comment' | trans }}"
+                    class="btn-likes p-2 rounded"
                     data-controller="post-comment"
                     data-action="click->post-comment#getForm"
                     data-post-comment-id-value="{{ post.id }}"
                     data-post-comment-url-value="{{ path('app_async_post_comment', { id: post.id }) }}">
                     {{ iconComment|raw }}
                     {{ commentCount|raw }}
-                </a>
+                </button>
             {% endif %}
             </div>
-            <div class="col-6 text-end">
+            <div class="col text-end">
+                <a 
+                    href="https://x.com/intent/tweet?url={{ url('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) | url_encode }}" 
+                    target="_blank"
+                    class="btn btn-dark"
+                    rel="noopener noreferrer"
+                    title="{{ 'label.x_share'|trans }}">
+                    {{ ux_icon('bi:twitter-x', {class: 'basic-icon'}) }}
+                </a>
                 <a 
                     href="https://www.facebook.com/sharer/sharer.php?u={{ url('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) | url_encode }}"
                     target="_blank" 
                     rel="noopener noreferrer"
                     class="btn btn-primary"
-                    title="label.facebook_share">
+                    title="{{ 'label.facebook_share'|trans }}">
                     {{ ux_icon('bi:facebook', {class: 'basic-icon'}) }} 
                 </a>
             </div>

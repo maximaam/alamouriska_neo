@@ -109,9 +109,12 @@ main {
 .bg-9a3-sour {
     background-color: var(--9a3-sour);
 }
-.btn-primary, .btn-secondary, .btn-danger, .btn-warning {
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-warning,
+.btn-dark {
     text-transform:uppercase;
-    color: var(--bs-white) !important;
     text-decoration: none !important;
     font-weight: bold;
 }
@@ -129,7 +132,7 @@ main {
 }
 .basic-icon {
     width: 1.5rem;
-    height: 1rem;
+    height: 1.5rem;
     &.login-icon {
         width: 2.2rem;
         height: 2.2rem;
@@ -143,10 +146,8 @@ main {
 .sidebar {
     .card {
         color: var(--bs-white) !important;
-        /*background-color: rgba(122, 233, 88, 0.15);*/
         background-color: var(--rocher);
         backdrop-filter: blur(8px);
-        /*border: 1px solid rgba(255, 255, 255, 0.2);*/
         a {
             margin-left: 0.5rem;
             color: var(--bs-white) !important;
@@ -161,7 +162,8 @@ main {
         color: var(--rocher) !important;
         &.btn-primary, 
         &.btn-secondary,
-        &.btn-danger {
+        &.btn-danger,
+        &.btn-dark {
             color: var(--bs-white) !important;
         }
     }
@@ -193,17 +195,16 @@ main {
     padding: 0.5rem;
 }
 .btn-likes {
-    background-color: var(--bs-gray-300);
-    margin-right: 0.5rem;
+    color: var(--rocher);
+    background-color: transparent;
+    margin-right: 0.1rem;
     &:hover {
         background-color: var(--bs-gray-400);
     }
 }
-
 .bg-gray-300 {
     background-color: var(--bs-gray-300);
 }
-
 .card-post-image {
     img {
         width: 100%;
@@ -214,12 +215,53 @@ main {
     font-size: 1em;
     color: var(--bs-white);
 }
-
 .vich-image {
     img {
         margin-top: 10px;
         width: 128px;
         height: 128px;
+    }
+}
+.cloud-marquee {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  .cloud-track {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 60s linear infinite;
+    font-size: 2rem;
+    }
+}
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.white-hr {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1rem 0;
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--bs-white);
+  }
+  &:not(:empty)::before {
+    margin-right: 0.5em;
+  }
+  &:not(:empty)::after {
+    margin-left: 0.5em;
+  }
+}
+.slide-toggle {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: 0;
+    &.open {
+        max-height: 500px; /* adjust to fit your form */
     }
 }
 
@@ -238,52 +280,3 @@ main {
         background-color: transparent;
     }
 }
-
-
-.cloud-marquee {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  .cloud-track {
-    display: inline-block;
-    padding-left: 100%;
-    animation: marquee 60s linear infinite;
-    font-size: 2rem;
-    }
-}
-
-@keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
-.white-hr {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 1rem 0;
-  &::before, &::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid var(--bs-white);
-  }
-  &:not(:empty)::before {
-    margin-right: 0.5em;
-  }
-  &:not(:empty)::after {
-    margin-left: 0.5em;
-  }
-}
-
-.slide-toggle {
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    max-height: 0;
-}
-
-.slide-toggle.open {
-    max-height: 500px; /* adjust to fit your form */
-}
-
