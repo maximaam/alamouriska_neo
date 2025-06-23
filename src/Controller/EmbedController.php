@@ -7,8 +7,8 @@ namespace App\Controller;
 use App\Repository\PageRepository;
 use App\Repository\PostCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
 // No route for embed controller
 final class EmbedController extends AbstractController

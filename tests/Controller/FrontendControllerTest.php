@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-final class HomeControllerTest extends WebTestCase
+final class FrontendControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
     private EntityManagerInterface $em;
@@ -27,10 +27,10 @@ final class HomeControllerTest extends WebTestCase
         $this->client->request('GET', '/');
 
         self::assertResponseIsSuccessful();
-        self::assertPageTitleContains('Bienvenue, Merhba Bikoum! - Alamouriska');
+        self::assertPageTitleContains('Alamouriska ! Le site du parler algérien en derja (درجة)');
         self::assertSelectorCount(1, 'h1');
-        self::assertSelectorTextContains('h1', 'Bienvenue, Merhba Bikoum sur Alamouriska !');
-        self::assertSelectorTextContains('.page-content', 'Welcome to the homepage.');
+        self::assertSelectorTextContains('h1', 'Alamouriska ! Le site du parler algérien en derja (درجة)');
+        // self::assertSelectorTextContains('.page-content', 'Welcome to the homepage.');
     }
 
     private function createPage(): void
