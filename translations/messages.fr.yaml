@@ -1,6 +1,7 @@
 label:
   welcome: Bienvenue, Merhba Bikoum!
-  welcome_h1: Bienvenue, Merhba Bikoum sur %app_name% !
+  welcome_h1: "%app_name% ! Le site du parler algérien en derja (درجة)."
+  welcome_h2: "Bienvenue, Merhba Bikoum sur %app_name% !"
   slogan: L'appel de la langue algérienne !
   send: Envoyer
   user: Utilisateur
@@ -51,6 +52,7 @@ label:
   comment_delete_confirm_msg: Confirmer la suppression?
   contact_member: Contacter le membre
   user_delete: Supprimer le compte
+  newest_comments: Commentaires récents
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

@@ -15,7 +15,6 @@
 {% block body %}
     <div class="container start-page">
         <div class="row">
-            {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
             <div class="col-sm-8">
                 <h1 class="mb-4 text-center">{{ post_type_slug }}</h1>
                 {% for post in pagination %}
@@ -30,6 +29,7 @@
 
                 {{ knp_pagination_render(pagination, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
             </div>
+            {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
         </div>
     </div>
 {% endblock %}

@@ -19,6 +19,20 @@ export default class extends Controller {
 
     getForm(event) {
         event.preventDefault();
+        const formContainer = document.getElementById('comment-container-' + this.idValue);
+
+        if (formContainer.classList.contains('open')) {
+            // Hide if open
+            formContainer.classList.remove('open');
+            return;
+        }
+
+        if (formContainer.dataset.contentLoaded === 'true') {
+            // Already loaded before, just show it
+            formContainer.classList.add('open');
+            return;
+        }
+
         fetch(this.urlValue, {
             method: 'GET',
             headers: {
@@ -27,10 +41,16 @@ export default class extends Controller {
         })
         .then(res => res.text())
         .then(html => {
-            const formContainer = document.getElementById('comment-container-' + this.idValue);
             formContainer.innerHTML = html;
             const form = formContainer.querySelector('form');
-            form.addEventListener('submit', this.submitForm.bind(this));
+            if (form) {
+                form.addEventListener('submit', this.submitForm.bind(this));
+            }
+
+            formContainer.dataset.contentLoaded = 'true';
+            requestAnimationFrame(() => {
+                formContainer.classList.add('open');
+            });
         });
     }
 

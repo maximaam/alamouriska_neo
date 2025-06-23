@@ -15,33 +15,22 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
             <div class="col-sm-8">
-                <h1>{{ 'label.welcome_h1' | trans({'%app_name%': app_name}) }}</h1>
-                <div class="page-content mb-5">
-                    {{ page.description | raw }}
-                </div>
-                <div class="card mb-3" id="journal-public">
-                    <div class="card-header font-weight-bold">Journal public</div>
-                    <div class="card-body p-2">
-                        Journal...
-
-                        <ul class="list-unstyled list-comments">
-                            {% if journals is defined and journals | length > 0 %}
-                                {% for journal in journals %}
-                                    {% include 'partials/comment-item.html.twig' with { 'object': journal, 'object_type': 'journal'} %}
-                                {% endfor %}
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
-                <div class="card" id="latest-users">
-                    <div class="card-header font-weight-bold">Membres récents</div>
-                    <ul class="card-body p-2">
-                        latest udrtd....
-                    </ul>
-                </div>
+                <h1 class="mb-3 text-center">{{ 'label.welcome_h1' | trans({'%app_name%': app_name}) }}</h1>
+                <h2 class="white-hr">
+                    <span>{{ 'label.newest_posts'|trans }}</span>
+                </h2>
+                {% for post in newest_posts %}
+                    {% include 'partials/_card-post.html.twig' with {
+                        post: post,
+                        likedPostIds: likedPostIds,
+                        commentPostIds: commentPostIds
+                    } only %}
+                {% else %}
+                    <p class="text-center text-muted">No posts found.</p>
+                {% endfor %}
             </div>
+            {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
         </div>
     </div>
 {% endblock %}

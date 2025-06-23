@@ -10,7 +10,6 @@ use App\Entity\PostComment;
 use App\Entity\PostLike;
 use App\Entity\User;
 use App\Form\ContactMemberForm;
-use App\Repository\PageRepository;
 use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -32,10 +31,21 @@ final class FrontendController extends AbstractController
     }
 
     #[Route('/', name: 'index')]
-    public function index(PageRepository $pageRepo): Response
+    public function index(#[CurrentUser] ?User $user = null): Response
     {
+        $latestPosts = $this->em->getRepository(Post::class)->findLatests();
+        $likedPostIds = ($user instanceof User)
+            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($latestPosts, $user)
+            : [];
+
+        $commentPostIds = ($user instanceof User)
+            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($latestPosts, $user)
+            : [];
+
         return $this->render('frontend/index.html.twig', [
-            'page' => $pageRepo->findOneBy(['alias' => 'home']),
+            'newest_posts' => $this->em->getRepository(Post::class)->findLatests(),
+            'likedPostIds' => $likedPostIds,
+            'commentPostIds' => $commentPostIds,
         ]);
     }
 

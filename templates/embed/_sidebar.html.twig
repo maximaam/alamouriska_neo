@@ -1,31 +1,28 @@
 <div class="sidebar col-sm-4">
     <div class="card mb-3">
+        <div class="card-body">
+            <h2>{{ 'label.welcome_h2' | trans({'%app_name%': app_name}) }}</h2>
+            {{ page.description | raw }}
+        </div>
+    </div>
+    <div class="card mb-3">
         <div class="card-header fw-bold">
-            {{ 'label.newest_posts' | trans }}
-            <a title="{{ 'label.post_create' | trans }}" href="{{ path('app_post_new') }}">
-                {{ ux_icon('bi:journal-plus', {class: 'basic-icon'}) }}
-            </a>
+            {{ 'label.newest_comments' | trans }}
         </div>
         <div class="card-body">
-            {% for post in latest_posts %}
-                <div class="mb-2 pb-1 card-list">
-                    {%  include 'partials/_avatar.html.twig' with {'user': post.user } only %}
-                    <a href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}">
-                        {{ post.title }}
-                    </a>
-                </div>
-            {% endfor %}
+                {% for comment in newset_comments %}
+                    <div class="mb-2 pb-1 card-list">
+                        {%  include 'partials/_avatar.html.twig' with {'user': comment.post.user } only %}
+                        <a href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ comment.post.type.name ~'.seo_route') | trans, 'id' : comment.post.id, 'titleSlug': comment.post.titleSlug}) }}" title="Par: {{ comment.post.user.pseudo }} - Le: {{ comment.post.createdAt | date }}">
+                            {{ comment.comment }}
+                        </a>
+                    </div>
+                {% endfor %}
             <div class="text-center mt-3">
                  <a href="{{ path('app_post_new') }}" class="btn btn-secondary">
                     {{ 'post.label.create' | trans }}
                 </a>
             </div>
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-header fw-bold">Les commentaires récents</div>
-        <div class="card-body">
         </div>
     </div>
 

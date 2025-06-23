@@ -15,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostCommentRepository extends ServiceEntityRepository
 {
-    public const QB_ALIAS = 'cl';
+    public const QB_ALIAS = 'pc';
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -41,6 +41,21 @@ class PostCommentRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleColumnResult();
+    }
+
+    /**
+     * @return array<mixed, mixed>
+     */
+    public function findLatests(int $maxResult = 5): array
+    {
+        return $this->createQueryBuilder(self::QB_ALIAS)
+            ->select(self::QB_ALIAS, PostRepository::QB_ALIAS, UserRepository::QB_ALIAS)
+            ->leftJoin(self::QB_ALIAS.'.post', PostRepository::QB_ALIAS)
+            ->leftJoin(PostRepository::QB_ALIAS.'.user', UserRepository::QB_ALIAS)
+            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+            ->setMaxResults($maxResult)
+            ->getQuery()
+            ->getArrayResult();
     }
 
     //    /**

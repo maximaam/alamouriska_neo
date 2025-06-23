@@ -12,7 +12,6 @@
 {% block body %}
     <div class="container start-page">
         <div class="row text-dark">
-            {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
             <div class="col-sm-8">
                 {% include 'partials/_card-post.html.twig' with {
                     post: post,
@@ -20,6 +19,7 @@
                     commentPostIds: commentPostIds
                 } only %}
             </div>
+            {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
         </div>
     </div>
 {% endblock %}

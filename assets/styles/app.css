@@ -1,11 +1,12 @@
 :root {
+    --la-pointe: #1372aa;
     --bahra: #0B4B85; /* bahra : mer */
     --rocher: #0a4b85; /* rgb(10, 75, 133); */
     --rocher-light: rgba(10, 75, 133, 0.5);
     --rmila: #7c8704; /* rmila : sable */
     --rmila-light: #a3b107; /* rmila : sable */
+    --9a3-sour: rgba(255, 255, 255, 0.15);
 }
-
 body {
     color: var(--bs-white);
     background: var(--bahra);
@@ -54,12 +55,10 @@ button {
         font-size: 0.78rem;
     }
 }
-.user-container {
-    text-align: center;
-    margin: 0.25rem 0 0.25rem 0;
-}
 .navbar-toggler {
     background-color: var(--bs-white) !important;
+    border: none;
+    box-shadow: none !important;
 }
 .search-input {
     border-radius: 0.25rem 0 0 0.25rem !important;
@@ -104,10 +103,11 @@ main {
 .main-footer {
     margin-top: 50px;
     min-height: 150px;
-    /*background-color: rgba(122, 233, 88, 0.15);*/
-    background-color: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
     border-top: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: var(--9a3-sour);
+}
+.bg-9a3-sour {
+    background-color: var(--9a3-sour);
 }
 .btn-primary, .btn-secondary, .btn-danger, .btn-warning {
     text-transform:uppercase;
@@ -228,14 +228,14 @@ main {
         display: none;
     }
     body {
-        background: var(--bahra) url("../images/bg-main.jpg") no-repeat fixed;
+        background: var(--bahra) url("../images/bg-2-chameaux.jpg") no-repeat fixed;
         background-size: cover;
     }
     .app-centered {
         width: 60%;
     }
-    .user-container {
-        margin-left: 1rem;
+    .bg-9a3-sour {
+        background-color: transparent;
     }
 }
 
@@ -258,3 +258,32 @@ main {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
+
+.white-hr {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1rem 0;
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--bs-white);
+  }
+  &:not(:empty)::before {
+    margin-right: 0.5em;
+  }
+  &:not(:empty)::after {
+    margin-left: 0.5em;
+  }
+}
+
+.slide-toggle {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: 0;
+}
+
+.slide-toggle.open {
+    max-height: 500px; /* adjust to fit your form */
+}
+
