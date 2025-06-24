@@ -18,9 +18,16 @@
         <div class="row">
             <div class="col-sm-8">
                 <h1 class="mb-3 text-center">{{ header_meta }}</h1>
-                <h2 class="white-hr">
+                <article class="mb-4 mt-4">
+                    <h2>{{ 'label.welcome_h2' | trans({'%app_name%': app_name}) }}</h2>
+                    {{ page.description | raw }}
+                    <p class="text-end">
+                        <a href="{{ path('app_frontend_page', { 'alias': 'alamouriska-keskissik' }) }}">>> {{ 'label.read_more'|trans }}</a>
+                    </p>
+                </article>
+                <h3 class="white-hr">
                     <span>{{ 'label.newest_posts'|trans }}</span>
-                </h2>
+                </h3>
                 {% for post in newest_posts %}
                     {% include 'partials/_card-post.html.twig' with {
                         post: post,

@@ -43,6 +43,7 @@ final class FrontendController extends AbstractController
             : [];
 
         return $this->render('frontend/index.html.twig', [
+            'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
             'newest_posts' => $this->em->getRepository(Post::class)->findLatests(),
             'likedPostIds' => $likedPostIds,
             'commentPostIds' => $commentPostIds,

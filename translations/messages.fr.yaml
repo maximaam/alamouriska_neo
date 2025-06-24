@@ -1,7 +1,7 @@
 label:
   welcome: Bienvenue, Merhba Bikoum!
-  welcome_h1: "%app_name% ! Le site du parler algérien en derja (درجة)."
-  welcome_h2: "Bienvenue, Merhba Bikoum sur %app_name% !"
+  welcome_h1: "%app_name% ! Le site du parler algérien en derja (درجة)"
+  welcome_h2: "Bienvenue, Merhba Bikoum, Ansuf!"
   slogan: L'appel de la langue algérienne !
   send: Envoyer
   user: Utilisateur
@@ -9,7 +9,6 @@ label:
   email: Email
   password: Mot de passe
   login: Connexion
-  register: Inscription
   email_address: Adresse Email
   reset_password: Réinitialiser le mot de passe
   reset_password_help: Mets ton Adresse Email et tu receveras un message pour changer ton mot de passe
@@ -23,14 +22,13 @@ label:
   avatar: Image de profil
   profile: Profil
   logout: Déconnexion
-  login_facebook: Connexion avec Facebook
   no_account: Pas de compte? Incris-toi!
   search: Recherche
   enable_community_contact: "Les membres peuvent me contacter"
   allow_post_notification: "Me notifier à chaque publication"
   yes: Oui
   no: Non
-  posts_page_h1: "Liste des %post_type% en derja (درجة)"
+  posts_page_h1: "%post_type% en derja (درجة)"
   confirm: Confirmer
   cancel: Annuler
   my_posts: Mes publications
@@ -54,6 +52,9 @@ label:
   user_delete: Supprimer le compte
   newest_comments: Commentaires récents
   facebook_share: Partager sur Facebook
+  by: Par
+  date_on: Le
+  read_more: Lire plus
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -66,7 +67,7 @@ flash:
   reset_password_invalid_user: "Utilisateur introuvable."
   profile_edit_success: "Ton profile a été actualisé."
   post_delete_warning: "Tu confirmes vouloir éffacer cetee publication?"
-  post_deleted_success: "La publication a bien été éffacée."
+  post_deleted_success: "La publication a bien été supprimée."
   registration_email_verification_success: "Ton adresse email a été validée."
   registration_success: "Un email t'a été envoyé, merci de cliquer sur le lien pour valider ton inscription."
   new_email_verification_success: "Ton email a été modifié."

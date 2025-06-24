@@ -1,15 +1,28 @@
 <div class="card mb-3 card-post">
     <div class="row card-header">
-        <div class="col">
-            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="no-underline">
-                {% include 'partials/_avatar.html.twig' with {'user': post.user } only %}
+        <div class="col-8">
+
+            <div class="d-inline-block align-middle">
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="profile-row fw-bold fs-4 no-underline">
+                {% include 'partials/_avatar.html.twig' with {'user': post.user, 'size': 64 } only %}
+            </a>
+            </div>
+            <div class="d-inline-block align-middle">
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="profile-row fw-bold fs-4 no-underline">
                 {{ post.user.pseudo }}
             </a>
-            | {{ post.createdAt | date('d.m.Y') }}
+            <br>
+            <time class="" datetime="{{ post.createdAt | date('Y.m.d') }}">
+                {{ 'label.date_on' | trans }} : {{ post.createdAt | date('d.m.Y') }}
+            </time>
+            </div>
+
+            
+            
         </div>
-        <div class="col text-end">
+        <div class="col-4 text-end">
             {% set post_type = ('post.' ~ post.type.name ~ '.singular') | trans %}
-            <span class="bg-warning p-2 rounded post-type-{{post_type}}">{{ post_type }}</span>
+            <span class="p-2 rounded-bottom shadow-sm post-type">{{ post_type }}</span>
         </div>
     </div>
     <div class="card-body p-2">

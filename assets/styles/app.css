@@ -30,8 +30,12 @@ h2 {
 h3 {
     font-size: 1rem;
 }
-a, button {
+a {
     text-decoration: none;
+    color: var(--bs-warning);
+    &:hover {
+       text-decoration: underline; 
+    }
 }
 button {
     border: none;
@@ -42,13 +46,12 @@ button {
     a {
         color: var(--bs-white);
     }
-    &.current a, &:hover {
+    &.current a {
         text-decoration: underline;
     }
 }
 .navbar-brand span {
     display: inline-block;
-    color: var(--bs-white);
     line-height: 1.2rem;
     vertical-align: middle;
     small {
@@ -263,6 +266,14 @@ main {
     &.open {
         max-height: 500px; /* adjust to fit your form */
     }
+}
+
+/* POST */
+.post-type {
+    background-color: var(--bs-gray-300);
+    display: inline-block;
+    position: relative;
+    top: -9px;
 }
 
 @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */

@@ -18,7 +18,6 @@ final class EmbedController extends AbstractController
         $mainRequest = $requestStack->getMainRequest();
 
         return $this->render('embed/_sidebar.html.twig', [
-            'page' => $pageRepo->findOneBy(['alias' => 'home']),
             'newset_comments' => $commentRepo->findLatests(),
             'route_params' => $mainRequest?->attributes->get('_route_params'),
         ]);
