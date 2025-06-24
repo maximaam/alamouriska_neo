@@ -55,6 +55,7 @@ label:
   by: Par
   date_on: Le
   read_more: Lire plus
+  newest_questions: Questions récentes
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

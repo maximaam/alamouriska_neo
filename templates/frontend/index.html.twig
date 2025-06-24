@@ -18,6 +18,7 @@
         <div class="row">
             <div class="col-sm-8">
                 <h1 class="mb-3 text-center">{{ header_meta }}</h1>
+                {% if app.user is null %}
                 <article class="mb-4 mt-4">
                     <h2>{{ 'label.welcome_h2' | trans({'%app_name%': app_name}) }}</h2>
                     {{ page.description | raw }}
@@ -25,6 +26,7 @@
                         <a href="{{ path('app_frontend_page', { 'alias': 'alamouriska-keskissik' }) }}">>> {{ 'label.read_more'|trans }}</a>
                     </p>
                 </article>
+                {% endif %}
                 <h3 class="white-hr">
                     <span>{{ 'label.newest_posts'|trans }}</span>
                 </h3>

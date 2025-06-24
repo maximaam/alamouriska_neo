@@ -49,6 +49,21 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return array<mixed, mixed>
+     */
+    public function findQuestions(int $maxResult = 5): array
+    {
+        return $this->createQueryBuilder(self::QB_ALIAS)
+            ->select(self::QB_ALIAS, UserRepository::QB_ALIAS)
+            ->leftJoin(self::QB_ALIAS.'.user', UserRepository::QB_ALIAS)
+            ->andWhere(self::QB_ALIAS.'.question = true')
+            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+            ->setMaxResults($maxResult)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
      * @return Query<array<int, Post>>
      */
     public function findPaginatedQuery(PostType $type): Query

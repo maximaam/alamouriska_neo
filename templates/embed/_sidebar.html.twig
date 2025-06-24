@@ -21,15 +21,27 @@
     </div>
 
     <div class="card mb-3">
-        <div class="card-header fw-bold">Les plus énigmatiques</div>
+        <div class="card-header fw-bold">
+            {{ 'label.newest_questions' | trans }}
+        </div>
         <div class="card-body">
-            <ul class="pl-3 mb-2">
-                ...
-            </ul>
             <p>
                 Des membres se posent des questions sur l'origine de certaines
                 tournures de langage ; aidez-les.
             </p>
+            {% for post in newset_questions %}
+                <div class="mb-2 pb-1 card-list">
+                    {%  include 'partials/_avatar.html.twig' with {'user': post.user } only %}
+                    <a href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}">
+                        {{ post.title }}
+                    </a>
+                </div>
+            {% endfor %}
+            <div class="text-center mt-3">
+                 <a href="{{ path('app_post_new') }}" class="btn btn-secondary">
+                    {{ 'label.show_all_questions' | trans }}
+                </a>
+            </div>
         </div>
     </div>
 
