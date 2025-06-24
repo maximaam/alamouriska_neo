@@ -45,29 +45,20 @@
         </div>
     </div>
 
-    <div class="card fw-bold mb-3">
-        <div class="card-header">Noter {{ app_name }}</div>
-
+    <div class="card mb-3">
+        <div class="card-header fw-bold">
+            {{ 'label.newest_users' | trans }}
+        </div>
         <div class="card-body">
-            <!-- Rating Stars Box -->
-            <div class="rating-stars text-center">
-                <div class="mb-2">
-                    Votes...
+            {% for user in newest_users %}
+                <div class="mb-2 pb-1 card-list">
+                    {%  include 'partials/_avatar.html.twig' with {'user': user } only %}
+                    <a href="{{ path('app_frontend_member_profile', {'pseudo': user.pseudo}) }}">
+                        {{ user.pseudo }}
+                    </a>
                 </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 
-    {% if app.user is same as(null) %} {# For non users only #}
-        <div class="card bg-happy mb-3">
-            <div class="card-header font-weight-bold">{{ app_name }}, keskissik?</div>
-
-            <div class="card-body">
-                {% if page is defined %}
-                    <p>{{ page.description | raw }}</p>
-                    <a href="{{ path('app_frontend_index', { alias: 'keskissik' }) }}" class="btn btn-primary">En savoir plus</a>
-                {% endif %}
-            </div>
-        </div>
-    {% endif %}
 </div>

@@ -51,8 +51,8 @@ final class PostController extends AbstractController
     {
         return $this->render('post/show.html.twig', [
             'post' => $post,
-            'likedPostIds' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
-            'commentPostIds' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
+            'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
+            'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
         ]);
     }
 
@@ -90,8 +90,8 @@ final class PostController extends AbstractController
 
         return $this->render('post/delete.html.twig', [
             'post' => $post,
-            'likedPostIds' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
-            'commentPostIds' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
+            'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
+            'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
         ]);
     }
 }

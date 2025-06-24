@@ -37,6 +37,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    public function findNewest(int $maxResult = 5): array
+    {
+        return $this->createQueryBuilder(self::QB_ALIAS)
+            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+            ->setMaxResults($maxResult)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */

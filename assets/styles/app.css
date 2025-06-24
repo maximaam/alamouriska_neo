@@ -127,9 +127,11 @@ main {
     }
 }
 .btn-secondary {
-    background-color: var(--rmila);
+    background-color: var(--bs-warning);
+    color: var(--rocher);
     &:hover {
-        background-color: var(--rmila-light) !important;
+        background-color: inherit;
+        opacity: 0.9;
     }
 }
 .basic-icon {
@@ -150,7 +152,7 @@ main {
         color: var(--bs-white) !important;
         background-color: var(--rocher);
         backdrop-filter: blur(8px);
-        a {
+        .card-list a {
             margin-left: 0.5rem;
             color: var(--bs-white) !important;
             &:hover {
@@ -162,8 +164,7 @@ main {
 .card {
     a {
         color: var(--rocher) !important;
-        &.btn-primary, 
-        &.btn-secondary,
+        &.btn-primary,
         &.btn-danger,
         &.btn-dark {
             color: var(--bs-white) !important;

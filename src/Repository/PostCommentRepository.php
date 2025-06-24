@@ -46,7 +46,7 @@ class PostCommentRepository extends ServiceEntityRepository
     /**
      * @return array<mixed, mixed>
      */
-    public function findLatests(int $maxResult = 5): array
+    public function findNewest(int $maxResult = 5): array
     {
         return $this->createQueryBuilder(self::QB_ALIAS)
             ->select(self::QB_ALIAS, PostRepository::QB_ALIAS, UserRepository::QB_ALIAS)

@@ -45,8 +45,8 @@ final class FrontendController extends AbstractController
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
             'newest_posts' => $this->em->getRepository(Post::class)->findLatests(),
-            'likedPostIds' => $likedPostIds,
-            'commentPostIds' => $commentPostIds,
+            'liked_post_ids' => $likedPostIds,
+            'comment_post_ids' => $commentPostIds,
         ]);
     }
 
@@ -61,8 +61,8 @@ final class FrontendController extends AbstractController
             'member' => $user,
             'posts' => $posts,
             'comments_count' => $this->em->getRepository(PostComment::class)->count(['user' => $user]),
-            'likedPostIds' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user),
-            'commentPostIds' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user),
+            'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user),
+            'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user),
         ]);
     }
 
@@ -96,8 +96,8 @@ final class FrontendController extends AbstractController
 
         return $this->render('frontend/post.html.twig', [
             'post' => $post,
-            'likedPostIds' => $likedPostIds,
-            'commentPostIds' => $commentPostIds,
+            'liked_post_ids' => $likedPostIds,
+            'comment_post_ids' => $commentPostIds,
         ]);
     }
 
@@ -127,8 +127,8 @@ final class FrontendController extends AbstractController
 
         return $this->render('frontend/posts.html.twig', [
             'pagination' => $pagination,
-            'likedPostIds' => $likedPostIds,
-            'commentPostIds' => $commentPostIds,
+            'liked_post_ids' => $likedPostIds,
+            'comment_post_ids' => $commentPostIds,
         ]);
     }
 }

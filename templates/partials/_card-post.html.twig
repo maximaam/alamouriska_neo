@@ -1,24 +1,20 @@
 <div class="card mb-3 card-post">
     <div class="row card-header">
         <div class="col-8">
-
             <div class="d-inline-block align-middle">
-            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="profile-row fw-bold fs-4 no-underline">
-                {% include 'partials/_avatar.html.twig' with {'user': post.user, 'size': 64 } only %}
-            </a>
+                <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="profile-row fw-bold fs-4 no-underline">
+                    {% include 'partials/_avatar.html.twig' with {'user': post.user, 'size': 64 } only %}
+                </a>
             </div>
             <div class="d-inline-block align-middle">
-            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="profile-row fw-bold fs-4 no-underline">
-                {{ post.user.pseudo }}
-            </a>
-            <br>
-            <time class="" datetime="{{ post.createdAt | date('Y.m.d') }}">
-                {{ 'label.date_on' | trans }} : {{ post.createdAt | date('d.m.Y') }}
-            </time>
+                <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="profile-row fw-bold fs-4 no-underline">
+                    {{ post.user.pseudo }}
+                </a>
+                <br>
+                <time class="" datetime="{{ post.createdAt | date('Y.m.d') }}">
+                    {{ 'label.date_on' | trans }} : {{ post.createdAt | date('d.m.Y') }}
+                </time>
             </div>
-
-            
-            
         </div>
         <div class="col-4 text-end">
             {% set post_type = ('post.' ~ post.type.name ~ '.singular') | trans %}
@@ -53,7 +49,7 @@
         <div class="row mt-2">
             <div class="col post-actions">
             {% set likeCount= '<span id="likes-counter-' ~ post.id ~ '" data-post-like-target="count">' ~ post.postLikes|length ~ '</span>' %}
-            {% set iconLikeName = (app.user and post.id in likedPostIds) ? 'bi:heart-fill' : 'bi:heart' %}
+            {% set iconLikeName = (app.user and post.id in liked_post_ids) ? 'bi:heart-fill' : 'bi:heart' %}
             {% set iconLike = '<span data-post-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
 
             {% if app.user is null %}
@@ -77,7 +73,7 @@
 
             <!-- Comment -->
             {% set commentCount= '<span id="comment-counter-' ~ post.id ~ '" data-post-comment-target="count">' ~ post.postComments|length ~ '</span>' %}
-            {% set iconCommentName = (app.user and post.id in commentPostIds) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
+            {% set iconCommentName = (app.user and post.id in comment_post_ids) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
             {% set iconComment = '<span data-post-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon text-info'}) ~ '</span>' %}
 
             {% if app.user is null %}

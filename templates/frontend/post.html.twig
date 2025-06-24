@@ -15,8 +15,8 @@
             <div class="col-sm-8">
                 {% include 'partials/_card-post.html.twig' with {
                     post: post,
-                    likedPostIds: likedPostIds,
-                    commentPostIds: commentPostIds
+                    liked_post_ids: liked_post_ids,
+                    comment_post_ids: comment_post_ids
                 } only %}
             </div>
             {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}

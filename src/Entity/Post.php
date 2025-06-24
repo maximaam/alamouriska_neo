@@ -58,13 +58,13 @@ class Post
     /**
      * @var Collection<int, PostLike>
      */
-    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'post', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'post', orphanRemoval: true, fetch:'EAGER')]
     private Collection $postLikes;
 
     /**
      * @var Collection<int, PostComment>
      */
-    #[ORM\OneToMany(targetEntity: PostComment::class, mappedBy: 'post', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: PostComment::class, mappedBy: 'post', orphanRemoval: true, fetch:'EAGER')]
     private Collection $postComments;
 
     #[ORM\Column]
