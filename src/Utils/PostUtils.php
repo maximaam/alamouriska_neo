@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Routing\Attribute\AsRoutingConditionService;
 #[AsRoutingConditionService(alias: 'post_utils')]
 final class PostUtils
 {
+    public const SEO_POST_SLUGS = 'mots-algeriens|expressions-algeriennes|proverbes-algeriens|blagues-algeriennes';
+    
     /**
      * @var array<string, PostType>
      */
@@ -28,5 +30,10 @@ final class PostUtils
     public static function getValidSeoSlugs(): string
     {
         return implode('|', array_keys(static::$typesSeoSlugs));
+    }
+
+    public function isValidSlug(?string $slug): bool
+    {
+        return array_key_exists($slug, self::$typesSeoSlugs);
     }
 }

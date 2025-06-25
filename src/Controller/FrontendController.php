@@ -53,6 +53,12 @@ final class FrontendController extends AbstractController
     #[Route('/membre/{pseudo:user}', name: 'member_profile')]
     public function memberProfile(User $user): Response
     {
+        if (!$user->isVerified()) {
+            $this->addFlash('warning', 'flash.user_not_verified');
+
+            return $this->redirectToRoute('app_frontend_index', status: Response::HTTP_SEE_OTHER);
+        }
+
         $form = $this->createForm(ContactMemberForm::class);
         $posts = $this->em->getRepository(Post::class)->findBy(['user' => $user]);
 
@@ -74,7 +80,17 @@ final class FrontendController extends AbstractController
         ]);
     }
 
-    #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['seoTypeSlug' => Requirement::ASCII_SLUG])]
+    #[Route(
+        '/{seoTypeSlug}/{id}/{titleSlug}',
+        name: 'post',
+        methods: ['GET'],
+        requirements: [
+            'seoTypeSlug' => PostUtils::SEO_POST_SLUGS,
+            'id' => Requirement::POSITIVE_INT,
+            'titleSlug' => Requirement::ASCII_SLUG,
+        ],
+        // condition: "service('post_utils').isValidSlug('mots-algeriens')",
+    )]
     public function postById(Post $post, string $seoTypeSlug, string $titleSlug, #[CurrentUser] ?User $user = null): Response
     {
         // URL manipulation, like changing the ID
@@ -101,7 +117,13 @@ final class FrontendController extends AbstractController
         ]);
     }
 
-    #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => Requirement::ASCII_SLUG], condition: "service('post_utils').getValidSeoSlugs()")]
+    #[Route(
+        '/{seoTypeSlug}',
+        name: 'posts',
+        requirements: [
+            'seoTypeSlug' => PostUtils::SEO_POST_SLUGS,
+        ], 
+    )]
     public function postsByType(PaginatorInterface $paginator, Request $request, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
     {
         if (null === $type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) {

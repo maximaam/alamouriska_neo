@@ -26,7 +26,7 @@ class PageCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('title'),
-            TextField::new('alias'),
+            TextField::new('alias')->onlyOnIndex(),
             TextareaField::new('description'),
             ImageField::new('pageImageName', 'Image')
                 ->setBasePath($pagesDir)
