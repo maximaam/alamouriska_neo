@@ -17,23 +17,32 @@
             </div>
         </div>
         <div class="col-4 text-end">
-            <span title="{{ 'label.post_type' | trans }}" class="p-2 rounded-bottom fw-bold shadow-sm post-type">
+            {% if app.user == post.user %}
+            <span title="{{ 'label.post_edit' | trans }}" class="bg-warning p-2 rounded-bottom fw-bold shadow-sm post-features">
+                <a href="{{ path('app_post_show', {'id': post.id} ) }}">
+                    {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
+                </a>
+            </span>
+            {% endif %}
+            {% if post.question is true %}
+            <span title="{{ 'label.post_is_question' | trans }}" class="bg-info p-2 rounded-bottom fw-bold shadow-sm post-features">
+                {{ ux_icon('bi:question', {class: 'basic-icon'}) }}
+            </span>
+            {% endif %}
+            <span title="{{ 'label.post_type' | trans }}" class="p-2 ps-4 pe-4 rounded-bottom fw-bold shadow-sm post-features">
                 {{ ('post.' ~ post.type.name ~ '.singular') | trans }}
             </span>
         </div>
     </div>
     <div class="card-body p-2">
-        {% if post.question is true %}
-            <div class="bg-gray-300 rounded p-2 mb-3">
-                {{ ux_icon('bi:question', {class: 'basic-icon'}) }}
-                {{ 'label.post_is_question' | trans }}
-            </div>
-        {% endif %}
          <h2>
-            {{ post.title }} | {{ post.titleArabic }}
+            {{ post.title }}
+            {% if post.titleArabic is not null %}
+                <br>
+                {{ post.titleArabic }}
+            {% endif %}
         </h2>
          <p>{{ post.description }}</p>
-
         {% if post.postImageName is not null %}
             <div class="card-post-image">
                 <img src="{{ asset(posts_dir ~ '/' ~ post.postImageName) | imagine_filter('post_image') }}" alt="">
@@ -44,12 +53,6 @@
     <div class="card-footer">
         <div class="row mt-2">
             <div class="col post-actions">
-            {% if app.user == post.user %}
-                <a title="{{ 'label.post_update' | trans }}" href="{{ path('app_post_show', {'id': post.id} ) }}">
-                    {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
-                </a>
-            {% endif %}
-            | 
             {% set likeCount= '<span id="likes-counter-' ~ post.id ~ '" data-post-like-target="count">' ~ post.postLikes|length ~ '</span>' %}
             {% set iconLikeName = (app.user and post.id in liked_post_ids) ? 'bi:heart-fill' : 'bi:heart' %}
             {% set iconLike = '<span data-post-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
@@ -76,7 +79,7 @@
             <!-- Comment -->
             {% set commentCount= '<span id="comment-counter-' ~ post.id ~ '" data-post-comment-target="count">' ~ post.postComments|length ~ '</span>' %}
             {% set iconCommentName = (app.user and post.id in comment_post_ids) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
-            {% set iconComment = '<span data-post-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon text-info'}) ~ '</span>' %}
+            {% set iconComment = '<span data-post-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon text-dark'}) ~ '</span>' %}
 
             {% if app.user is null %}
                 <a href="{{ path('app_security_login') }}" title="{{ 'label.i_comment' | trans }}">

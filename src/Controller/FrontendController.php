@@ -23,7 +23,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route(name: 'app_frontend_', priority: 1)]
 final class FrontendController extends AbstractController
 {
-    public const PAGE_MAX_POSTS = 3;
+    public const PAGE_MAX_POSTS = 10;
 
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -122,7 +122,7 @@ final class FrontendController extends AbstractController
         name: 'posts',
         requirements: [
             'seoTypeSlug' => PostUtils::SEO_POST_SLUGS,
-        ], 
+        ],
     )]
     public function postsByType(PaginatorInterface $paginator, Request $request, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
     {

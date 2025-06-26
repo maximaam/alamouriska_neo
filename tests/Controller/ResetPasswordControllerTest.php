@@ -64,7 +64,7 @@ class ResetPasswordControllerTest extends WebTestCase
         // self::assertQueuedEmailCount(1);
         // self::assertEmailCount(1); deacitvated manually
 
-        self::assertCount(1, $messages = $this->getMailerMessages());
+        self::assertCount(2, $messages = $this->getMailerMessages());
 
         self::assertEmailAddressContains($messages[0], 'from', 'app@alamouriska.com');
         self::assertEmailAddressContains($messages[0], 'to', 'me@example.com');

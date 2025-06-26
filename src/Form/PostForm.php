@@ -41,7 +41,6 @@ class PostForm extends AbstractType
                 'attr' => [
                     'class' => '',
                     'placeholder' => 'label.title_latin_alphabet',
-                    
                 ],
                 'help' => 'form.help.title_latin_alphabet',
                 'label_attr' => [

@@ -47,7 +47,7 @@ Voir la page des questions-réponses: <a href="https://www.alamouriska.com/page/
 <br><br>
 Si vous avez des idées ou des propositions, n'hésitez pas à nous contacter: <a href="https://www.alamouriska.com/page/contact">Contact</a>
 
--< contact
+-> contact
 Si vous avez besoin de nous contacter, vous pouvez le faire directement par mail à: alamouriska.app[AT]gmail.com
 
 

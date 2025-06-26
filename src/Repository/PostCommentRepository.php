@@ -52,7 +52,7 @@ class PostCommentRepository extends ServiceEntityRepository
             ->select(self::QB_ALIAS, PostRepository::QB_ALIAS, UserRepository::QB_ALIAS)
             ->leftJoin(self::QB_ALIAS.'.post', PostRepository::QB_ALIAS)
             ->leftJoin(PostRepository::QB_ALIAS.'.user', UserRepository::QB_ALIAS)
-            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();

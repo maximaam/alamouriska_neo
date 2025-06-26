@@ -40,7 +40,7 @@ class RegistrationControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertPageTitleContains('Inscription - Alamouriska');
 
-        $this->client->submitForm('Inscription', [
+        $this->client->submitForm('Envoyer', [
             'registration_form[email]' => 'me@example.com',
             'registration_form[pseudo]' => 'samingo',
             'registration_form[plainPassword]' => 'password',

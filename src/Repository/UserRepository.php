@@ -37,11 +37,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @return array<mixed, mixed>
+     */
     public function findNewest(int $maxResult = 5): array
     {
         return $this->createQueryBuilder(self::QB_ALIAS)
             ->andWhere(self::QB_ALIAS.'.isVerified = true')
-            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();

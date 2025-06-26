@@ -268,12 +268,11 @@ main {
 }
 
 /* POST */
-.post-type {
+.post-features {
     background-color: var(--bs-gray-400);
     display: inline-block;
     position: relative;
     top: -9px;
-    min-width: 100px;
     text-align: center;
 }
 

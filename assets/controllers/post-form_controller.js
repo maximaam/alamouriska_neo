@@ -17,8 +17,9 @@ export default class extends Controller {
             const shouldHide = postTypeValue === 4;
 
             if (this.title) {
+                const postTitlesWrapper = document.getElementById('post-titles-wrapper');
                 this.title.disabled = shouldHide;
-                this.title.parentNode.parentNode.parentNode.style.display = shouldHide ? 'none' : 'block';
+                postTitlesWrapper.style.display = shouldHide ? 'none' : 'flex';
 
                 if (shouldHide) {
                     this.title.removeAttribute('required');

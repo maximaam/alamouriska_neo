@@ -28,7 +28,7 @@ class PostRepository extends ServiceEntityRepository
     public function findLatests(int $maxResult = 10): array
     {
         return $this->createQueryBuilder(self::QB_ALIAS)
-            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getResult();
@@ -57,7 +57,7 @@ class PostRepository extends ServiceEntityRepository
             ->select(self::QB_ALIAS, UserRepository::QB_ALIAS)
             ->leftJoin(self::QB_ALIAS.'.user', UserRepository::QB_ALIAS)
             ->andWhere(self::QB_ALIAS.'.question = true')
-            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();
@@ -71,7 +71,7 @@ class PostRepository extends ServiceEntityRepository
         return $this->createQueryBuilder(self::QB_ALIAS)
             ->where(self::QB_ALIAS.'.type = :type')
             ->setParameter('type', $type)
-            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
             ->getQuery();
     }
 }

@@ -44,6 +44,8 @@ final class AsyncController extends AbstractController
             throw new AccessDeniedHttpException('Invalid CSRF token.');
         }
 
+        $sumLikes = \count($post->getPostLikes());
+
         $hasLiked = $this->entityManager
             ->getRepository(PostLike::class)
             ->findOneBy(['user' => $user, 'post' => $post]);
@@ -55,7 +57,7 @@ final class AsyncController extends AbstractController
             return $this->json([
                 'status' => 'success',
                 'action' => 'dislike',
-                'likes' => \count($post->getPostLikes()),
+                'likes' => $sumLikes > 0 ? --$sumLikes : 0,
             ]);
         }
 
@@ -69,7 +71,7 @@ final class AsyncController extends AbstractController
         return $this->json([
             'status' => 'success',
             'action' => 'like',
-            'likes' => \count($post->getPostLikes()),
+            'likes' => ++$sumLikes,
         ]);
     }
 
