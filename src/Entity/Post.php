@@ -21,7 +21,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[UniqueEntity(fields: ['title'], message: 'post_title_exists')]
 #[Vich\Uploadable]
-#[Assert\Callback('validateTitle')]
+// #[Assert\Callback('validateTitle')]
 class Post
 {
     use TimestampableEntity;
@@ -37,6 +37,9 @@ class Post
 
     #[ORM\Column(length: 255, unique: true)]
     private ?string $title = null;
+
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    private ?string $titleArabic = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -105,6 +108,18 @@ class Post
         return $this;
     }
 
+    public function getTitleArabic(): ?string
+    {
+        return $this->titleArabic;
+    }
+
+    public function setTitleArabic(string $titleArabic): static
+    {
+        $this->titleArabic = $titleArabic;
+
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -167,14 +182,16 @@ class Post
         return $this;
     }
 
+    /*
     public function validateTitle(ExecutionContextInterface $context): void
     {
-        if (!\in_array($this->type, [PostType::proverb, PostType::joke], true) && '' === $this->title) {
+        if (!\in_array($this->type, [PostType::joke], true) && '' === $this->titleLatin) {
             $context->buildViolation('Requis.')
                 ->atPath('title')
                 ->addViolation();
         }
     }
+    */
 
     /**
      * @return Collection<int, PostLike>

@@ -40,8 +40,22 @@ class PostForm extends AbstractType
             ->add('title', null, [
                 'attr' => [
                     'class' => '',
-                    'placeholder' => 'label.title',
+                    'placeholder' => 'label.title_latin_alphabet',
+                    
                 ],
+                'help' => 'form.help.title_latin_alphabet',
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
+            ])
+            ->add('titleArabic', null, [
+                'attr' => [
+                    'class' => '',
+                    'placeholder' => 'label.title_arabic_alphabet',
+                    'dir' => 'rtl',
+                ],
+                'help' => 'form.help.title_arabic_alphabet',
+                'help_html' => true,
                 'label_attr' => [
                     'class' => 'd-none',
                 ],

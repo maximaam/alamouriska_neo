@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block card_body %}
-    {{ include('partials/_form.html.twig') }}
+    {%  include 'partials/_form.html.twig' with {form: form, form_name: 'post' } only %}
 {% endblock %}
 
 {% block card_footer %}

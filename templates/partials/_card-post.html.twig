@@ -17,8 +17,9 @@
             </div>
         </div>
         <div class="col-4 text-end">
-            {% set post_type = ('post.' ~ post.type.name ~ '.singular') | trans %}
-            <span class="p-2 rounded-bottom shadow-sm post-type">{{ post_type }}</span>
+            <span title="{{ 'label.post_type' | trans }}" class="p-2 rounded-bottom fw-bold shadow-sm post-type">
+                {{ ('post.' ~ post.type.name ~ '.singular') | trans }}
+            </span>
         </div>
     </div>
     <div class="card-body p-2">
@@ -29,12 +30,7 @@
             </div>
         {% endif %}
          <h2>
-            {{ post.title }}
-            {% if app.user == post.user %}
-                <a title="{{ 'label.post_update' | trans }}" href="{{ path('app_post_show', {'id': post.id} ) }}">
-                    {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
-                </a>
-            {% endif %}
+            {{ post.title }} | {{ post.titleArabic }}
         </h2>
          <p>{{ post.description }}</p>
 
@@ -48,6 +44,12 @@
     <div class="card-footer">
         <div class="row mt-2">
             <div class="col post-actions">
+            {% if app.user == post.user %}
+                <a title="{{ 'label.post_update' | trans }}" href="{{ path('app_post_show', {'id': post.id} ) }}">
+                    {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
+                </a>
+            {% endif %}
+            | 
             {% set likeCount= '<span id="likes-counter-' ~ post.id ~ '" data-post-like-target="count">' ~ post.postLikes|length ~ '</span>' %}
             {% set iconLikeName = (app.user and post.id in liked_post_ids) ? 'bi:heart-fill' : 'bi:heart' %}
             {% set iconLike = '<span data-post-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}

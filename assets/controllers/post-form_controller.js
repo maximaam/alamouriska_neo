@@ -18,7 +18,7 @@ export default class extends Controller {
 
             if (this.title) {
                 this.title.disabled = shouldHide;
-                this.title.parentNode.style.display = shouldHide ? 'none' : 'block';
+                this.title.parentNode.parentNode.parentNode.style.display = shouldHide ? 'none' : 'block';
 
                 if (shouldHide) {
                     this.title.removeAttribute('required');

@@ -3,8 +3,8 @@
     --bahra: #0B4B85; /* bahra : mer */
     --rocher: #0a4b85; /* rgb(10, 75, 133); */
     --rocher-light: rgba(10, 75, 133, 0.5);
-    --rmila: #7c8704; /* rmila : sable */
-    --rmila-light: #a3b107; /* rmila : sable */
+    --rmila: #f7e94a; /* rmila : sable */
+    --rmila-light: #f3ea88; /* rmila : sable */
     --9a3-sour: rgba(255, 255, 255, 0.15);
 }
 body {
@@ -127,11 +127,10 @@ main {
     }
 }
 .btn-secondary {
-    background-color: var(--bs-warning);
+    background-color: var(--rmila);
     color: var(--rocher);
     &:hover {
-        background-color: inherit;
-        opacity: 0.9;
+        background-color: var(--rmila-light);
     }
 }
 .basic-icon {
@@ -183,9 +182,10 @@ main {
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     a {
-        color: var(--bs-white) !important;
+        color: var(--rmila) !important;
         font-weight: bold;
         &:hover {
+            color: inherit;
             text-decoration: underline;
         }
     }
@@ -214,7 +214,6 @@ main {
     }   
 }
 .help-text {
-    text-align: right;
     font-size: 1em;
     color: var(--bs-white);
 }
@@ -270,10 +269,12 @@ main {
 
 /* POST */
 .post-type {
-    background-color: var(--bs-gray-300);
+    background-color: var(--bs-gray-400);
     display: inline-block;
     position: relative;
     top: -9px;
+    min-width: 100px;
+    text-align: center;
 }
 
 @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */

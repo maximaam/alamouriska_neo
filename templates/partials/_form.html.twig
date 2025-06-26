@@ -1,5 +1,28 @@
 {{ form_start(form, { attr: attr|default({}) }) }}
-    {{ form_widget(form) }}
+    {% if form_name is defined and form_name == 'post' %}
+        <div class="mb-3">
+            {{ form_row(form.type) }}
+        </div>
+        <div class="row g-2">
+            <div class="col-md">
+                {{ form_row(form.title) }}
+            </div>
+            <div class="col-md">
+                {{ form_row(form.titleArabic) }}
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ form_row(form.description) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(form.postImageFile) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(form.question) }}
+        </div>
+    {% else %}
+        {{ form_widget(form) }}
+    {% endif %}
     <div class="text-end">
         <button type="submit" id="submit-form" class="btn btn-primary">{{ 'label.send'|trans }}</button>
     </div>

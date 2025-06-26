@@ -15,7 +15,7 @@
                 <table class="table table-striped table-hover table-responsive bg-purple">
                     {%  for post in posts %}
                     <tr>
-                        <td width="75%">{{ post.title }}</td>
+                        <td width="75%">{{ post.title }} | {{ post.titleArabic }}</td>
                         <td>
                             <a title="{{ 'label.post_show' | trans }}" href="{{ path('app_post_show', {'id': post.id} ) }}">
                                 {{ ux_icon('bi:eye-fill', {class: 'basic-icon'}) }}

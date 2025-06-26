@@ -57,6 +57,13 @@ label:
   read_more: Lire plus
   newest_questions: Questions récentes
   newest_users: Membres récents
+  title_latin_alphabet: Titre en caractères latins...
+  title_arabic_alphabet: بألعربية...
+  register: Inscription
+  show_all_questions: Plus de questions
+  post_type: Type de publication
+  post_show: Publication
+  post_edit: Modifier la publication
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -111,6 +118,8 @@ form:
   help:
     avatar_upload: "Photo de profil (optionnel). 1 MB max, 128x128 pixel min"
     reset_password_request: "Enter your email address, and we will send you a link to reset your password."
+    title_latin_alphabet: "Requis. Alphabet latin."
+    title_arabic_alphabet: Souhaité. <a href="https://www.lexilogos.com/clavier/araby.htm" target="_blank" class="link-rocher">>> Clavier Arabe</a>
 
 
 email:

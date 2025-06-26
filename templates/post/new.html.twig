@@ -11,7 +11,7 @@
 
 {% block card_body %}
     <div class="mb-3">
-        {{ include('partials/_form.html.twig') }}
+        {%  include 'partials/_form.html.twig' with {form: form, form_name: 'post' } only %}
     </div>
 {% endblock %}
 
