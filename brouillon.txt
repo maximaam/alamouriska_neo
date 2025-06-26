@@ -1,40 +1,55 @@
 
 INSERT INTO `user` (`pseudo`, `email`, `is_verified`, `password`, `roles`, `avatar_name`, `enable_community_contact`, `enable_post_notification`, `created_at`, `updated_at`) VALUES
 ('ZANDIANI', 'el_djermane@yahoo.fr', 1, '$2y$13$gth/AgmAPgnQ5zbDXtV21OX5//7yyt.nay/ZLIDMuPFDNLxDYeU2S','["ROLE_USER"]', 'ZANDIANI.jpg', 1, 1, '2019-06-05 23:14:06', '2019-06-13 11:02:58'),
-
 ('AlaiaGeller','xlhmjvpbyl_1540975992@tfbnw.net',1, '$2y$13$FjiwN8nvl6B0lhqogjOBYeHmyJ6qIrOPNc.qE5IUwDSe2Ba/MDeTW','["ROLE_USER"]', NULL, 1, 1, '2019-06-10 10:52:41', NULL),
-
 ('fabini','boumich603@gmail.com',1, '$2y$13$9chU1WLBc3uGkbZcPHYt6OlI.ZwZ872dvNvUukt0ANMvJMUWtW3Lu','["ROLE_USER"]', NULL, 1, 1, '2019-06-15 18:02:29', NULL),
-
 ('wahraniya', 'mimocode@gmail.com', 1, '$2y$13$jtJGJas9hIXUQLGJO9VXRucS1WWajmRvHbW5YBYjNaTes.wwmRHLS', '["ROLE_USER"]', NULL, 1, 1,'2019-06-17 20:30:09', '2019-06-17 20:45:52'),
-
-
 ('BonneNouvelle','mimo.berlino3@gmail.com', 1, '$2y$13$9oCTQN2/Kyi3WFAKo/3VXu.fIGI4/jEEbL0EYYuXL7Mo.DlzrdMq.', '["ROLE_USER"]', NULL, 0, 0, '2019-06-18 23:00:19', '2019-06-18 23:19:19'),
-
-
 ('SmainDrouiche','smaindrouiche@yahoo.fr', 1, '$2y$13$msJJ1i7btJqykSUFi30PEefsU.kOKl.uW1LHPf0YdzCfGTFw.0MvG', '["ROLE_USER"]', NULL, 1, 1, '2019-06-18 23:28:24', NULL),
-
 ('NaouelMira','naouelmira@yahoo.fr', 1, '$2y$13$noJ.ES4yCcJAyCZI.ZyWZui.TEAZlY2sqCw1tel4v2wqHY.PuAMn6', '["ROLE_USER"]', NULL, 1, 1, '2019-06-25 18:19:15', NULL),
-
 ('Safenabo','safenabo@gmx.de', 1, '$2y$13$ftE8iPxEXIRnyDwVkS3JwOnPuZ3iZ3PboOiKQY2pAjkM7U9/HXgrK', '["ROLE_USER"]', NULL, 1, 1, '2019-07-01 13:10:32', '2019-07-26 10:16:41'),
-
 ('3am3ali', 'a.cadi@trames-dz.com', 1, '$2y$13$JcA7jwNDyOeEYXxKgV4HGO9pCWG4wLyXsEbMQ.8t2prdxO6DOpn42', '["ROLE_USER"]', NULL, 1, 1, '2019-07-08 00:20:29', NULL),
-
 ('RADIALI','radiali56@gmail.com', 1, '$2y$13$gLyv8u2AyVphAXyeE.3UJ.ZgDNEZfieoTk3pFg08eSPgsrMwZAk/6', '["ROLE_USER"]', NULL, 1, 1, '2019-07-08 00:27:00', NULL),
-
 ('Mohamed','mt.grairia@gmail.com', 1, '$2y$13$YbnSTy6h.hFdG2YhnDahVuNXh7sBWWN5GC4f4Uh.SRBXOMt2kSOva', '["ROLE_USER"]', NULL, 1, 1, '2019-07-08 12:26:57', NULL),
-
 ('OLamia','ouhiblamia@live.fr',1, '$2y$13$2Ra7tiFvxhyWAzQQMuQy8.EF29KtAnkRZplVNDLQi2LJ61zcFEPQy','["ROLE_USER"]', 'OLamia.jpg', 1, 1, '2019-07-08 18:21:45', '2019-07-08 18:25:48'),
-
 ('joghlala','raoufo@hotmail.com', 1, '$2y$13$fMikmt4Yv4hNV5Bux0C1K.ytUx8XG4Y3DobLDLxBZ/J6mKQS0leDu', '["ROLE_USER"]', NULL, 1, 1, '2019-07-10 09:12:02', NULL),
-
 ('Ghania','rano.deux.fontaines@gmail.com',1, '$2y$13$KTABABhfN7CcYZ87K6FPPu4hl38ycxXcgStrvoPSg3NH4CpIBWgiy', '["ROLE_USER"]', NULL, 1, 1, '2019-07-10 15:22:52', '2019-07-10 15:29:01'),
-
 ('MalekH','chedrouhek@gmail.com', 1, '$2y$13$4f7WK.fg5npFKIvVB9hmkO.xzv/huiq0KPr6LVwzIrfFrQJevm7P6', '["ROLE_USER"]', NULL, 1, 1, '2019-09-08 01:38:28', NULL),
-
 ('Malek2018','chedrouhek9@gmail.com', 1, '$2y$13$lM2CVjEtQvT32NOu8qLVAeim3f2RajIoETACuu6Wiil4LHuK8Cb5a', '["ROLE_USER"]', NULL, 1, 1, '2019-12-03 01:07:06', '2019-12-03 01:30:57'),
-
 ('carlos','carlosmarouche@hotmail.com', 1, '$2y$13$kkvn4EkpUViyBVRs8Xf4k.MGcc6k7zaCzNqW9NoSHWb217RLG6Ap2','["ROLE_USER"]', NULL, 1, 1, '2020-09-24 00:19:36', NULL);
+
+
+-> home
+<p>Alamouriska est une application créée dans le but de rassembler, dans un point central, les éléments du langage algérien, tel que ce dernier a évolué au fil des siècles. En un seul mot: la derdja, ou daridja. En arabe درجة. Que ce soit les mots, expressions, proverbes, ou même des blagues, avec les différentes influences linguistiques qui ont marquées la langue populaire des algériens.</p>
+
+-> kesskissik
+A chaque fois tu insères quelque chose sur alamouriska.com, c'est comme jeter une bouée de sauvetage à une personne qui se noie.
+<br>
+La langue, en effet, peut mourir. Ou oublier, perdre son historique.
+<br><br>
+Alamouriska est une application créée dans le but de rassembler, dans un point central, les éléments du langage algérien, tel que ce dernier a évolué au fil des siècles. En un seul mot: la derdja, ou daridja. En arabe درجة. Que ce soit les mots, expressions, proverbes, ou même des blagues, avec les différentes influences linguistiques qui ont marquées la langue populaire des algériens.
+<br><br>
+Le fonctionnement est simple: il suffit de choisir la catégorie de ta publication:
+<dl>
+<dt>Mots</dt>
+<dd>Un simple mot. En caracteres latin, amazigh et/ou arabes.</dd>
+<dt>Expressions</dt>
+<dd>Une suite de mots.</dd>
+<dt>Proverbes</dt>
+<dd>Proverbes, dictons, adages populaires, maximes...</dd>
+<dt>Blagues</dt>
+<dd>Le sens de l'humour algérien</dd>
+<dt>Blogs</dt>
+<dd>Toute idée que tu souhaites proposer ou discuter. Même des cours ou des explications des fonctionnements de la langue.</dd>
+</dl>
+<br>
+Voir la page des questions-réponses: <a href="https://www.alamouriska.com/page/faq">Questions-Réponses</a>
+<br><br>
+Si vous avez des idées ou des propositions, n'hésitez pas à nous contacter: <a href="https://www.alamouriska.com/page/contact">Contact</a>
+
+-< contact
+Si vous avez besoin de nous contacter, vous pouvez le faire directement par mail à: alamouriska.app[AT]gmail.com
+
 
 
 
