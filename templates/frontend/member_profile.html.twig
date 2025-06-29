@@ -16,12 +16,12 @@
                 </div>
                 <h1 class="mb-4 text-center display-5">{{ member.pseudo }}</h1>
                 <dl class="row">
-                    <dt class="col-sm-6">{{ 'label.profile_since' | trans }}</dt>
-                    <dd class="col-sm-6">{{ member.createdAt | date('d-m-Y') }}</dd>
-                    <dt class="col-sm-6">{{ 'label.profile_posts_count' | trans }}</dt>
-                    <dd class="col-sm-6">{{ posts | length }}</dd>
-                    <dt class="col-sm-6">{{ 'label.profile_comments_count' | trans }}</dt>
-                    <dd class="col-sm-6">{{ comments_count }}</dd>
+                    <dt class="col-6">{{ 'label.profile_since' | trans }}</dt>
+                    <dd class="col-6">{{ member.createdAt | date('d-m-Y') }}</dd>
+                    <dt class="col-6">{{ 'label.profile_posts_count' | trans }}</dt>
+                    <dd class="col-6">{{ posts | length }}</dd>
+                    <dt class="col-6">{{ 'label.profile_comments_count' | trans }}</dt>
+                    <dd class="col-6">{{ comments_count }}</dd>
                 </dl>
 
                 {% if app.user and app.user != member and member.enableCommunityContact %}

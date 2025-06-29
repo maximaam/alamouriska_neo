@@ -11,3 +11,12 @@
 # run composer
 /opt/RZphp72/bin/php-cli /mnt/web319/b1/37/51912237/htdocs/bin/composer install
 
+
+# prod
+/opt/RZphp82/bin/php-cli bin/console c:c
+/opt/RZphp82/bin/php-cli bin/console asset-map:compile
+
+to do 
+- optimize:
+    'liked_post_ids' => $likedPostIds,
+    'comment_post_ids' => $commentPostIds,

@@ -101,4 +101,15 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
             ->getQuery();
     }
+
+    /**
+     * @return Query<array<int, Post>>
+     */
+    public function findPaginatedQuestionsQuery(): Query
+    {
+        return $this->createQueryBuilder(self::QB_ALIAS)
+            ->where(self::QB_ALIAS.'.question = TRUE')
+            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+            ->getQuery();
+    }
 }

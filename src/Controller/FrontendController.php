@@ -155,6 +155,33 @@ final class FrontendController extends AbstractController
         ]);
     }
 
+    #[Route('/questions', name: 'questions')]
+    public function questions(PaginatorInterface $paginator, Request $request, #[CurrentUser] ?User $user = null): Response
+    {
+        $pagination = $paginator->paginate(
+            $this->em->getRepository(Post::class)->findPaginatedQuestionsQuery(),
+            $request->query->getInt('page', 1),
+            self::PAGE_MAX_POSTS,
+        );
+
+        /** @var Post[] $posts */
+        $posts = $pagination->getItems();
+
+        $likedPostIds = ($user instanceof User)
+            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user)
+            : [];
+
+        $commentPostIds = ($user instanceof User)
+            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user)
+            : [];
+
+        return $this->render('frontend/questions.html.twig', [
+            'pagination' => $pagination,
+            'liked_post_ids' => $likedPostIds,
+            'comment_post_ids' => $commentPostIds,
+        ]);
+    }
+
     #[Route('/recherche', name: 'search')]
     public function search(Request $request, #[CurrentUser] ?User $user = null): Response
     {

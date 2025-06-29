@@ -67,6 +67,7 @@ label:
   post_delete: Supprimer la publication
   search_for: "Recherche pour '%search_input%'"
   add_comment: Ajouter un commentaire
+  posts_questions: Les questions des membres
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
