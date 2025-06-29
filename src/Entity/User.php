@@ -58,14 +58,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 32, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Type(Types::STRING)]
-    #[Assert\NotBlank]
     #[Assert\Regex('/^[A-Za-z0-9\-]+$/')]
     #[Assert\Length(
         min: 4,
         max: 32,
-        minMessage: 'fos_user.username.short',
-        maxMessage: 'fos_user.username.long',
-        groups: ['Profile', 'Registration']
+        minMessage: 'user_pseudo_short',
+        maxMessage: 'user_pseudo_long',
+        // groups: ['Profile', 'Registration']
     )]
     private ?string $pseudo = null;
 

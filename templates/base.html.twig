@@ -62,15 +62,14 @@
                         <div class="row">
                             <div class="col-10">
                                 <form class="d-flex">
-                                    <label for="search_input">
-                                        <input class="form-control search-input" type="search" name="search_input" id="search_input" placeholder="{{ 'label.search'|trans }}..." aria-label="Search">
-                                    </label>
+                                    <label for="search_input"></label>
+                                    <input class="form-control search-input" type="search" name="search_input" id="search_input" placeholder="{{ 'label.search'|trans }}..." aria-label="Search">
                                     <button class="btn search-btn" type="submit">
                                         {{ ux_icon('bi:search', {class: 'basic-icon'}) }}
                                     </button>
                                 </form>
                             </div>
-                            <div class="col-2 text-end">
+                            <div class="col-2 top-nav-user">
                                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                                 <a href="{{ path('app_user_show') }}" title="{{ app.user.pseudo }} - {{ 'label.profile'|trans }}">
                                     {%  include 'partials/_avatar.html.twig' with {'user': app.user } only %}

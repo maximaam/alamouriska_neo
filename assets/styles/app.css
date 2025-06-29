@@ -1,15 +1,13 @@
 :root {
     --la-pointe: #1372aa;
-    --bahra: #0B4B85; /* bahra : mer */
     --rocher: #0a4b85; /* rgb(10, 75, 133); */
     --rocher-light: rgba(10, 75, 133, 0.5);
-    --rmila: #f7e94a; /* rmila : sable */
-    --rmila-light: #f3ea88; /* rmila : sable */
-    --9a3-sour: rgba(255, 255, 255, 0.15);
+    --bg-moudja: rgba(255, 255, 255, 0.15);
+    --border-moudja: 1px solid rgba(255, 255, 255, 0.2);
 }
 body {
     color: var(--bs-white);
-    background: var(--bahra);
+    background: var(--la-pointe);
     font-family: "Roboto Light", sans-serif;
 }
 textarea, input {
@@ -32,13 +30,14 @@ h3 {
 }
 a {
     text-decoration: none;
-    color: var(--bs-warning);
+    color: var(--bs-yellow);
     &:hover {
-       text-decoration: underline; 
+       text-decoration: underline;
+       text-underline-offset: 0.125em;
     }
 }
 button {
-    border: none;
+    border: none !important;
     color: var(--bs-white);
     background: transparent;
 }
@@ -50,17 +49,21 @@ button {
         text-decoration: underline;
     }
 }
-.navbar-brand span {
-    display: inline-block;
-    line-height: 1.2rem;
-    vertical-align: middle;
-    small {
-        font-size: 0.78rem;
+nav.navbar {
+    background-color: var(--rocher);
+    .navbar-brand span {
+        display: inline-block;
+        line-height: 1.2rem;
+        vertical-align: middle;
+        small {
+            font-size: 0.78rem;
+        }
+    }
+    .navbar-toggler {
+        background-color: var(--bs-white) !important;
     }
 }
-.navbar-toggler {
-    background-color: var(--bs-white) !important;
-}
+
 .search-input {
     border-radius: 0.25rem 0 0 0.25rem !important;
     border: none !important;
@@ -69,7 +72,12 @@ button {
     border-radius: 0 0.25rem 0.25rem 0;
     background-color: var(--rocher);
     color: var(--bs-white);
-    border: none;
+}
+.top-nav-user {
+    padding-top: 2px;
+    img {
+        vertical-align: text-top;
+    }
 }
 .logo {
     border: 1px solid var(--bs-white);
@@ -104,35 +112,11 @@ main {
 }
 .main-footer {
     margin-top: 50px;
-    min-height: 150px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    background-color: var(--9a3-sour);
+    min-height: 180px;
+    border-top: var(--border-moudja);
+    background-color: var(--bg-moudja);
 }
-.bg-9a3-sour {
-    background-color: var(--9a3-sour);
-}
-.btn-primary,
-.btn-secondary,
-.btn-danger,
-.btn-warning,
-.btn-dark {
-    text-transform:uppercase;
-    text-decoration: none !important;
-    font-weight: bold;
-}
-.btn-primary {
-    background-color: var(--rocher) !important;
-    &:hover {
-        background-color: var(--rocher-light) !important;
-    }
-}
-.btn-secondary {
-    background-color: var(--rmila);
-    color: var(--rocher);
-    &:hover {
-        background-color: var(--rmila-light);
-    }
-}
+
 .basic-icon {
     width: 1.5rem;
     height: 1.5rem;
@@ -146,49 +130,76 @@ main {
     width: 75%;
 }
 
-.sidebar {
-    .card {
+/* CARDS  */
+.card {
+    a:not(.btn) {
+        color: var(--rocher) !important;
+    }
+    &.bg-rocher {
         color: var(--bs-white) !important;
-        background-color: var(--rocher);
-        backdrop-filter: blur(8px);
-        .card-list a {
-            margin-left: 0.5rem;
+        background-color: var(--rocher-light);
+        border: var(--border-moudja);
+        a:not(.btn) {
             color: var(--bs-white) !important;
             &:hover {
+                text-decoration: underline;
+            }
+            &.text-yellow {
+                color: var(--bs-yellow) !important;
+                font-weight: bold;
+                text-underline-offset: 0.250em;
+            }
+        }
+        .card-header {
+            background-color: var(--rocher);
+        }
+        .card-body {
+            .card-list {
+                border-bottom: var(--border-moudja);
+                a {
+                    margin-left: 0.5rem;
+                }
+            }
+        }
+    }
+    &.bg-moudja {
+        color: var(--bs-white) !important;
+        background-color: var(--bg-moudja);
+        border-top: var(--border-moudja);
+        a {
+            color: var(--bs-yellow) !important;
+            &:hover {
+                color: inherit;
                 text-decoration: underline;
             }
         }
     }
 }
-.card {
-    a {
-        color: var(--rocher) !important;
-        &.btn-primary,
-        &.btn-danger,
-        &.btn-dark {
-            color: var(--bs-white) !important;
-        }
+
+.btn-primary {
+    background-color: var(--rocher) !important;
+    &:hover {
+        background-color: var(--rocher) !important;
+        opacity: 0.9;
     }
-    .card-body {
-        .card-list {
-            border-bottom: rgba(255, 255, 255, 0.2) solid;
-        }
+}
+.btn-secondary {
+    background-color: var(--bs-yellow);
+    color: var(--rocher) !important;
+    &:hover {
+        background-color: var(--bs-yellow);
+        opacity: 0.9;
     }
 }
 
-.bg-rocher {
-    color: var(--bs-white) !important;
-    background-color: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    a {
-        color: var(--rmila) !important;
-        font-weight: bold;
-        &:hover {
-            color: inherit;
-            text-decoration: underline;
-        }
-    }
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-warning,
+.btn-dark {
+    text-transform: uppercase;
+    text-decoration: none !important;
+    font-weight: bold;
 }
 
 /* Symfony errors */
@@ -277,17 +288,17 @@ main {
 }
 
 @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */
-    .navbar-brand span {
-        display: none;
+    nav.navbar {
+        background-color: transparent;
+        .navbar-brand span {
+            display: none;
+        }
     }
     body {
-        background: var(--bahra) url("../images/bg-2-chameaux.jpg") no-repeat fixed;
+        background: var(--rocher) url("../images/bg-2-chameaux.jpg") no-repeat fixed;
         background-size: cover;
     }
     .app-centered {
         width: 60%;
-    }
-    .bg-9a3-sour {
-        background-color: transparent;
     }
 }

@@ -51,7 +51,7 @@ final class FrontendController extends AbstractController
     }
 
     #[Route('/membre/{pseudo:user}', name: 'member_profile')]
-    public function memberProfile(User $user): Response
+    public function memberProfile(PaginatorInterface $paginator, User $user, Request $request): Response
     {
         if (!$user->isVerified()) {
             $this->addFlash('warning', 'flash.user_not_verified');
@@ -60,12 +60,19 @@ final class FrontendController extends AbstractController
         }
 
         $form = $this->createForm(ContactMemberForm::class);
+        $pagination = $paginator->paginate(
+            $this->em->getRepository(Post::class)->findPaginatedByUserQuery($user),
+            $request->query->getInt('page', 1),
+            self::PAGE_MAX_POSTS,
+        );
+
         $posts = $this->em->getRepository(Post::class)->findBy(['user' => $user]);
 
         return $this->render('frontend/member_profile.html.twig', [
             'form' => $form,
             'member' => $user,
             'posts' => $posts,
+            'pagination' => $pagination,
             'comments_count' => $this->em->getRepository(PostComment::class)->count(['user' => $user]),
             'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user),
             'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user),
@@ -117,13 +124,7 @@ final class FrontendController extends AbstractController
         ]);
     }
 
-    #[Route(
-        '/{seoTypeSlug}',
-        name: 'posts',
-        requirements: [
-            'seoTypeSlug' => PostUtils::SEO_POST_SLUGS,
-        ],
-    )]
+    #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS])]
     public function postsByType(PaginatorInterface $paginator, Request $request, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
     {
         if (null === $type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) {

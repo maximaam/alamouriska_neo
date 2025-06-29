@@ -1,26 +1,26 @@
 <div class="sidebar col-sm-4">
-    <div class="card mb-3">
+    <div class="card bg-rocher mb-3">
         <div class="card-header fw-bold">
             {{ 'label.newest_comments' | trans }}
         </div>
         <div class="card-body">
-                {% for comment in newset_comments %}
-                    <div class="mb-2 pb-1 card-list">
-                        {%  include 'partials/_avatar.html.twig' with {'user': comment.post.user } only %}
-                        <a href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ comment.post.type.name ~'.seo_route') | trans, 'id' : comment.post.id, 'titleSlug': comment.post.titleSlug}) }}" title="Par: {{ comment.post.user.pseudo }} - Le: {{ comment.post.createdAt | date }}">
-                            {{ comment.comment }}
-                        </a>
-                    </div>
-                {% endfor %}
+            {% for comment in newset_comments %}
+                <div class="mb-2 pb-1 card-list">
+                    {%  include 'partials/_avatar.html.twig' with {'user': comment.post.user } only %}
+                    <a href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ comment.post.type.name ~'.seo_route') | trans, 'id' : comment.post.id, 'titleSlug': comment.post.titleSlug}) }}" title="Par: {{ comment.post.user.pseudo }} - Le: {{ comment.post.createdAt | date }}">
+                        {{ comment.comment }}
+                    </a>
+                </div>
+            {% endfor %}
             <div class="text-center mt-3">
-                 <a href="{{ path('app_post_new') }}" class="btn btn-secondary">
-                    {{ 'post.label.create' | trans }}
+                 <a href="{{ path('app_post_new') }}" class="text-yellow">
+                    {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'post.label.create' | trans }}
                 </a>
             </div>
         </div>
     </div>
 
-    <div class="card mb-3">
+    <div class="card bg-rocher mb-3">
         <div class="card-header fw-bold">
             {{ 'label.newest_questions' | trans }}
         </div>
@@ -38,14 +38,14 @@
                 </div>
             {% endfor %}
             <div class="text-center mt-3">
-                 <a href="{{ path('app_post_new') }}" class="btn btn-secondary">
-                    {{ 'label.show_all_questions' | trans }}
+                 <a href="{{ path('app_post_new') }}" class="text-yellow">
+                    {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'label.show_all_questions' | trans }}
                 </a>
             </div>
         </div>
     </div>
 
-    <div class="card mb-3">
+    <div class="card bg-rocher mb-3">
         <div class="card-header fw-bold">
             {{ 'label.newest_users' | trans }}
         </div>

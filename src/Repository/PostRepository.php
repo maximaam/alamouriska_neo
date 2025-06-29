@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Enum\PostType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
@@ -71,6 +72,18 @@ class PostRepository extends ServiceEntityRepository
         return $this->createQueryBuilder(self::QB_ALIAS)
             ->where(self::QB_ALIAS.'.type = :type')
             ->setParameter('type', $type)
+            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+            ->getQuery();
+    }
+
+    /**
+     * @return Query<array<int, Post>>
+     */
+    public function findPaginatedByUserQuery(User $user): Query
+    {
+        return $this->createQueryBuilder(self::QB_ALIAS)
+            ->where(self::QB_ALIAS.'.user = :user')
+            ->setParameter('user', $user)
             ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
             ->getQuery();
     }

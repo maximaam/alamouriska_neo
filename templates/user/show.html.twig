@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="col-sm-6">
+    <div class="col-sm-8">
         <div class="card mb-3">
             <div class="card-header">
                 <h2>{{ 'label.my_posts' | trans }}</h2>
@@ -17,12 +17,12 @@
                     <tr>
                         <td width="75%">{{ post.title }} | {{ post.titleArabic }}</td>
                         <td>
-                            <a title="{{ 'label.post_show' | trans }}" href="{{ path('app_post_show', {'id': post.id} ) }}">
+                            <a title="{{ 'label.post_show' | trans }}" href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}">
                                 {{ ux_icon('bi:eye-fill', {class: 'basic-icon'}) }}
                             </a>
                         </td>                        
                         <td>
-                            <a title="{{ 'label.post_update' | trans }}" href="{{ path('app_post_edit', {'id': post.id} ) }}">
+                            <a title="{{ 'label.post_edit' | trans }}" href="{{ path('app_post_edit', {'id': post.id} ) }}">
                                 {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
                             </a>
                         </td>
@@ -44,8 +44,8 @@
         </div>
      </div>
 
-    <div class="col-sm-6">
-        <div class="card">
+    <div class="col-sm-4">
+        <div class="card bg-rocher">
             <div class="card-header">
                 <h2>{{ 'label.profile' | trans }}</h2>
             </div>

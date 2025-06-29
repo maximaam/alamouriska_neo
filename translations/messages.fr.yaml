@@ -64,6 +64,7 @@ label:
   post_type: Type de publication
   post_show: Publication
   post_edit: Modifier la publication
+  post_delete: Supprimer la publication
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

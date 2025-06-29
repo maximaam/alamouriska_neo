@@ -10,11 +10,14 @@
 {% endblock %}
 
 {% block card_body %}
-    {% include 'partials/_card-post.html.twig' with {
-        'post': post, 
-        'liked_post_ids': liked_post_ids,
-        'comment_post_ids': comment_post_ids
-    } only %}
+    <h2>
+        {{ post.title }}
+        {% if post.titleArabic is not null %}
+            <br>
+            {{ post.titleArabic }}
+        {% endif %}
+    </h2>
+    <p>{{ post.description }}</p>
 {% endblock %}
 
 {% block card_footer %}
