@@ -65,6 +65,7 @@ label:
   post_show: Publication
   post_edit: Modifier la publication
   post_delete: Supprimer la publication
+  search_for: "Recherche pour '%search_input%'"
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -86,6 +87,7 @@ flash:
   post_edit_success: "La publication a bien été actualisée."
   user_delete_warning: "Aya barka! Tu veux vraiment supprimer ton compte et toutes tes publications?"
   contact_member_email_sent: "Message envoyé !"
+  search_none_found: "Pas de publications trouvées pour la recherche !"
 
 post:
   word:

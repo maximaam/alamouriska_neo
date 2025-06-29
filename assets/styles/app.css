@@ -72,6 +72,9 @@ nav.navbar {
     border-radius: 0 0.25rem 0.25rem 0;
     background-color: var(--rocher);
     color: var(--bs-white);
+    &:hover {
+        background-color: var(--rocher);
+    }
 }
 .top-nav-user {
     padding-top: 2px;

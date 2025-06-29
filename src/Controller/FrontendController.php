@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-#[Route(name: 'app_frontend_', priority: 1)]
+#[Route(name: 'app_frontend_', methods: ['GET'], priority: 1)]
 final class FrontendController extends AbstractController
 {
     public const PAGE_MAX_POSTS = 10;
@@ -150,6 +150,33 @@ final class FrontendController extends AbstractController
 
         return $this->render('frontend/posts.html.twig', [
             'pagination' => $pagination,
+            'liked_post_ids' => $likedPostIds,
+            'comment_post_ids' => $commentPostIds,
+        ]);
+    }
+
+    #[Route('/recherche', name: 'search')]
+    public function search(Request $request, #[CurrentUser] ?User $user = null): Response
+    {
+        $searchInput = $request->query->getString('q');
+
+        if (strlen($searchInput) <=3 && strlen($searchInput) > 100) {
+            $this->redirectToRoute('app_frontend_index');
+        }
+
+        $posts = $this->em->getRepository(Post::class)->search($searchInput);
+       
+        $likedPostIds = ($user instanceof User)
+            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user)
+            : [];
+
+        $commentPostIds = ($user instanceof User)
+            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user)
+            : [];
+
+        return $this->render('frontend/search.html.twig', [
+            'search_input' => $searchInput,
+            'posts' => $posts,
             'liked_post_ids' => $likedPostIds,
             'comment_post_ids' => $commentPostIds,
         ]);

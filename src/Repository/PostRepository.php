@@ -65,6 +65,20 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return array<mixed, mixed>
+     */
+    public function search(string $searchInput, int $maxResult = 10): array
+    {
+        return $this->createQueryBuilder(self::QB_ALIAS)
+            ->andWhere(self::QB_ALIAS.'.title LIKE :search_input OR '.self::QB_ALIAS.'.titleArabic LIKE :search_input')
+            ->setParameter('search_input', '%'.$searchInput.'%')
+            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+            ->setMaxResults($maxResult)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @return Query<array<int, Post>>
      */
     public function findPaginatedQuery(PostType $type): Query

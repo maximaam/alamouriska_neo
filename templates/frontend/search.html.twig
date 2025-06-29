@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% set header_meta = 'label.search_for' | trans({'%search_input%': search_input | e }) %}
+
+{% block title %}
+    {{ header_meta }}
+{% endblock %}
+
+{% block opengraph_title %}
+    <meta property="og:title" content="{{ header_meta }}" />
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <h1 class="mb-3 text-center">{{ header_meta }}</h1>
+
+                {% for post in posts %}
+                    {% include 'partials/_card-post.html.twig' with {
+                        post: post,
+                        liked_post_ids: liked_post_ids,
+                        comment_post_ids: comment_post_ids
+                    } only %}
+                {% else %}
+                    <p class="alert alert-warning">
+                        {{ 'flash.search_none_found' | trans }}
+                    </p>
+                {% endfor %}
+            </div>
+            {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
+        </div>
+    </div>
+{% endblock %}
