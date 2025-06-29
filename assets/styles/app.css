@@ -80,7 +80,9 @@ nav.navbar {
     }
 }
 .logo {
-    border: 1px solid var(--bs-white);
+    border: 3px solid rgba(255, 193, 7, 0.6);
+    box-shadow: 0 0 20px 10px rgba(255, 193, 7, 0.6);
+    animation: sunPulse 5s infinite ease-in-out;
 }
 .nav-item {
     margin: 2px;
@@ -248,10 +250,6 @@ main {
     font-size: 2rem;
     }
 }
-@keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
 .white-hr {
   display: flex;
   align-items: center;
@@ -301,4 +299,17 @@ main {
     .app-centered {
         width: 60%;
     }
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+@keyframes sunPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px 10px rgba(255, 193, 7, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 40px 20px rgba(255, 193, 7, 0.9);
+  }
 }
