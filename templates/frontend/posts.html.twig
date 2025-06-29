@@ -13,23 +13,19 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container start-page">
-        <div class="row">
-            <div class="col-sm-8">
-                <h1 class="mb-4 text-center">{{ post_type_slug }}</h1>
-                {% for post in pagination %}
-                    {% include 'partials/_card-post.html.twig' with {
-                        post: post,
-                        liked_post_ids: liked_post_ids,
-                        comment_post_ids: comment_post_ids
-                    } only %}
-                {% else %}
-                    <p class="text-center text-muted">No posts found.</p>
-                {% endfor %}
+    <div class="col-sm-8">
+        <h1 class="mb-4 text-center">{{ post_type_slug }}</h1>
+        {% for post in pagination %}
+            {% include 'partials/_card-post.html.twig' with {
+                post: post,
+                liked_post_ids: liked_post_ids,
+                comment_post_ids: comment_post_ids
+            } only %}
+        {% else %}
+            <p class="alert alert-warning">{{ 'flash.search_none_found' | trans }}</p>
+        {% endfor %}
 
-                {{ knp_pagination_render(pagination, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
-            </div>
-            {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
-        </div>
+        {{ knp_pagination_render(pagination, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
     </div>
+    {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
 {% endblock %}

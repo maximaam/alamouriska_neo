@@ -2,7 +2,7 @@
     <h3>
         {{ postComment.user.pseudo }}
         | Le: {{ postComment.createdAt | date('d-m-Y') }}
-        {% if postComment.user == app.user %}
+        {% if app.user is not null and postComment.user == app.user %}
             <button role="button" title="{{ 'label.comment_delete' | trans }}"
                 data-action="click->post-comment-delete#delete"
                 data-post-comment-delete-target="button"

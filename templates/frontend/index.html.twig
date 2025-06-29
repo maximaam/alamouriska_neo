@@ -14,42 +14,38 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-8">
-                <h1 class="mb-3 text-center">{{ header_meta }}</h1>
-                
-                {% if app.user is null and page is not null %}
-                <article class="mb-4 mt-4">
-                    <h2>{{ 'label.welcome_h2' | trans({'%app_name%': app_name}) }}</h2>
-                    {{ page.description | raw }}
-                    <p class="text-end">
-                        <a href="{{ path('app_frontend_page', { 'alias': 'alamouriska-keskissik' }) }}">>> {{ 'label.read_more'|trans }}</a>
-                    </p>
-                </article>
-                {% endif %}
+    <div class="col-sm-8">
+        <h1 class="mb-3 text-center">{{ header_meta }}</h1>
+        
+        {% if app.user is null and page is not null %}
+        <article class="mb-4 mt-4">
+            <h2>{{ 'label.welcome_h2' | trans({'%app_name%': app_name}) }}</h2>
+            {{ page.description | raw }}
+            <p class="text-end">
+                <a href="{{ path('app_frontend_page', { 'alias': 'alamouriska-keskissik' }) }}">>> {{ 'label.read_more'|trans }}</a>
+            </p>
+        </article>
+        {% endif %}
 
-                <h3 class="white-hr">
-                    <span>{{ 'label.newest_posts'|trans }}</span>
-                </h3>
+        <h3 class="white-hr">
+            <span>{{ 'label.newest_posts'|trans }}</span>
+        </h3>
 
-                {% for post in newest_posts %}
-                    {% include 'partials/_card-post.html.twig' with {
-                        post: post,
-                        liked_post_ids: liked_post_ids,
-                        comment_post_ids: comment_post_ids
-                    } only %}
-                {% else %}
-                    <p class="text-center text-muted">No posts found.</p>
-                {% endfor %}
+        {% for post in newest_posts %}
+            {% include 'partials/_card-post.html.twig' with {
+                post: post,
+                liked_post_ids: liked_post_ids,
+                comment_post_ids: comment_post_ids
+            } only %}
+        {% else %}
+            <p class="text-center text-muted">No posts found.</p>
+        {% endfor %}
 
-                <div class="text-end">
-                    <a href="{{ path('app_post_new') }}" class="btn btn-secondary">
-                        {{ 'post.label.create' | trans }}
-                    </a>
-                </div>
-            </div>
-            {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
+        <div class="text-center mb-3">
+            <a href="{{ path('app_post_new') }}" class="btn btn-secondary">
+                {{ 'post.label.create' | trans }}
+            </a>
         </div>
     </div>
+    {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
 {% endblock %}

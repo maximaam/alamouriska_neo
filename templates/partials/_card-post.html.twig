@@ -6,7 +6,7 @@
             </a>
         </div>
         <div class="d-inline-block align-middle">
-            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="fw-bold fs-5">
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="fw-bold">
                 {{ post.user.pseudo }}
             </a>
             <br>
@@ -18,11 +18,11 @@
     <div class="card-body p-2">
         <div class="text-end">
             {% if post.question is true %}
-            <span title="{{ 'label.post_is_question' | trans }}" class="bg-info p-2 rounded-bottom fw-bold post-features">
+            <span title="{{ 'label.post_is_question' | trans }}" class="bg-info p-1 ps-3 pe-3 rounded-bottom fw-bold post-features">
                 {{ ux_icon('bi:question', {class: 'basic-icon'}) }}
             </span>
             {% endif %}
-            <span title="{{ 'label.post_type' | trans }}" class="p-2 ps-3 pe-3 rounded-bottom fw-bold post-features">
+            <span title="{{ 'label.post_type' | trans }}" class="p-1 ps-3 pe-3 rounded-bottom fw-bold post-features">
                 {{ ('post.' ~ post.type.name ~ '.singular') | trans }}
             </span>
         </div>
@@ -55,36 +55,23 @@
             {% set iconLikeName = (app.user and post.id in liked_post_ids) ? 'bi:heart-fill' : 'bi:heart' %}
             {% set iconLike = '<span data-post-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
 
-            {% if app.user is null %}
-                <a href="{{ path('app_security_login') }}" class="p-2" title="{{ 'label.i_like' | trans }}">
-                    {{ iconLike|raw }}
-                    {{ likeCount|raw }}
-                </a>
-            {% else %}
-                <button
-                    type="button"
-                    title="{{ 'label.i_like' | trans }}"
-                    class="btn-likes p-2 rounded"
-                    data-controller="post-like"
-                    data-action="click->post-like#like"
-                    data-post-like-url-value="{{ path('app_async_post_like', { id: post.id }) }}"
-                    data-post-like-csrf-token-value="{{ csrf_token('like-post') }}">
-                    {{ iconLike|raw }}
-                    {{ likeCount|raw }}
-                </button>
-            {% endif %}
+            <button
+                type="button"
+                title="{{ 'label.i_like' | trans }}"
+                class="btn-likes p-2 rounded"
+                data-controller="post-like"
+                data-action="click->post-like#like"
+                data-post-like-url-value="{{ path('app_async_post_like', { id: post.id }) }}"
+                data-post-like-csrf-token-value="{{ csrf_token('like-post') }}">
+                {{ iconLike|raw }}
+                {{ likeCount|raw }}
+            </button>
 
             <!-- Comment -->
             {% set commentCount= '<span id="comment-counter-' ~ post.id ~ '" data-post-comment-target="count">' ~ post.postComments|length ~ '</span>' %}
             {% set iconCommentName = (app.user and post.id in comment_post_ids) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
             {% set iconComment = '<span data-post-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon'}) ~ '</span>' %}
 
-            {% if app.user is null %}
-                <a href="{{ path('app_security_login') }}" class="p-2" title="{{ 'label.i_comment' | trans }}">
-                    {{ iconComment|raw }}
-                    {{ commentCount|raw }}
-                </a>
-            {% else %}
                 <button
                     type="button"
                     title="{{ 'label.i_comment' | trans }}"
@@ -96,7 +83,6 @@
                     {{ iconComment|raw }}
                     {{ commentCount|raw }}
                 </button>
-            {% endif %}
             </div>
             <div class="col text-end">
                 <a 

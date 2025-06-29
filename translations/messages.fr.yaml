@@ -66,6 +66,7 @@ label:
   post_edit: Modifier la publication
   post_delete: Supprimer la publication
   search_for: "Recherche pour '%search_input%'"
+  add_comment: Ajouter un commentaire
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

@@ -55,6 +55,10 @@ export default class extends Controller {
         })
         .then(response => response.json())
         .then(data => {
+            if (data.status === 'redirect') {
+                window.location.href = data.url;
+            }
+            
             this.countTarget.textContent = data.likes;
             const icon = data.action === 'like'
                 ? this.getIcon('currentColor', 'evenodd', 'M8 1.314C12.438-3.248 23.534 4.735 8 15C-7.534 4.736 3.562-3.248 8 1.314')

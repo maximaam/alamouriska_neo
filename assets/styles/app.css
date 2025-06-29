@@ -63,17 +63,16 @@ nav.navbar {
         background-color: var(--bs-white) !important;
     }
 }
-
 .search-input {
     border-radius: 0.25rem 0 0 0.25rem !important;
     border: none !important;
 }
 .search-btn {
     border-radius: 0 0.25rem 0.25rem 0;
-    background-color: var(--rocher);
-    color: var(--bs-white);
+    background-color: var(--bs-yellow);
+    color: var(--rocher);
     &:hover {
-        background-color: var(--rocher);
+        background-color: var(--bs-yellow);
     }
 }
 .top-nav-user {
@@ -121,7 +120,6 @@ main {
     border-top: var(--border-moudja);
     background-color: var(--bg-moudja);
 }
-
 .basic-icon {
     width: 1.5rem;
     height: 1.5rem;
@@ -140,7 +138,6 @@ main {
     &.bg-rocher {
         color: var(--bs-white) !important;
         background-color: var(--rocher-light);
-        border: var(--border-moudja);
         a:not(.btn) {
             color: var(--bs-white) !important;
             &:hover {
@@ -193,7 +190,6 @@ main {
         opacity: 0.9;
     }
 }
-
 .btn-primary,
 .btn-secondary,
 .btn-danger,
@@ -210,6 +206,7 @@ main {
     color: var(--bs-white);
     padding: 0.5rem;
 }
+
 .btn-likes {
     color: var(--rocher);
     background-color: transparent;
@@ -293,6 +290,10 @@ main {
     width: 48px;
     height: 48px;
 }
+.page-content img {
+    width: 100%;
+}
+/* / Break points  */
 
 @media (min-width: 600px) {
 }

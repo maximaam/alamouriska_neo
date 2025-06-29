@@ -6,6 +6,12 @@
 </div>
 {% endif %}
 
+{% if app.user is not null %}
 <div class="comment-form">
     {{ include('partials/_form.html.twig') }}
 </div>
+{% else %}
+<div class="text-end">
+    <a href="{{ path('app_security_login') }}" class="btn btn-primary">{{ 'label.add_comment' | trans }}</a>
+</div>
+{% endif %}

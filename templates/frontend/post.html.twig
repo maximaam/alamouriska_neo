@@ -10,16 +10,12 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container start-page">
-        <div class="row text-dark">
-            <div class="col-sm-8">
-                {% include 'partials/_card-post.html.twig' with {
-                    post: post,
-                    liked_post_ids: liked_post_ids,
-                    comment_post_ids: comment_post_ids
-                } only %}
-            </div>
-            {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
-        </div>
+    <div class="col-sm-8">
+        {% include 'partials/_card-post.html.twig' with {
+            post: post,
+            liked_post_ids: liked_post_ids,
+            comment_post_ids: comment_post_ids
+        } only %}
     </div>
+    {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
 {% endblock %}
