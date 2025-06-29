@@ -131,9 +131,6 @@ main {
         color: var(--bs-white);
     }
 }
-.app-centered {
-    width: 100%;
-}
 
 /* CARDS  */
 .card {
@@ -179,11 +176,6 @@ main {
             }
         }
     }
-}
-
-.user-avatar {
-    width: 32px;
-    height: 32px;
 }
 
 .btn-primary {
@@ -293,6 +285,15 @@ main {
     text-align: center;
 }
 
+/* Break points  */
+.app-centered {
+    width: 100%;
+}
+.post-card-avatar .user-avatar {
+    width: 48px;
+    height: 48px;
+}
+
 @media (min-width: 600px) {
 }
 
@@ -310,7 +311,7 @@ main {
     .app-centered {
         width: 60%;
     }
-    .user-avatar {
+    .post-card-avatar .user-avatar {
         width: 64px;
         height: 64px;
     }

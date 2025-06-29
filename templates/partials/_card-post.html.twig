@@ -1,22 +1,22 @@
 <div class="card mb-3 card-post">
-    <div class="row card-header">
-        <div class="col-8">
-            <div class="d-inline-block align-middle">
-                <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}">
-                    {% include 'partials/_avatar.html.twig' with {'user': post.user, 'size': 64 } only %}
-                </a>
-            </div>
-            <div class="d-inline-block align-middle">
-                <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="fw-bold fs-5">
-                    {{ post.user.pseudo }}
-                </a>
-                <br>
-                <time class="" datetime="{{ post.createdAt | date('Y.m.d') }}">
-                    {{ 'label.date_on' | trans }} : {{ post.createdAt | date('d.m.Y') }}
-                </time>
-            </div>
+    <div class="card-header">
+        <div class="d-inline-block align-middle">
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="post-card-avatar">
+                {% include 'partials/_avatar.html.twig' with {'user': post.user, 'size': 64 } only %}
+            </a>
         </div>
-        <div class="col-4 text-end">
+        <div class="d-inline-block align-middle">
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="fw-bold fs-5">
+                {{ post.user.pseudo }}
+            </a>
+            <br>
+            <time class="" datetime="{{ post.createdAt | date('Y.m.d') }}">
+                {{ 'label.date_on' | trans }} : {{ post.createdAt | date('d.m.Y') }}
+            </time>
+        </div>
+    </div>
+    <div class="card-body p-2">
+        <div class="text-end">
             {% if post.question is true %}
             <span title="{{ 'label.post_is_question' | trans }}" class="bg-info p-2 rounded-bottom fw-bold post-features">
                 {{ ux_icon('bi:question', {class: 'basic-icon'}) }}
@@ -26,8 +26,6 @@
                 {{ ('post.' ~ post.type.name ~ '.singular') | trans }}
             </span>
         </div>
-    </div>
-    <div class="card-body p-2">
          <h2>
             {{ post.title }}
             {% if post.titleArabic is not null %}
