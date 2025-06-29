@@ -2,12 +2,12 @@
     <div class="row card-header">
         <div class="col-8">
             <div class="d-inline-block align-middle">
-                <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="profile-row fw-bold fs-4 no-underline">
+                <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}">
                     {% include 'partials/_avatar.html.twig' with {'user': post.user, 'size': 64 } only %}
                 </a>
             </div>
             <div class="d-inline-block align-middle">
-                <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="profile-row fw-bold fs-4 no-underline">
+                <a href="{{ path('app_frontend_member_profile', {'pseudo': post.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="fw-bold fs-5">
                     {{ post.user.pseudo }}
                 </a>
                 <br>
@@ -18,7 +18,7 @@
         </div>
         <div class="col-4 text-end">
             {% if post.question is true %}
-            <span title="{{ 'label.post_is_question' | trans }}" class="bg-info p-2 rounded-bottom fw-bold shadow-sm post-features">
+            <span title="{{ 'label.post_is_question' | trans }}" class="bg-info p-2 rounded-bottom fw-bold post-features">
                 {{ ux_icon('bi:question', {class: 'basic-icon'}) }}
             </span>
             {% endif %}

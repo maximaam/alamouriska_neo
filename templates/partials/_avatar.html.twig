@@ -1,9 +1,8 @@
 {% set avatar = asset('images/default-avatar.png') %}
 {% set size = size|default(32) %}
 
-
 {% if user.avatarName is not null %}
     {% set avatar = asset(avatars_dir ~ '/' ~ user.avatarName) | imagine_filter('avatar_thumb_' ~ size) %}
 {% endif %}
 
-<img class="rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ user.pseudo }}" width="{{ size }}" height="{{ size }}">
+<img class="user-avatar rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ user.pseudo }}" width="{{ size }}" height="{{ size }}">

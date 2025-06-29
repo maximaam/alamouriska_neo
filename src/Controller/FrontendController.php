@@ -159,13 +159,14 @@ final class FrontendController extends AbstractController
     public function search(Request $request, #[CurrentUser] ?User $user = null): Response
     {
         $searchInput = $request->query->getString('q');
+        $searchLen = \strlen($searchInput);
 
-        if (strlen($searchInput) <=3 && strlen($searchInput) > 100) {
+        if ($searchLen <= 3 || $searchLen > 100) {
             $this->redirectToRoute('app_frontend_index');
         }
 
         $posts = $this->em->getRepository(Post::class)->search($searchInput);
-       
+
         $likedPostIds = ($user instanceof User)
             ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user)
             : [];

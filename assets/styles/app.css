@@ -132,7 +132,7 @@ main {
     }
 }
 .app-centered {
-    width: 75%;
+    width: 100%;
 }
 
 /* CARDS  */
@@ -179,6 +179,11 @@ main {
             }
         }
     }
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
 }
 
 .btn-primary {
@@ -288,7 +293,10 @@ main {
     text-align: center;
 }
 
-@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */
+@media (min-width: 600px) {
+}
+
+@media (min-width:1024px) { /* big landscape tablets, laptops, and desktops */
     nav.navbar {
         background-color: transparent;
         .navbar-brand span {
@@ -302,6 +310,13 @@ main {
     .app-centered {
         width: 60%;
     }
+    .user-avatar {
+        width: 64px;
+        height: 64px;
+    }
+}
+
+@media (min-width:1440px) {
 }
 
 @keyframes marquee {
