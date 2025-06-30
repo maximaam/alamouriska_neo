@@ -270,6 +270,7 @@ main {
     max-height: 0;
     &.open {
         max-height: 500px; /* adjust to fit your form */
+        overflow: scroll;
     }
 }
 

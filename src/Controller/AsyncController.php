@@ -166,9 +166,9 @@ final class AsyncController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $messageBus->dispatch(new ContactMemberEmailMessage(
                 $user->getPseudo(),
+                $form->get('message')->getData(),
                 $member->getPseudo(),
                 $member->getEmail(),
-                $form->get('message')->getData(),
             ));
 
             return $this->json([

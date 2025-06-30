@@ -1,17 +1,17 @@
-{% if with_comments == true %}
-<div class="comments mb-3">
-    {% for postComment in post.postComments %}
-        {% include 'partials/_post-comment-item.html.twig' with {'postComment': postComment} only %}   
-    {% endfor %}
-</div>
+{% if app.user is not null %}
+    <div class="comment-form bg-gray-300 p-3 mb-3 rounded">
+        {{ include('partials/_form.html.twig') }}
+    </div>
+    {% else %}
+    <div class="text-end">
+        <a href="{{ path('app_security_login') }}" class="btn btn-primary">{{ 'label.add_comment' | trans }}</a>
+    </div>
 {% endif %}
 
-{% if app.user is not null %}
-<div class="comment-form">
-    {{ include('partials/_form.html.twig') }}
-</div>
-{% else %}
-<div class="text-end">
-    <a href="{{ path('app_security_login') }}" class="btn btn-primary">{{ 'label.add_comment' | trans }}</a>
-</div>
+{% if with_comments == true %}
+    <div class="comments mb-3">
+        {% for postComment in post.postComments %}
+            {% include 'partials/_post-comment-item.html.twig' with {'postComment': postComment} only %}   
+        {% endfor %}
+    </div>
 {% endif %}
