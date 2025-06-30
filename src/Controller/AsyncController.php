@@ -83,7 +83,7 @@ final class AsyncController extends AbstractController
     }
 
     #[Route('/post-comment/{id}/comment', name: 'post_comment', methods: ['GET', 'POST'])]
-    public function postComment(Request $request, Post $post, #[CurrentUser] ?User $user = null): JsonResponse|Response
+    public function postComment(Request $request, Post $post, MailerInterface $mailer, #[CurrentUser] ?User $user = null): JsonResponse|Response
     {
         $form = $this->createForm(PostCommentForm::class);
         $form->handleRequest($request);
@@ -97,6 +97,30 @@ final class AsyncController extends AbstractController
 
                 $this->entityManager->persist($comment);
                 $this->entityManager->flush();
+
+                if ($post->getUser() !== $user) {
+
+                    /** @var string $appNotifier */
+                    $appNotifier = $this->getParameter('app_notifier_email');
+                    /** @var string $appName */
+                    $appName = $this->getParameter('app_name');
+
+                    $email = (new TemplatedEmail())
+                        ->from(new Address($appNotifier, $appName))
+                        ->to((string) $post->getUser()->getEmail())
+                        ->subject($this->translator->trans('email.post_comment.subject'))
+                        ->htmlTemplate('emails/post_comment.fr.html.twig')
+                        ->context([
+                            'sender' => $user->getPseudo(),
+                            'receiver' => $post->getUser()->getPseudo(),
+                            'post_title' => $post->getTitle().' | '.$post->getTitleArabic(),
+                            'post_type' => $post->getType()->name,
+                            'post_id' => $post->getId(),
+                            'post_slug' => $post->getTitleSlug(),
+                        ]);
+
+                    $mailer->send($email);
+                }
 
                 return $this->json([
                     'status' => 'success',
@@ -164,8 +188,8 @@ final class AsyncController extends AbstractController
                 ->subject($this->translator->trans('email.contact_member.subject'))
                 ->htmlTemplate('emails/contact_member.fr.html.twig')
                 ->context([
-                    'sender' => $user,
-                    'receiver' => $member,
+                    'sender' => $user->getPseudo(),
+                    'receiver' => $member->getPseudo(),
                     'message' => $form->get('message')->getData(),
                 ]);
 

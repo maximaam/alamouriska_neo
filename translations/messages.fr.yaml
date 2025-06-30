@@ -132,3 +132,7 @@ email:
     subject: "Ton inscription sur %app_name%"
   change_password_request:
     subject: "Demande de changement de mot de passe"
+  contact_member:
+    subject: "Message d'un membre"
+  post_comment:
+    subject: "Commentaire sur ta publication!"

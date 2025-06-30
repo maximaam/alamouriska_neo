@@ -1,8 +1,8 @@
 {% extends 'email.html.twig' %}
 
 {% block header %}
-    Bonjour {{ receiver.pseudo}}, tu as un message de: 
-    <a href="{{ url('app_frontend_member_profile', {'pseudo': sender.pseudo }) }}" target="_blank">{{ sender.pseudo }}</a>
+    Bonjour {{ receiver}}, tu as un message de: 
+    <a href="{{ url('app_frontend_member_profile', {'pseudo': sender }) }}" target="_blank">{{ sender }}</a>
 {% endblock %}
 
 {% block body %}

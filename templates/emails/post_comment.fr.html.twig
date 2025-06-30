@@ -1,0 +1,16 @@
+{% extends 'email.html.twig' %}
+
+{% block header %}
+    Commentaire sur ta publication!
+{% endblock %}
+
+{% block body %}
+    <p>
+    Bonjour {{ receiver }},<br><br>
+    <a href="{{ url('app_frontend_member_profile', {'pseudo': sender }) }}" target="_blank">{{ sender }}</a>
+    a ajouté un commentaire sur ta publication: 
+    <a href="{{ url('app_frontend_post', {'seoTypeSlug': ('post.'~ post_type ~'.seo_route') | trans, 'id' : post_id, 'titleSlug': post_slug}) }}" target="_blank">
+        {{ post_title }}
+    </a>
+    </p>
+{% endblock %}
