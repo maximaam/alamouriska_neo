@@ -21,6 +21,8 @@ framework:
             messenger.bus.default: []
 
         routing:
+            App\Message\PostCommentEmailMessage: async
+            
             # Changé pour envoyer sync par défaut
             # Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async

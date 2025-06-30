@@ -8,6 +8,9 @@ framework:
     #esi: true
     #fragments: true
 
+    router:
+        default_uri: 'https://www.alamouriska.com'
+
 when@test:
     framework:
         test: true
