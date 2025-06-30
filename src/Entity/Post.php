@@ -15,7 +15,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
@@ -31,22 +30,22 @@ class Post
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::SMALLINT, enumType: PostType::class)]
+    #[ORM\Column(type: Types::SMALLINT, enumType: PostType::class, nullable: false)]
     #[Assert\NotBlank]
-    private ?PostType $type = null;
+    private PostType $type;
 
-    #[ORM\Column(length: 255, unique: true)]
-    private ?string $title = null;
+    #[ORM\Column(length: 255, unique: true, nullable: false)]
+    private string $title;
 
     #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $titleArabic = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    #[ORM\Column(type: Types::TEXT, nullable: false)]
+    private string $description;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     #[ORM\Column(nullable: true)]
     private ?string $postImageName = null;
@@ -54,9 +53,9 @@ class Post
     #[Vich\UploadableField(mapping: 'posts', fileNameProperty: 'postImageName')]
     private ?File $postImageFile = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: false)]
     #[Slug(fields: ['title'])]
-    private ?string $titleSlug = null;
+    private string $titleSlug;
 
     /**
      * @var Collection<int, PostLike>
@@ -85,7 +84,7 @@ class Post
         return $this->id;
     }
 
-    public function getType(): ?PostType
+    public function getType(): PostType
     {
         return $this->type;
     }
@@ -97,7 +96,7 @@ class Post
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -121,7 +120,7 @@ class Post
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -133,12 +132,12 @@ class Post
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(User $user): static
     {
         $this->user = $user;
 
@@ -171,7 +170,7 @@ class Post
         return $this->postImageFile;
     }
 
-    public function getTitleSlug(): ?string
+    public function getTitleSlug(): string
     {
         return $this->titleSlug;
     }

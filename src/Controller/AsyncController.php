@@ -89,20 +89,24 @@ final class AsyncController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                if (!$user instanceof User) {
+                    throw new \LogicException('Access denied.');
+                }
+
                 $comment = (new PostComment())
-                ->setPost($post)
-                ->setUser($user)
-                ->setComment($form->get('comment')->getData());
+                    ->setPost($post)
+                    ->setUser($user)
+                    ->setComment($form->get('comment')->getData());
 
                 $this->entityManager->persist($comment);
                 $this->entityManager->flush();
 
                 if ($post->getUser() !== $user) {
                     $messageBus->dispatch(new PostCommentEmailMessage(
-                        $user->getPseudo(),
-                        $post->getUser()->getPseudo(),
-                        $post->getUser()->getEmail(),
-                        $post->getId(),
+                        (string) $user->getPseudo(),
+                        (string) $post->getUser()->getPseudo(),
+                        (string) $post->getUser()->getEmail(),
+                        (int) $post->getId(),
                         $post->getTitle().' | '.$post->getTitleArabic(),
                         $post->getType()->name,
                         $post->getTitleSlug()
@@ -164,10 +168,10 @@ final class AsyncController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $messageBus->dispatch(new ContactMemberEmailMessage(
-                $user->getPseudo(),
+                (string) $user->getPseudo(),
                 $form->get('message')->getData(),
-                $member->getPseudo(),
-                $member->getEmail(),
+                (string) $member->getPseudo(),
+                (string) $member->getEmail(),
             ));
 
             return $this->json([

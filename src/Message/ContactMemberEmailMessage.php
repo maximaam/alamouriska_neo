@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-final class ContactMemberEmailMessage
+final readonly class ContactMemberEmailMessage
 {
     public function __construct(
         public string $senderPseudo,

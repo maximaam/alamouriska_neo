@@ -11,23 +11,27 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Address;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment as Twig;
 
 #[AsMessageHandler]
-final class PostCommentEmailMessageHandler
+final readonly class PostCommentEmailMessageHandler
 {
     public function __construct(
-        private readonly MailerInterface $mailer,
-        private readonly Twig $twig,
-        private readonly TranslatorInterface $translator,
-        private readonly ParameterBagInterface $parameterBag,
+        private MailerInterface $mailer,
+        private TranslatorInterface $translator,
+        private ParameterBagInterface $parameterBag,
     ) {
     }
 
     public function __invoke(PostCommentEmailMessage $message): void
     {
+        /** @var string $appNotifier */
+        $appNotifier = $this->parameterBag->get('app_notifier_email');
+
+        /** @var string $appName */
+        $appName = $this->parameterBag->get('app_name');
+
         $email = (new TemplatedEmail())
-            ->from(new Address($this->parameterBag->get('app_notifier_email'), $this->parameterBag->get('app_name')))
+            ->from(new Address($appNotifier, $appName))
             ->to($message->receiverEmail)
             ->subject($this->translator->trans('email.post_comment.subject'))
             ->htmlTemplate('emails/post_comment.fr.html.twig')

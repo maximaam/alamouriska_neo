@@ -106,7 +106,7 @@ class PostForm extends AbstractType
 
     public static function validateInputs(Post $post, ExecutionContextInterface $context): void
     {
-        if (PostType::word === $post->getType() && str_contains((string) $post->getTitle(), ' ')) {
+        if (PostType::word === $post->getType() && str_contains($post->getTitle(), ' ')) {
             $context->buildViolation('word_contains_spaces')
             ->atPath('title')
             ->addViolation();
