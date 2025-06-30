@@ -10,15 +10,15 @@ use App\Entity\PostLike;
 use App\Entity\User;
 use App\Form\ContactMemberForm;
 use App\Form\PostCommentForm;
+use App\Message\ContactMemberEmailMessage;
+use App\Message\PostCommentEmailMessage;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -26,8 +26,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Message\PostCommentEmailMessage;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 #[Route('/async', name: 'app_async_', condition: 'request.isXmlHttpRequest()')]
 final class AsyncController extends AbstractController
@@ -84,7 +82,7 @@ final class AsyncController extends AbstractController
     }
 
     #[Route('/post-comment/{id}/comment', name: 'post_comment', methods: ['GET', 'POST'])]
-    public function postComment(Request $request, Post $post, MailerInterface $mailer, MessageBusInterface $messageBus, #[CurrentUser] ?User $user = null): JsonResponse|Response
+    public function postComment(Request $request, Post $post, MessageBusInterface $messageBus, #[CurrentUser] ?User $user = null): JsonResponse|Response
     {
         $form = $this->createForm(PostCommentForm::class);
         $form->handleRequest($request);
@@ -160,29 +158,18 @@ final class AsyncController extends AbstractController
 
     #[Route('/contact-member/{id}', name: 'contact_member', methods: ['POST'])]
     #[IsGranted(User::ROLE_USER)]
-    public function contactMember(#[CurrentUser] User $user, User $member, Request $request, NormalizerInterface $normalizer, MailerInterface $mailer): JsonResponse
+    public function contactMember(#[CurrentUser] User $user, User $member, Request $request, NormalizerInterface $normalizer, MessageBusInterface $messageBus): JsonResponse
     {
         $form = $this->createForm(ContactMemberForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var string $appNotifier */
-            $appNotifier = $this->getParameter('app_notifier_email');
-            /** @var string $appName */
-            $appName = $this->getParameter('app_name');
-
-            $email = (new TemplatedEmail())
-                ->from(new Address($appNotifier, $appName))
-                ->to((string) $member->getEmail())
-                ->subject($this->translator->trans('email.contact_member.subject'))
-                ->htmlTemplate('emails/contact_member.fr.html.twig')
-                ->context([
-                    'sender' => $user->getPseudo(),
-                    'receiver' => $member->getPseudo(),
-                    'message' => $form->get('message')->getData(),
-                ]);
-
-            $mailer->send($email);
+            $messageBus->dispatch(new ContactMemberEmailMessage(
+                $user->getPseudo(),
+                $member->getPseudo(),
+                $member->getEmail(),
+                $form->get('message')->getData(),
+            ));
 
             return $this->json([
                 'status' => 'success',
