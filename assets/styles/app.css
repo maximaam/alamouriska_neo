@@ -270,7 +270,7 @@ main {
     max-height: 0;
     &.open {
         max-height: 500px; /* adjust to fit your form */
-        overflow: scroll;
+        overflow-y: scroll;
     }
 }
 
@@ -291,12 +291,15 @@ main {
     width: 48px;
     height: 48px;
 }
-.page-content img {
-    width: 100%;
-}
 /* / Break points  */
 
 @media (min-width: 600px) {
+}
+
+@media (max-width:1024px) {
+    .page-content img {
+        width: 100%;
+    }
 }
 
 @media (min-width:1024px) { /* big landscape tablets, laptops, and desktops */
