@@ -82,7 +82,7 @@ final class AsyncController extends AbstractController
     }
 
     #[Route('/post-comment/{id}/comment', name: 'post_comment', methods: ['GET', 'POST'])]
-    public function postComment(Request $request, Post $post, MessageBusInterface $messageBus, #[CurrentUser] User $user): JsonResponse|Response
+    public function postComment(Request $request, Post $post, MessageBusInterface $messageBus, #[CurrentUser] ?User $user = null): JsonResponse|Response
     {
         $form = $this->createForm(PostCommentForm::class);
         $form->handleRequest($request);

@@ -8,7 +8,9 @@
     {% endif %}
 {% else %}
     <div class="text-end">
-        <a href="{{ path('app_security_login') }}" class="btn btn-primary">{{ 'label.add_comment' | trans }}</a>
+        <a href="{{ path('app_security_login') }}" class="btn btn-primary mb-3">
+            {{ 'label.add_comment' | trans }}
+        </a>
     </div>
 {% endif %}
 
