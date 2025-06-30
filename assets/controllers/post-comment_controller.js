@@ -70,7 +70,7 @@ export default class extends Controller {
             if (data.status === 'success') {
                 const commentsWrapper = document.getElementById('comment-container-' + this.idValue);
                 const commentsContainer = commentsWrapper.querySelector('.comments');
-                commentsContainer?.insertAdjacentHTML('beforeend', data.comment_item);
+                commentsContainer?.insertAdjacentHTML('afterbegin', data.comment_item);
                 
                 const actionsWrapper = commentsContainer
                     ?.closest('[data-controller="post-comment-delete"]')

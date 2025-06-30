@@ -82,7 +82,7 @@ final class AsyncController extends AbstractController
     }
 
     #[Route('/post-comment/{id}/comment', name: 'post_comment', methods: ['GET', 'POST'])]
-    public function postComment(Request $request, Post $post, MessageBusInterface $messageBus, #[CurrentUser] ?User $user = null): JsonResponse|Response
+    public function postComment(Request $request, Post $post, MessageBusInterface $messageBus, #[CurrentUser] User $user): JsonResponse|Response
     {
         $form = $this->createForm(PostCommentForm::class);
         $form->handleRequest($request);
@@ -118,7 +118,6 @@ final class AsyncController extends AbstractController
                     'form' => $this->renderView('partials/_post-comment-form.html.twig', [
                         'form' => $this->createForm(PostCommentForm::class)->createView(),
                         'post' => $post,
-                        'with_comments' => false,
                     ]),
                 ]);
             }
@@ -128,7 +127,6 @@ final class AsyncController extends AbstractController
                 'form' => $this->renderView('partials/_post-comment-form.html.twig', [
                     'form' => $form->createView(),
                     'post' => $post,
-                    'with_comments' => false,
                 ]),
             ]);
         }
@@ -137,6 +135,7 @@ final class AsyncController extends AbstractController
             'post' => $post,
             'form' => $form->createView(),
             'with_comments' => true,
+            'with_form_container' => true,
         ]);
     }
 
