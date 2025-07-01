@@ -49,7 +49,9 @@
                 comment_post_ids: comment_post_ids
             } only %}
         {% else %}
-            <p class="text-center text-muted">{{ 'flash.user_no_posts' }}</p>
+            <p class="alert alert-info">
+                {{ 'flash.user_no_posts' | trans }}
+            </p>
         {% endfor %}
 
         {{ knp_pagination_render(pagination, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}

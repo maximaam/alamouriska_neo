@@ -27,16 +27,31 @@
             <label for="password" class="d-none">{{ 'label.password'|trans }}</label>
             <input type="password" name="_password" id="password" placeholder="{{ 'label.password'|trans }}" class="form-control" autocomplete="current-password" required>
         </div>
-        <div class="mb-3">
+        <div class="mb-2">
             <a href="{{ path('app_forgot_password_request') }}">{{ 'label.forgot_password'|trans }}</a>
         </div>
-        <div class="row mb-3">
-            <div class="col">
-                <a href="{{ path('app_registration_register') }}">>> {{ 'label.no_account'|trans }}</a> 
-            </div>
+        <div class="mb-3">
             <div class="col text-end">
                 <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
                 <button class="btn btn-secondary" type="submit">{{ 'label.login'|trans }}</button>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <h3 class="white-hr">
+                <span>{{ 'label.no_account_yet'|trans }}</span>
+            </h3>
+            <div class="mb-2">
+                <a href="{{ path('app_registration_register') }}" class="btn w-100 btn-secondary">
+                    {{ ux_icon('bi:person-fill', {class: 'basic-icon'}) }}
+                    {{ 'label.register'|trans }}
+                </a>
+            </div>
+            
+            <div>
+                <a href="{{ path('connect_google_start', { service: 'google' }) }}" class="btn w-100 btn-light">
+                    {{ ux_icon('bi:google', {class: 'basic-icon'}) }}
+                    {{ 'label.login_with_google' | trans }}
+                </a>
             </div>
         </div>
     </form>

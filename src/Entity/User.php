@@ -118,6 +118,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: PostComment::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $postComments;
 
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
+    private ?string $googleId = null;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -387,6 +390,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $postComment->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(?string $googleId): static
+    {
+        $this->googleId = $googleId;
 
         return $this;
     }

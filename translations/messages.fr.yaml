@@ -22,7 +22,7 @@ label:
   avatar: Image de profil
   profile: Profil
   logout: Déconnexion
-  no_account: Pas de compte? Incris-toi!
+  no_account_yet: Pas de compte?
   search: Recherche
   enable_community_contact: "Les membres peuvent me contacter"
   allow_post_notification: "Me notifier à chaque publication"
@@ -68,6 +68,7 @@ label:
   search_for: "Recherche pour '%search_input%'"
   add_comment: Ajouter un commentaire
   posts_questions: Les questions des membres
+  login_with_google: Se connecter avec Google
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -90,6 +91,9 @@ flash:
   user_delete_warning: "Aya barka! Tu veux vraiment supprimer ton compte et toutes tes publications?"
   contact_member_email_sent: "Message envoyé !"
   search_none_found: "Pas de publications trouvées pour la recherche !"
+  user_no_posts: "Le membre n'a aucune publication."
+
+
 
 post:
   word:
