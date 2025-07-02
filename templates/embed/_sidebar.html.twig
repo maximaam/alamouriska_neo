@@ -6,7 +6,7 @@
         <div class="card-body">
             {% for comment in newset_comments %}
                 <div class="mb-2 pb-1 card-list">
-                    {%  include 'partials/_avatar.html.twig' with {'user': comment.post.user } only %}
+                    {%  include 'partials/_avatar.html.twig' with {'user': comment.user } only %}
                     <a href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ comment.post.type.name ~'.seo_route') | trans, 'id' : comment.post.id, 'titleSlug': comment.post.titleSlug}) }}" title="Par: {{ comment.post.user.pseudo }} - Le: {{ comment.post.createdAt | date }}">
                         {{ comment.comment }}
                     </a>

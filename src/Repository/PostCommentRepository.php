@@ -48,15 +48,17 @@ class PostCommentRepository extends ServiceEntityRepository
      */
     public function findNewest(int $maxResult = 5): array
     {
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->select(self::QB_ALIAS, PostRepository::QB_ALIAS, UserRepository::QB_ALIAS)
-            ->leftJoin(self::QB_ALIAS.'.post', PostRepository::QB_ALIAS)
-            ->leftJoin(PostRepository::QB_ALIAS.'.user', UserRepository::QB_ALIAS)
-            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+        return $this->createQueryBuilder('c') // c = Comment
+            ->select('c', 'p', 'postUser', 'commentUser')
+            ->leftJoin('c.post', 'p')
+            ->leftJoin('p.user', 'postUser')       // author of the post
+            ->leftJoin('c.user', 'commentUser')    // author of the comment
+            ->orderBy('c.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();
     }
+
 
     //    /**
     //     * @return PostComment[] Returns an array of PostComment objects
