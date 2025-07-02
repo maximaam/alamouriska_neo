@@ -1,0 +1,35 @@
+<div class="card mb-3 card-post">
+    <div class="card-header">
+        <div class="d-inline-block align-middle">
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': brick.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="post-card-avatar">
+                {% include 'partials/_avatar.html.twig' with {'user': brick.user, 'size': 64 } only %}
+            </a>
+        </div>
+        <div class="d-inline-block align-middle">
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': brick.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="fw-bold">
+                {{ brick.user.pseudo }}
+            </a>
+            <br>
+            <time class="" datetime="{{ brick.createdAt | date('Y.m.d') }}">
+                {{ 'label.date_on' | trans }} : {{ brick.createdAt | date('d.m.Y') }}
+            </time>
+        </div>
+    </div>
+    <div class="card-body p-2">
+         <div class="wall-container">
+            {{ brick.description | raw }}
+        </div>
+
+        {% if app.user == brick.user %}
+            <div class="text-end mt-2">
+                <a href="{{ path('app_wall_delete', {'id': brick.id} ) }}">{{ 'label.post_delete' | trans }}</a>
+                | 
+                <a href="{{ path('app_wall_edit', {'id': brick.id} ) }}">{{ 'label.post_edit' | trans }}</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card-footer">
+    Footer...
+     </div>
+</div>

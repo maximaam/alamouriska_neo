@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Wall{% endblock %}
+
+{% block body %}
+    <h1>Edit Wall</h1>
+
+    {{ include('wall/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_wall_index') }}">back to list</a>
+
+    {{ include('wall/_delete_form.html.twig') }}
+{% endblock %}

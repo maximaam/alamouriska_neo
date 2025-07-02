@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% set header_meta = 'label.wall' | trans %}
+
+{% block title %}
+    {{ header_meta }}
+{% endblock %}
+
+{% block opengraph_title %}
+    <meta property="og:title" content="{{ header_meta }}" />
+{% endblock %}
+
+{% block body %}
+    <div class="col-sm-8">
+        <h1 class="mb-3 text-center">{{ header_meta }}</h1>
+
+        {% for brick in bricks %}
+            {% include 'partials/_wall.html.twig' with {
+                brick: brick,
+            } only %}
+        {% else %}
+            <p class="alert alert-warning">
+                {{ 'flash.search_none_found' | trans }}
+            </p>
+        {% endfor %}
+    </div>
+
+    {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
+
+{% endblock %}

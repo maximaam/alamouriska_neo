@@ -1,0 +1,19 @@
+{% extends 'layer_center.html.twig' %}
+
+{% block title %}
+    {{ 'label.another_brick_in_the_wall' | trans }}
+    {{ parent() }}
+{% endblock %}
+
+{% block card_header %}
+    <h1>{{ 'label.another_brick_in_the_wall' | trans }}</h1>
+{% endblock %}
+
+{% block card_body %}
+    <div class="mb-3">
+        {%  include 'partials/_form.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block card_footer %}
+{% endblock %}

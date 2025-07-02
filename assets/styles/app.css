@@ -322,6 +322,11 @@ main {
     }
 }
 
+
+.wall-container iframe {
+    width: 100%;
+}
+
 @media (min-width:1440px) {
 }
 
