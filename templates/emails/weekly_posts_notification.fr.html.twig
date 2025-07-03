@@ -1,0 +1,19 @@
+{% extends 'email.html.twig' %}
+
+{% block header %}
+    Bonjour, Salam, Azul !
+{% endblock %}
+
+{% block body %}
+    <p>Voici la liste des publications de la semaine passée</p>
+    <ul>
+    {% for type, count in weekly_posts %}
+        <li>
+            <a href="{{ url('app_frontend_posts', {'seoTypeSlug': ('post.'~ type ~'.seo_route')  | trans }) }}" target="_blank">
+                {{ ('post.'~ type ~'.plural') | trans }} : 
+                {{ count }} {{ ('label.posts') | trans }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

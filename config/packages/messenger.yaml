@@ -23,6 +23,7 @@ framework:
         routing:
             App\Message\PostCommentEmailMessage: async
             App\Message\ContactMemberEmailMessage: async
+            App\Message\WeeklyPostsNotificationMessage: async
             
             # Changé pour envoyer sync par défaut
             # Symfony\Component\Mailer\Messenger\SendEmailMessage: async

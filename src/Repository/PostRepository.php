@@ -28,8 +28,8 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findLatests(int $maxResult = 10): array
     {
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getResult();
@@ -54,11 +54,11 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findQuestions(int $maxResult = 5): array
     {
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->select(self::QB_ALIAS, UserRepository::QB_ALIAS)
-            ->leftJoin(self::QB_ALIAS.'.user', UserRepository::QB_ALIAS)
-            ->andWhere(self::QB_ALIAS.'.question = true')
-            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+        return $this->createQueryBuilder('p')
+            ->select('p', 'u')
+            ->leftJoin('p.user', 'u')
+            ->andWhere('p.question = true')
+            ->orderBy('p.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();
@@ -69,10 +69,10 @@ class PostRepository extends ServiceEntityRepository
      */
     public function search(string $searchInput, int $maxResult = 10): array
     {
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->andWhere(self::QB_ALIAS.'.title LIKE :search_input OR '.self::QB_ALIAS.'.titleArabic LIKE :search_input')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.title LIKE :search_input OR p.titleArabic LIKE :search_input')
             ->setParameter('search_input', '%'.$searchInput.'%')
-            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+            ->orderBy('p.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getResult();
@@ -83,10 +83,10 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findPaginatedQuery(PostType $type): Query
     {
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->where(self::QB_ALIAS.'.type = :type')
+        return $this->createQueryBuilder('p')
+            ->where('p.type = :type')
             ->setParameter('type', $type)
-            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+            ->orderBy('p.createdAt', 'DESC')
             ->getQuery();
     }
 
@@ -95,10 +95,10 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findPaginatedByUserQuery(User $user): Query
     {
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->where(self::QB_ALIAS.'.user = :user')
+        return $this->createQueryBuilder('p')
+            ->where('p.user = :user')
             ->setParameter('user', $user)
-            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+            ->orderBy('p.createdAt', 'DESC')
             ->getQuery();
     }
 
@@ -107,9 +107,30 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findPaginatedQuestionsQuery(): Query
     {
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->where(self::QB_ALIAS.'.question = TRUE')
-            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+        return $this->createQueryBuilder('p')
+            ->where('p.question = TRUE')
+            ->orderBy('p.createdAt', 'DESC')
             ->getQuery();
+    }
+
+    public function findWeekly(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.createdAt >= :last_week')
+            ->setParameter('last_week', new \DateTimeImmutable('-1 week'))
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    public function countWeeklyPosts(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.type AS type', 'COUNT(p.id) AS count')
+            ->where('p.createdAt >= :last_week')
+            ->setParameter('last_week', new \DateTimeImmutable('-1 week'))
+            ->groupBy('p.type')
+            ->getQuery()
+            ->getArrayResult();
     }
 }

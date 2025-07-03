@@ -50,6 +50,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getArrayResult();
     }
 
+    /**
+     * @return array<mixed, mixed>
+     */
+    public function findEnablePostNotification(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.email')
+            ->andWhere('u.enablePostNotification = true')
+            ->getQuery()
+            ->getSingleColumnResult();
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */

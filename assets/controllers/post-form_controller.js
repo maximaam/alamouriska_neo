@@ -6,43 +6,18 @@ export default class extends Controller {
         this.title = document.getElementById('post_form_title');
         this.titleArabic = document.getElementById('post_form_titleArabic');
         this.description = document.getElementById('post_form_description');
+        this.postTitlesWrapper = document.getElementById('post-titles-wrapper');
+
         this.initialTitlePlaceholder = this.title?.placeholder || '';
         this.initialTitleArabicPlaceholder = this.titleArabic?.placeholder || '';
 
+        this.updateTitleFields();
         this.handleTypeChange(); // set up event listener
         this.handleTitleChange();
     }
 
     handleTypeChange() {
-        this.element?.addEventListener('change', (event) => {
-            const selected = event.target;
-            const postTypeValue = Number(selected.value);
-            const postTypeText = selected.options[selected.selectedIndex]?.text || '';
-            const typeIsJoke = postTypeValue === 4;
-            const validSelection = selected.selectedIndex > 0;
-            const postTitlesWrapper = document.getElementById('post-titles-wrapper');
-
-            if (!this.title || !this.titleArabic || !postTitlesWrapper) return;
-
-            // Toggle visibility
-            postTitlesWrapper.style.display = typeIsJoke ? 'none' : 'flex';
-
-            // Enable/disable input fields
-            const shouldDisable = typeIsJoke || !validSelection;
-            this.title.disabled = shouldDisable;
-            this.titleArabic.disabled = shouldDisable;
-
-            if (typeIsJoke) {
-                this.title.removeAttribute('required');
-            } else if (validSelection) {
-                this.title.placeholder = `${postTypeText}...`;
-                this.title.setAttribute('required', 'required');
-            } else {
-                // Restore initial placeholders
-                this.title.placeholder = this.initialTitlePlaceholder;
-                this.titleArabic.placeholder = this.initialTitleArabicPlaceholder;
-            }
-        });
+        this.postTitlesWrapper = document.getElementById('post-titles-wrapper');        this.element?.addEventListener('change', () => this.updateTitleFields());
     }
 
     handleTitleChange() {
@@ -68,5 +43,36 @@ export default class extends Controller {
             })
             .catch(err => console.error('Fetch error:', err));
         });
+    }
+
+    updateTitleFields() {
+        if (!this.title || !this.titleArabic || !this.postTitlesWrapper) return;
+
+        const selectedIndex = this.element.selectedIndex;
+        const typeValue = Number(this.element.value);
+        const typeText = this.element.options[selectedIndex]?.text || '';
+        const typeIsJoke = typeValue === 4;
+        const validSelection = selectedIndex > 0;
+
+        const shouldDisable = typeIsJoke || !validSelection;
+
+        // Show or hide wrapper
+        this.postTitlesWrapper.style.display = typeIsJoke ? 'none' : 'flex';
+
+        // Enable or disable inputs
+        this.title.disabled = shouldDisable;
+        this.titleArabic.disabled = shouldDisable;
+
+        // Set placeholder and required
+        if (typeIsJoke) {
+            this.title.removeAttribute('required');
+        } else if (validSelection) {
+            this.title.placeholder = `${typeText}...`;
+            this.title.setAttribute('required', 'required');
+        } else {
+            this.title.placeholder = this.initialTitlePlaceholder;
+            this.titleArabic.placeholder = this.initialTitleArabicPlaceholder;
+            this.title.removeAttribute('required');
+        }
     }
 }

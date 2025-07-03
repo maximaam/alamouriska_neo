@@ -59,7 +59,6 @@ class PostCommentRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
-
     //    /**
     //     * @return PostComment[] Returns an array of PostComment objects
     //     */
