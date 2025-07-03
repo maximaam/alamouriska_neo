@@ -40,7 +40,10 @@
     </head>
     <body>
         <div class="cloud-marquee">
-            <div class="cloud-track">☁️&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;☁️&nbsp;☁️</div>
+            <div class="cloud-track">
+                {% set bird = asset('images/fly-bird.gif') %}
+                {{ rolling_clouds(bird)|raw }}
+            </div>
         </div>
         <header class="main-header">
             <nav class="navbar navbar-expand-lg">

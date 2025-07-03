@@ -57,7 +57,7 @@ class NotifyCommand extends Command
         $io->info(\sprintf('Starting %s...', $action));
 
         match ($action) {
-            self::ACTION_WEEKLY_POSTS => $this->sendWeeklyPosts(),
+            self::ACTION_WEEKLY_POSTS => $this->sendWeeklyPosts($io),
         };
 
         $io->success(\sprintf('Successfully ended %s...', $action));
@@ -65,9 +65,16 @@ class NotifyCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function sendWeeklyPosts(): void
+    private function sendWeeklyPosts(SymfonyStyle $io): void
     {
         $posts = $this->em->getRepository(Post::class)->countWeeklyPosts();
+        
+        if ([] === $posts) {
+            $io->warning('No new posts this week.');
+
+            return;
+        }
+          
         $userEmails = $this->em->getRepository(User::class)->findEnablePostNotification();
 
         $weeklyData = [];
