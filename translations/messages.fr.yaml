@@ -70,6 +70,10 @@ label:
   posts_questions: Les questions des membres
   login_with_google: Se connecter avec Google
   posts: Publications
+  wall_create_new: "Ajouter une brique fel 7it"
+  wall_h1: El7it Parade
+  manage_my_stuff: Modifier mes contributions
+  edit_email: "Modifier l'adresse email"
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -93,8 +97,6 @@ flash:
   contact_member_email_sent: "Message envoyé !"
   search_none_found: "Pas de publications trouvées pour la recherche !"
   user_no_posts: "Le membre n'a aucune publication."
-
-
 
 post:
   word:
@@ -130,6 +132,7 @@ form:
     reset_password_request: "Enter your email address, and we will send you a link to reset your password."
     title_latin_alphabet: "Requis. Alphabet latin."
     title_arabic_alphabet: Souhaité. <a href="https://www.lexilogos.com/clavier/araby.htm" target="_blank" class="link-rocher">>> Clavier Arabe</a>
+    wall_input: "Textes, liens, videos youtube... tout ce qui peut intéresser au sujet de la langue algérienne"
 
 
 email:

@@ -121,11 +121,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true, unique: true)]
     private ?string $googleId = null;
 
+    /**
+     * @var Collection<int, Wall>
+     */
+    #[ORM\OneToMany(targetEntity: Wall::class, mappedBy: 'User', orphanRemoval: true)]
+    private Collection $walls;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->postLikes = new ArrayCollection();
         $this->postComments = new ArrayCollection();
+        $this->walls = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -402,6 +409,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGoogleId(?string $googleId): static
     {
         $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Wall>
+     */
+    public function getWalls(): Collection
+    {
+        return $this->walls;
+    }
+
+    public function addWall(Wall $wall): static
+    {
+        if (!$this->walls->contains($wall)) {
+            $this->walls->add($wall);
+            $wall->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWall(Wall $wall): static
+    {
+        if ($this->walls->removeElement($wall)) {
+            // set the owning side to null (unless already changed)
+            if ($wall->getUser() === $this) {
+                $wall->setUser(null);
+            }
+        }
 
         return $this;
     }

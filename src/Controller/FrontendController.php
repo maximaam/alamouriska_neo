@@ -9,6 +9,7 @@ use App\Entity\Post;
 use App\Entity\PostComment;
 use App\Entity\PostLike;
 use App\Entity\User;
+use App\Entity\Wall;
 use App\Form\ContactMemberForm;
 use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -207,6 +208,14 @@ final class FrontendController extends AbstractController
             'posts' => $posts,
             'liked_post_ids' => $likedPostIds,
             'comment_post_ids' => $commentPostIds,
+        ]);
+    }
+
+    #[Route('/el7it', name: 'wall')]
+    public function wall(): Response
+    {
+        return $this->render('frontend/wall.html.twig', [
+            'bricks' => $this->em->getRepository(Wall::class)->findBy([], ['createdAt' => 'DESC']),
         ]);
     }
 }

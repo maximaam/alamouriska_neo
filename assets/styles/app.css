@@ -276,10 +276,11 @@ main {
 
 /* POST */
 .post-features {
-    background-color: var(--bs-gray-400);
+    background-color: var(--bs-card-border-color);
     display: inline-block;
     position: relative;
-    top: -9px;
+    top: -8px;
+    right: 10px;
     text-align: center;
 }
 
@@ -320,6 +321,11 @@ main {
         width: 64px;
         height: 64px;
     }
+}
+
+
+.wall-container iframe {
+    width: 100%;
 }
 
 @media (min-width:1440px) {
