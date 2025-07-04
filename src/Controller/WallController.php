@@ -37,10 +37,10 @@ final class WallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $description = $form->get('description')->getData();
 
-            $description = SocialMediaUtils::linkifyUrls($description);   
-            $description = SocialMediaUtils::makeYoutubeEmbed($description);
+            $descriptionHtml = SocialMediaUtils::linkifyUrls($description);   
+            $descriptionHtml = SocialMediaUtils::makeYoutubeEmbed($descriptionHtml);
 
-            $wall->setDescription($description);
+            $wall->setDescriptionHtml($descriptionHtml);
 
             $entityManager->persist($wall);
             $entityManager->flush();
@@ -63,10 +63,10 @@ final class WallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $description = $form->get('description')->getData();
 
-            $description = SocialMediaUtils::linkifyUrls($description);
-            $description = SocialMediaUtils::makeYoutubeEmbed($description);
+            $descriptionHtml = SocialMediaUtils::linkifyUrls($description);
+            $descriptionHtml = SocialMediaUtils::makeYoutubeEmbed($descriptionHtml);
 
-            $wall->setDescription($description);
+            $wall->setDescriptionHtml($descriptionHtml);
 
             $entityManager->persist($wall);
             $entityManager->flush();
@@ -80,14 +80,23 @@ final class WallController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'delete', methods: ['POST'])]
-    public function delete(Request $request, Wall $wall, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'delete', methods: ['GET', 'POST'])]
+    public function delete(#[CurrentUser] User $user, Request $request, Wall $wall): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$wall->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($wall);
-            $entityManager->flush();
+        if ($request->isMethod(Request::METHOD_POST) && $this->isCsrfTokenValid('delete'.$wall->getId(), $request->getPayload()->getString('_token'))) {
+            $this->em->remove($wall);
+            $this->em->flush();
+            $this->addFlash('success', 'flash.wall_deleted_success');
+
+            return $this->redirectToRoute('app_user_show', status: Response::HTTP_SEE_OTHER);
         }
 
-        return $this->redirectToRoute('app_frontend_index', [], Response::HTTP_SEE_OTHER);
+        $this->addFlash('warning', 'flash.wall_delete_warning');
+
+        return $this->render('wall/delete.html.twig', [
+            'wall' => $wall,
+            //'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
+            //'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
+        ]);
     }
 }

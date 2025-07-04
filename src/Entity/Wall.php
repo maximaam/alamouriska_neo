@@ -26,6 +26,9 @@ class Wall
     #[ORM\JoinColumn(nullable: false)]
     private User $User;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $descriptionHtml = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +54,18 @@ class Wall
     public function setUser(User $User): static
     {
         $this->User = $User;
+
+        return $this;
+    }
+
+    public function getDescriptionHtml(): ?string
+    {
+        return $this->descriptionHtml;
+    }
+
+    public function setDescriptionHtml(string $descriptionHtml): static
+    {
+        $this->descriptionHtml = $descriptionHtml;
 
         return $this;
     }

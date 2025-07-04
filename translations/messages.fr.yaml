@@ -74,6 +74,7 @@ label:
   wall_h1: El7it Parade
   manage_my_stuff: Modifier mes contributions
   edit_email: "Modifier l'adresse email"
+  wall_delete: Supprimer la brique
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
@@ -85,7 +86,7 @@ flash:
   reset_password_invalid_link: "Le lien n'est plus valide. Essaie de nouveau."
   reset_password_invalid_user: "Utilisateur introuvable."
   profile_edit_success: "Ton profile a été actualisé."
-  post_delete_warning: "Tu confirmes vouloir éffacer cetee publication?"
+  post_delete_warning: "Tu confirmes vouloir éffacer cette publication?"
   post_deleted_success: "La publication a bien été supprimée."
   registration_email_verification_success: "Ton adresse email a été validée."
   registration_success: "Un email t'a été envoyé, merci de cliquer sur le lien pour valider ton inscription."
@@ -97,6 +98,7 @@ flash:
   contact_member_email_sent: "Message envoyé !"
   search_none_found: "Pas de publications trouvées pour la recherche !"
   user_no_posts: "Le membre n'a aucune publication."
+  wall_delete_warning: "Tu confirmes vouloir éffacer cette brique du 7it?"
 
 post:
   word:

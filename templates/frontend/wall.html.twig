@@ -15,7 +15,7 @@
         <h1 class="mb-3 text-center">{{ header_meta }}</h1>
 
         {% for brick in bricks %}
-            {% include 'partials/_wall.html.twig' with {
+            {% include 'partials/_card-wall.html.twig' with {
                 brick: brick,
             } only %}
         {% else %}

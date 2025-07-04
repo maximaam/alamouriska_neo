@@ -1,0 +1,22 @@
+{% extends 'layer_center.html.twig' %}
+
+{% block title %}
+    {{ 'label.wall_delete' | trans }}
+    {{ parent() }}
+{% endblock %}
+
+{% block card_header %}
+    <h1>{{ 'label.wall_delete' | trans }}</h1>
+{% endblock %}
+
+{% block card_body %}
+    <div class="wall-container">
+        {{ wall.descriptionHtml | raw | nl2br }}
+    </div>
+{% endblock %}
+
+{% block card_footer %}
+    <div class="text-end">
+        {{ include('partials/_delete_form.html.twig', {'warning_msg': 'flash.wall_delete_warning' | trans, 'entity_id': wall.id }) }}
+    </div>
+{% endblock %}

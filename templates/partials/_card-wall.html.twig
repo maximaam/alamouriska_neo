@@ -17,7 +17,7 @@
     </div>
     <div class="card-body p-2">
          <div class="wall-container">
-            {{ brick.description | raw | nl2br }}
+            {{ brick.descriptionHtml | raw | nl2br }}
         </div>
 
         {% if app.user == brick.user %}
