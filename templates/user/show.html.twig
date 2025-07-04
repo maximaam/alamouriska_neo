@@ -1,97 +1,70 @@
-{% extends 'base.html.twig' %}
+{% extends 'layer_center.html.twig' %}
 
 {% block title %}
     {{ 'label.profile' | trans }}
     {{ parent() }}
 {% endblock %}
 
-{% block body %}
-    <div class="col-sm-8">
-        <div class="card mb-3">
-            <div class="card-header">
-                <h2>{{ 'label.my_posts' | trans }}</h2>
-            </div>
-            <div class="card-body">
-                <table class="table table-striped table-hover table-responsive bg-purple">
-                    {%  for post in posts %}
-                    <tr>
-                        <td width="75%">{{ post.title }} | {{ post.titleArabic }}</td>
-                        <td>
-                            <a title="{{ 'label.post_show' | trans }}" href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}">
-                                {{ ux_icon('bi:eye-fill', {class: 'basic-icon'}) }}
-                            </a>
-                        </td>                        
-                        <td>
-                            <a title="{{ 'label.post_edit' | trans }}" href="{{ path('app_post_edit', {'id': post.id} ) }}">
-                                {{ ux_icon('bi:pen-fill', {class: 'basic-icon'}) }}
-                            </a>
-                        </td>
-                        <td>
-                            <a title="{{ 'label.post_delete' | trans }}" href="{{ path('app_post_delete', {'id': post.id} ) }}">
-                                {{ ux_icon('bi:trash-fill', {class: 'basic-icon'}) }}
-                            </a>                        
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
+{% block card_header %}
+    <h1>{{ 'label.profile' | trans }}</h1>
+{% endblock %}
 
-            <div class="card-footer text-end">
-                <a title="{{ 'post.label.create' | trans }}" href="{{ path('app_post_new') }}" class="btn btn-primary">
-                    {{ ux_icon('bi:journal-plus', {class: 'basic-icon'}) }}
-                </a>
-            </div>
+{% block card_body %}
+    <div>
+        <div class="mb-3 text-center">
+            {% include 'partials/_avatar.html.twig' with {'user': app.user, 'size': 128 } only %}
         </div>
-     </div>
-
-    <div class="col-sm-4">
-        <div class="card bg-rocher">
-            <div class="card-header">
-                <h2>{{ 'label.profile' | trans }}</h2>
-            </div>
-            <div class="card-body">
-                <div class="mb-3 text-center">
-                    {% include 'partials/_avatar.html.twig' with {'user': user, 'size': 128 } only %}
-                </div>
-                <div class="mb-3">
-                    <ul class="ml-0 pl-0">
-                        <li>{{ 'label.email' | trans }}: {{ user.email }}</li>
-                        <li>{{ 'label.pseudo' | trans }}: {{ user.pseudo }}</li>
-                        <li>{{ 'label.enable_community_contact' | trans }}: 
-                            {% if user.enableCommunityContact %}
-                                <span title="{{ 'label.yes'|trans }}">{{ ux_icon('bi:check', {class: 'basic-icon'}) }}</span>
-                            {% else %}
-                                <span title="{{ 'label.no'|trans }}">{{ ux_icon('bi:x', {class: 'basic-icon'}) }}</span>
-                            {% endif %}
-                        </li>
-                        <li>{{ 'label.allow_post_notification' | trans }}: 
-                            {% if user.enablePostNotification %}
-                                <span title="{{ 'label.yes'|trans }}">{{ ux_icon('bi:check', {class: 'basic-icon'}) }}</span>
-                            {% else %}
-                                <span title="{{ 'label.no'|trans }}">{{ ux_icon('bi:x', {class: 'basic-icon'}) }}</span>
-                            {% endif %}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-footer text-end">
-                <a title="{{ 'label.user_delete' | trans }}" href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger">
-                    {{ ux_icon('bi:person-fill-dash', {class: 'basic-icon'}) }}
-                </a>
-                <a title="{{ 'label.password_edit' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
-                    {{ ux_icon('bi:lock-fill', {class: 'basic-icon'}) }}
-                </a>
-                <a title="{{ 'label.email_edit' | trans }}" href="{{ path('app_user_change_email') }}" class="btn btn-primary">
-                    {{ ux_icon('bi:envelope-at', {class: 'basic-icon'}) }}
-                </a>
-                <a title="{{ 'label.profile_edit' | trans }}" href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">
-                    {{ ux_icon('bi:person-fill-gear', {class: 'basic-icon'}) }}
-                </a>
-                <a title="{{ 'label.logout' | trans }}" href="{{ path('app_security_logout') }}" class="btn btn-warning">
-                    {{ ux_icon('bi:person-fill-lock', {class: 'basic-icon'}) }}
-                </a>
-            </div>
+        <div class="mb-3">
+            <ul class="ml-0 pl-0">
+                <li>{{ 'label.email' | trans }}: {{ app.user.email }}</li>
+                <li>{{ 'label.pseudo' | trans }}: {{ app.user.pseudo }}</li>
+                <li>{{ 'label.enable_community_contact' | trans }}: 
+                    {% if app.user.enableCommunityContact %}
+                        <span title="{{ 'label.yes'|trans }}">{{ ux_icon('bi:check', {class: 'basic-icon'}) }}</span>
+                    {% else %}
+                        <span title="{{ 'label.no'|trans }}">{{ ux_icon('bi:x', {class: 'basic-icon'}) }}</span>
+                    {% endif %}
+                </li>
+                <li>{{ 'label.allow_post_notification' | trans }}: 
+                    {% if app.user.enablePostNotification %}
+                        <span title="{{ 'label.yes'|trans }}">{{ ux_icon('bi:check', {class: 'basic-icon'}) }}</span>
+                    {% else %}
+                        <span title="{{ 'label.no'|trans }}">{{ ux_icon('bi:x', {class: 'basic-icon'}) }}</span>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+        <div class="text-end mb-3">
+            <a title="{{ 'label.user_delete' | trans }}" href="{{ path('app_user_delete', {'id': app.user.id}) }}" class="btn btn-danger">
+                {{ ux_icon('bi:person-fill-dash', {class: 'basic-icon'}) }}
+            </a>
+            <a title="{{ 'label.password_edit' | trans }}" href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="btn btn-primary">
+                {{ ux_icon('bi:lock-fill', {class: 'basic-icon'}) }}
+            </a>
+            <a title="{{ 'label.email_edit' | trans }}" href="{{ path('app_user_change_email') }}" class="btn btn-primary">
+                {{ ux_icon('bi:envelope-at', {class: 'basic-icon'}) }}
+            </a>
+            <a title="{{ 'label.profile_edit' | trans }}" href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="btn btn-primary">
+                {{ ux_icon('bi:person-fill-gear', {class: 'basic-icon'}) }}
+            </a>
+            <a title="{{ 'label.logout' | trans }}" href="{{ path('app_security_logout') }}" class="btn btn-warning">
+                {{ ux_icon('bi:person-fill-lock', {class: 'basic-icon'}) }}
+            </a>
         </div>
     </div>
+    <div class="">
+        <a href="{{ path('app_frontend_member_profile', {'pseudo': app.user.pseudo }) }}" class="btn btn-secondary w-100 mb-2">
+            {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'label.manage_my_stuff' | trans }}
+        </a>
+        <a href="{{ path('app_post_new') }}" class="btn btn-primary w-100 mb-2">
+            {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'post.label.create' | trans }}
+        </a>
+        <a href="{{ path('app_wall_new') }}" class="btn btn-primary w-100 mb-2">
+            {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'label.wall_create_new' | trans }}
+        </a>
+    </div>
+{% endblock %}
+
+{% block card_footer %}
 {% endblock %}
 

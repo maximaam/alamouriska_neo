@@ -212,14 +212,10 @@ final class FrontendController extends AbstractController
     }
 
     #[Route('/el7it', name: 'wall')]
-    public function wall(Request $request, #[CurrentUser] ?User $user = null): Response
+    public function wall(): Response
     {
-        $bricks = $this->em
-            ->getRepository(Wall::class)
-            ->findAll();
-
         return $this->render('frontend/wall.html.twig', [
-            'bricks' => $bricks,
+            'bricks' => $this->em->getRepository(Wall::class)->findBy([], ['createdAt' => 'DESC']),
         ]);
     }
 }

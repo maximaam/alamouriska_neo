@@ -7,7 +7,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangeEmailForm;
 use App\Form\UserForm;
-use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,12 +32,9 @@ final class UserController extends AbstractController
     }
 
     #[Route('/show', name: 'show', methods: ['GET'])]
-    public function show(#[CurrentUser] User $user, PostRepository $postRepository): Response
+    public function show(): Response
     {
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
-            'posts' => $postRepository->findBy(['user' => $user], ['id' => 'DESC']),
-        ]);
+        return $this->render('user/show.html.twig');
     }
 
     #[Route('/edit', name: 'edit', methods: ['GET', 'POST'])]
