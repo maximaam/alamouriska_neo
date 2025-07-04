@@ -9,13 +9,18 @@ final class SocialMediaUtils
     public static function makeYoutubeEmbed(string $content): string
     {
         // Match both full and short YouTube URLs
-        $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/)|youtu\.be/)([a-zA-Z0-9_-]{11})~';
+        // $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/)|youtu\.be/)([a-zA-Z0-9_-]{11})~'; # old without extra params
+        // $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtube\.com/shorts/|youtu\.be/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?~i';
+        $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/|embed/)|youtu\.be/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?~i';
 
         return preg_replace_callback($pattern, function ($matches) {
             $videoId = $matches[1];
 
             // Return embedded iframe
-            return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . htmlspecialchars($videoId, ENT_QUOTES) . '" frameborder="0" allowfullscreen></iframe>';
+            return sprintf(
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>',
+                htmlspecialchars($videoId, ENT_QUOTES)
+            );
         }, $content);
     }
 

@@ -37,7 +37,7 @@ final class WallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $description = $form->get('description')->getData();
 
-            $description = SocialMediaUtils::linkifyUrls($description);
+            $description = SocialMediaUtils::linkifyUrls($description);   
             $description = SocialMediaUtils::makeYoutubeEmbed($description);
 
             $wall->setDescription($description);
@@ -54,14 +54,6 @@ final class WallController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_wall_show', methods: ['GET'])]
-    public function show(Wall $wall): Response
-    {
-        return $this->render('wall/show.html.twig', [
-            'wall' => $wall,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Wall $wall, EntityManagerInterface $entityManager): Response
     {
@@ -69,9 +61,17 @@ final class WallController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $description = $form->get('description')->getData();
+
+            $description = SocialMediaUtils::linkifyUrls($description);
+            $description = SocialMediaUtils::makeYoutubeEmbed($description);
+
+            $wall->setDescription($description);
+
+            $entityManager->persist($wall);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_frontend_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_frontend_wall', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('wall/edit.html.twig', [
