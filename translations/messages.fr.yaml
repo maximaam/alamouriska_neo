@@ -99,6 +99,7 @@ flash:
   search_none_found: "Pas de publications trouvées pour la recherche !"
   user_no_posts: "Le membre n'a aucune publication."
   wall_delete_warning: "Tu confirmes vouloir éffacer cette brique du 7it?"
+  wall_deleted_success: "Brique éffacée"
 
 post:
   word:

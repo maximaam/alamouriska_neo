@@ -8,6 +8,7 @@ use App\Repository\WallRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: WallRepository::class)]
 class Wall
@@ -20,14 +21,20 @@ class Wall
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(
+        min: 10,
+        max: 3000,
+        minMessage: 'wall_description_short',
+        maxMessage: 'wall_description_long',
+    )]
     private ?string $description = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $descriptionHtml = null;
 
     #[ORM\ManyToOne(inversedBy: 'walls')]
     #[ORM\JoinColumn(nullable: false)]
     private User $User;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $descriptionHtml = null;
 
     public function getId(): ?int
     {
@@ -46,18 +53,6 @@ class Wall
         return $this;
     }
 
-    public function getUser(): User
-    {
-        return $this->User;
-    }
-
-    public function setUser(User $User): static
-    {
-        $this->User = $User;
-
-        return $this;
-    }
-
     public function getDescriptionHtml(): ?string
     {
         return $this->descriptionHtml;
@@ -66,6 +61,18 @@ class Wall
     public function setDescriptionHtml(string $descriptionHtml): static
     {
         $this->descriptionHtml = $descriptionHtml;
+
+        return $this;
+    }
+
+    public function getUser(): User
+    {
+        return $this->User;
+    }
+
+    public function setUser(User $User): static
+    {
+        $this->User = $User;
 
         return $this;
     }

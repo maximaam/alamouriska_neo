@@ -12,7 +12,10 @@
 
 {% block body %}
     <div class="col-sm-8">
-        <h1 class="mb-3 text-center">{{ header_meta }}</h1>
+        <h1 class="mb-3 text-center">
+            {{ header_meta }}
+            <small><a href="{{ path('app_wall_new') }}">(+)</a></small>
+        </h1>
 
         {% for brick in bricks %}
             {% include 'partials/_card-wall.html.twig' with {
