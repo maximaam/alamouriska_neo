@@ -9,13 +9,7 @@ use App\Enum\PostType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\String\TruncateMode;
-
-use function Symfony\Component\String\u;
-
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -83,15 +77,6 @@ class PostForm extends AbstractType
             ->add('question', null, [
                 'label' => 'label.post_is_question',
             ]);
-
-        // Joke has no title, so we create a truncated title from the description.
-        $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event): void {
-            $post = $event->getData();
-            if (PostType::joke === $post->getType()) {
-                $title = u($post->getDescription())->truncate(50, '…', cut: TruncateMode::WordBefore);
-                $post->setTitle((string) $title);
-            }
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

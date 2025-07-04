@@ -70,8 +70,9 @@ label:
   posts_questions: Les questions des membres
   login_with_google: Se connecter avec Google
   posts: Publications
-  wall_create_new: "Ajouter une brique fel 7it"
-  wall_h1: El7it Parade
+  wall: el7itt
+  wall_create_new: "Ajouter une brique fel 7itt"
+  wall_h1: El7itt Parade
   manage_my_stuff: Modifier mes contributions
   edit_email: "Modifier l'adresse email"
   wall_delete: Supprimer la brique
@@ -120,12 +121,6 @@ post:
     title_hint: Insérer le proverbe...
     seo_route: proverbes-algeriens
   proverbes-algeriens: Proverbes Algériens
-  joke:
-    singular: Blague
-    plural: Blagues
-    title_hint: Insérer la blegue...
-    seo_route: blagues-algeriennes
-  blagues-algeriennes: Blagues Algériennes
   label:
     create: Créer une publication
 

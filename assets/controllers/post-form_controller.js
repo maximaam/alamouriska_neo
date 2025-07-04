@@ -6,8 +6,6 @@ export default class extends Controller {
         this.title = document.getElementById('post_form_title');
         this.titleArabic = document.getElementById('post_form_titleArabic');
         this.description = document.getElementById('post_form_description');
-        this.postTitlesWrapper = document.getElementById('post-titles-wrapper');
-
         this.initialTitlePlaceholder = this.title?.placeholder || '';
         this.initialTitleArabicPlaceholder = this.titleArabic?.placeholder || '';
 
@@ -17,7 +15,7 @@ export default class extends Controller {
     }
 
     handleTypeChange() {
-        this.postTitlesWrapper = document.getElementById('post-titles-wrapper');        this.element?.addEventListener('change', () => this.updateTitleFields());
+       this.element?.addEventListener('change', () => this.updateTitleFields());
     }
 
     handleTitleChange() {
@@ -46,33 +44,24 @@ export default class extends Controller {
     }
 
     updateTitleFields() {
-        if (!this.title || !this.titleArabic || !this.postTitlesWrapper) return;
+        if (!this.title || !this.titleArabic) return;
 
         const selectedIndex = this.element.selectedIndex;
-        const typeValue = Number(this.element.value);
         const typeText = this.element.options[selectedIndex]?.text || '';
-        const typeIsJoke = typeValue === 4;
         const validSelection = selectedIndex > 0;
-
-        const shouldDisable = typeIsJoke || !validSelection;
-
-        // Show or hide wrapper
-        this.postTitlesWrapper.style.display = typeIsJoke ? 'none' : 'flex';
+        const shouldDisable = !validSelection;
 
         // Enable or disable inputs
         this.title.disabled = shouldDisable;
         this.titleArabic.disabled = shouldDisable;
 
         // Set placeholder and required
-        if (typeIsJoke) {
-            this.title.removeAttribute('required');
-        } else if (validSelection) {
+        if (validSelection) {
             this.title.placeholder = `${typeText}...`;
             this.title.setAttribute('required', 'required');
         } else {
             this.title.placeholder = this.initialTitlePlaceholder;
             this.titleArabic.placeholder = this.initialTitleArabicPlaceholder;
-            this.title.removeAttribute('required');
         }
     }
 }
