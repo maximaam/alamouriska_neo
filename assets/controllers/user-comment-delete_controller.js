@@ -29,9 +29,9 @@ export default class extends Controller {
         .then(data => {
             if ('success' === data.status) {
                 const commentItem = button.closest('.comment-item');
-                const actionsWrapper = button.closest('[data-controller="post-comment-delete"]')
+                const actionsWrapper = button.closest('[data-controller="user-comment-delete"]')
                     ?.previousElementSibling; // class="actions"
-                const counter = actionsWrapper?.querySelector('[data-post-comment-target="count"]');
+                const counter = actionsWrapper?.querySelector('[data-user-comment-target="count"]');
 
                 if (commentItem) commentItem.remove();
                 if (counter) counter.innerText = Number(counter.innerText) - 1;

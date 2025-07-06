@@ -16,8 +16,8 @@
 
 {% if with_comments is defined %}
     <div class="comments mb-3">
-        {% for postComment in post.postComments %}
-            {% include 'partials/_post-comment-item.html.twig' with {'postComment': postComment} only %}   
+        {% for userComment in post.userComments %}
+            {% include 'partials/_user-comment-item.html.twig' with {'userComment': userComment} only %}   
         {% endfor %}
     </div>
 {% endif %}

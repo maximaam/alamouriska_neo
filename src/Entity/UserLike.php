@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\LikeRepository;
+use App\Repository\UserLikeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: LikeRepository::class)]
-class Like
+#[ORM\Entity(repositoryClass: UserLikeRepository::class)]
+class UserLike
 {
     use TimestampableEntity;
 
@@ -18,11 +18,11 @@ class Like
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'likes')]
+    #[ORM\ManyToOne(inversedBy: 'userLikes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Post $post = null;
 
-    #[ORM\ManyToOne(inversedBy: 'likes')]
+    #[ORM\ManyToOne(inversedBy: 'userLikes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

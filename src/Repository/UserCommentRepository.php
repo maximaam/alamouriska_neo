@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Post;
-use App\Entity\Comment;
+use App\Entity\UserComment;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Comment>
+ * @extends ServiceEntityRepository<UserComment>
  */
-class CommentRepository extends ServiceEntityRepository
+class UserCommentRepository extends ServiceEntityRepository
 {
     public const QB_ALIAS = 'pc';
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Comment::class);
+        parent::__construct($registry, UserComment::class);
     }
 
     /**

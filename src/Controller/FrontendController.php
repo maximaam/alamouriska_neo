@@ -6,8 +6,8 @@ namespace App\Controller;
 
 use App\Entity\Page;
 use App\Entity\Post;
-use App\Entity\PostComment;
-use App\Entity\PostLike;
+use App\Entity\UserComment;
+use App\Entity\UserLike;
 use App\Entity\User;
 use App\Entity\Wall;
 use App\Form\ContactMemberForm;
@@ -36,11 +36,11 @@ final class FrontendController extends AbstractController
     {
         $latestPosts = $this->em->getRepository(Post::class)->findLatests();
         $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($latestPosts, $user)
+            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($latestPosts, $user)
             : [];
 
         $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($latestPosts, $user)
+            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($latestPosts, $user)
             : [];
 
         return $this->render('frontend/index.html.twig', [
@@ -74,9 +74,9 @@ final class FrontendController extends AbstractController
             'member' => $user,
             'posts' => $posts,
             'pagination' => $pagination,
-            'comments_count' => $this->em->getRepository(PostComment::class)->count(['user' => $user]),
-            'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user),
-            'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user),
+            'comments_count' => $this->em->getRepository(UserComment::class)->count(['user' => $user]),
+            'liked_post_ids' => $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($posts, $user),
+            'comment_post_ids' => $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($posts, $user),
         ]);
     }
 
@@ -111,11 +111,11 @@ final class FrontendController extends AbstractController
         }
 
         $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user)
+            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($post, $user)
             : [];
 
         $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user)
+            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($post, $user)
             : [];
 
         return $this->render('frontend/post.html.twig', [
@@ -142,11 +142,11 @@ final class FrontendController extends AbstractController
         $posts = $pagination->getItems();
 
         $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user)
+            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($posts, $user)
             : [];
 
         $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user)
+            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($posts, $user)
             : [];
 
         return $this->render('frontend/posts.html.twig', [
@@ -169,11 +169,11 @@ final class FrontendController extends AbstractController
         $posts = $pagination->getItems();
 
         $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user)
+            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($posts, $user)
             : [];
 
         $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user)
+            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($posts, $user)
             : [];
 
         return $this->render('frontend/questions.html.twig', [
@@ -196,11 +196,11 @@ final class FrontendController extends AbstractController
         $posts = $this->em->getRepository(Post::class)->search($searchInput);
 
         $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($posts, $user)
+            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($posts, $user)
             : [];
 
         $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($posts, $user)
+            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($posts, $user)
             : [];
 
         return $this->render('frontend/search.html.twig', [

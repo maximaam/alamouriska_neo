@@ -73,11 +73,11 @@ export default class extends Controller {
                 commentsContainer?.insertAdjacentHTML('afterbegin', data.comment_item);
                 
                 const actionsWrapper = commentsContainer
-                    ?.closest('[data-controller="post-comment-delete"]')
+                    ?.closest('[data-controller="user-comment-delete"]')
                     ?.previousElementSibling; // class="actions"
                 
                 const counter = actionsWrapper
-                    ?.querySelector('[data-post-comment-target="count"]');
+                    ?.querySelector('[data-user-comment-target="count"]');
 
                 if (counter) {
                     counter.innerText = Number(counter.innerText) + 1;

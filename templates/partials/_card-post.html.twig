@@ -51,35 +51,35 @@
     <div class="card-footer">
         <div class="row mt-2">
             <div class="col post-actions">
-            {% set likeCount= '<span id="likes-counter-' ~ post.id ~ '" data-post-like-target="count">' ~ post.postLikes|length ~ '</span>' %}
+            {% set likeCount= '<span id="likes-counter-' ~ post.id ~ '" data-user-like-target="count">' ~ post.userLikes|length ~ '</span>' %}
             {% set iconLikeName = (app.user and post.id in liked_post_ids) ? 'bi:heart-fill' : 'bi:heart' %}
-            {% set iconLike = '<span data-post-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
+            {% set iconLike = '<span data-user-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
 
             <button
                 type="button"
                 title="{{ 'label.i_like' | trans }}"
                 class="btn-likes p-2 rounded"
-                data-controller="post-like"
-                data-action="click->post-like#like"
-                data-post-like-url-value="{{ path('app_async_post_like', { id: post.id }) }}"
-                data-post-like-csrf-token-value="{{ csrf_token('like-post') }}">
+                data-controller="user-like"
+                data-action="click->user-like#like"
+                data-user-like-url-value="{{ path('app_async_user_like', { id: post.id }) }}"
+                data-user-like-csrf-token-value="{{ csrf_token('like-post') }}">
                 {{ iconLike|raw }}
                 {{ likeCount|raw }}
             </button>
 
             <!-- Comment -->
-            {% set commentCount= '<span id="comment-counter-' ~ post.id ~ '" data-post-comment-target="count">' ~ post.postComments|length ~ '</span>' %}
+            {% set commentCount= '<span id="comment-counter-' ~ post.id ~ '" data-user-comment-target="count">' ~ post.userComments|length ~ '</span>' %}
             {% set iconCommentName = (app.user and post.id in comment_post_ids) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
-            {% set iconComment = '<span data-post-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon'}) ~ '</span>' %}
+            {% set iconComment = '<span data-user-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon'}) ~ '</span>' %}
 
                 <button
                     type="button"
                     title="{{ 'label.i_comment' | trans }}"
                     class="btn-likes p-2 rounded"
-                    data-controller="post-comment"
-                    data-action="click->post-comment#getForm"
-                    data-post-comment-id-value="{{ post.id }}"
-                    data-post-comment-url-value="{{ path('app_async_post_comment', { id: post.id }) }}">
+                    data-controller="user-comment"
+                    data-action="click->user-comment#getForm"
+                    data-user-comment-id-value="{{ post.id }}"
+                    data-user-comment-url-value="{{ path('app_async_user_comment', { id: post.id }) }}">
                     {{ iconComment|raw }}
                     {{ commentCount|raw }}
                 </button>
@@ -103,7 +103,7 @@
                 </a>
             </div>
         </div>
-        <div data-controller="post-comment-delete" id="comment-container-{{ post.id }}" class="comment-container slide-toggle mt-2" data-contentLoaded="false">
+        <div data-controller="user-comment-delete" id="comment-container-{{ post.id }}" class="comment-container slide-toggle mt-2" data-contentLoaded="false">
         </div>
      </div>
 </div>

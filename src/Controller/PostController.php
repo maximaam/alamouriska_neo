@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Post;
-use App\Entity\PostComment;
-use App\Entity\PostLike;
+use App\Entity\UserComment;
+use App\Entity\UserLike;
 use App\Entity\User;
 use App\Form\PostForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,8 +51,8 @@ final class PostController extends AbstractController
     {
         return $this->render('post/show.html.twig', [
             'post' => $post,
-            'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
-            'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
+            'liked_post_ids' => $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($post, $user),
+            'comment_post_ids' => $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($post, $user),
         ]);
     }
 
@@ -90,8 +90,6 @@ final class PostController extends AbstractController
 
         return $this->render('post/delete.html.twig', [
             'post' => $post,
-            'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
-            'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
         ]);
     }
 }

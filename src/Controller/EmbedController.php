@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Repository\PostCommentRepository;
+use App\Repository\UserCommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 // No route for embed controller
 final class EmbedController extends AbstractController
 {
-    public function sidebar(RequestStack $requestStack, PostRepository $postRepo, PostCommentRepository $commentRepo, UserRepository $userRepo): Response
+    public function sidebar(RequestStack $requestStack, PostRepository $postRepo, UserCommentRepository $commentRepo, UserRepository $userRepo): Response
     {
         $mainRequest = $requestStack->getMainRequest();
 

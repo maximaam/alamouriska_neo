@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
+use App\Repository\UserCommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: CommentRepository::class)]
-class Comment
+#[ORM\Entity(repositoryClass: UserCommentRepository::class)]
+class UserComment
 {
     use TimestampableEntity;
 
@@ -19,16 +19,16 @@ class Comment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\ManyToOne(inversedBy: 'userComments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Post $post = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\ManyToOne(inversedBy: 'userComments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $commentText = null;
+    private ?string $comment = null;
 
     public function getId(): ?int
     {
@@ -59,14 +59,14 @@ class Comment
         return $this;
     }
 
-    public function getCommentText(): ?string
+    public function getComment(): ?string
     {
-        return $this->commentText;
+        return $this->comment;
     }
 
-    public function setCommentText(string $commentText): static
+    public function setComment(string $comment): static
     {
-        $this->commentText = $commentText;
+        $this->comment = $comment;
 
         return $this;
     }

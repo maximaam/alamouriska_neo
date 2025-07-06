@@ -5,21 +5,19 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Post;
-use App\Entity\Like;
+use App\Entity\UserLike;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Like>
+ * @extends ServiceEntityRepository<UserLike>
  */
-class LikeRepository extends ServiceEntityRepository
+class UserLikeRepository extends ServiceEntityRepository
 {
-    public const QB_ALIAS = 'pl';
-
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Like::class);
+        parent::__construct($registry, UserLike::class);
     }
 
     /**
@@ -33,10 +31,10 @@ class LikeRepository extends ServiceEntityRepository
             $posts = [$posts];
         }
 
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->select('IDENTITY('.self::QB_ALIAS.'.post)') // returns just the post IDs
-            ->andWhere(self::QB_ALIAS.'.post IN (:posts)')
-            ->andWhere(self::QB_ALIAS.'.user = :user')
+        return $this->createQueryBuilder('l')
+            ->select('IDENTITY(l.post)') // returns just the post IDs
+            ->andWhere('l.post IN (:posts)')
+            ->andWhere('l.user = :user')
             ->setParameter('posts', $posts)
             ->setParameter('user', $user)
             ->getQuery()

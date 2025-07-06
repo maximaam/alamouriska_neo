@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Post;
-use App\Entity\PostComment;
-use App\Entity\PostLike;
+use App\Entity\UserComment;
+use App\Entity\UserLike;
 use App\Entity\User;
 use App\Form\ContactMemberForm;
 use App\Form\PostCommentForm;
@@ -36,7 +36,7 @@ final class AsyncController extends AbstractController
     ) {
     }
 
-    #[Route('/post-like/{id}/like', name: 'post_like', methods: ['POST'])]
+    #[Route('/user-like/{id}/like', name: 'user_like', methods: ['POST'])]
     public function postLike(Request $request, Post $post, CsrfTokenManagerInterface $csrfTokenManager, #[CurrentUser] ?User $user = null): JsonResponse
     {
         if (!$user instanceof User) {
@@ -50,13 +50,13 @@ final class AsyncController extends AbstractController
             throw new AccessDeniedHttpException('Invalid CSRF token.');
         }
 
-        $sumLikes = \count($post->getPostLikes());
+        $sumLikes = \count($post->getUserLikes());
 
         $hasLiked = $this->entityManager
-            ->getRepository(PostLike::class)
+            ->getRepository(UserLike::class)
             ->findOneBy(['user' => $user, 'post' => $post]);
 
-        if ($hasLiked instanceof PostLike) {
+        if ($hasLiked instanceof UserLike) {
             $this->entityManager->remove($hasLiked);
             $this->entityManager->flush();
 
@@ -67,7 +67,7 @@ final class AsyncController extends AbstractController
             ]);
         }
 
-        $postLike = (new PostLike())
+        $postLike = (new UserLike())
             ->setPost($post)
             ->setUser($user);
 
@@ -81,7 +81,7 @@ final class AsyncController extends AbstractController
         ]);
     }
 
-    #[Route('/post-comment/{id}/comment', name: 'post_comment', methods: ['GET', 'POST'])]
+    #[Route('/user-comment/{id}/comment', name: 'user_comment', methods: ['GET', 'POST'])]
     public function postComment(Request $request, Post $post, MessageBusInterface $messageBus, #[CurrentUser] ?User $user = null): JsonResponse|Response
     {
         $form = $this->createForm(PostCommentForm::class);
@@ -93,7 +93,7 @@ final class AsyncController extends AbstractController
                     throw new \LogicException('Access denied.');
                 }
 
-                $comment = (new PostComment())
+                $comment = (new UserComment())
                     ->setPost($post)
                     ->setUser($user)
                     ->setComment($form->get('comment')->getData());
@@ -115,11 +115,11 @@ final class AsyncController extends AbstractController
 
                 return $this->json([
                     'status' => 'success',
-                    'comment_item' => $this->renderView('partials/_post-comment-item.html.twig', [
-                        'postComment' => $comment,
+                    'comment_item' => $this->renderView('partials/_user-comment-item.html.twig', [
+                        'userComment' => $comment,
                     ]),
                     // Resend a fresh form, in case the previous contains errors
-                    'form' => $this->renderView('partials/_post-comment-form.html.twig', [
+                    'form' => $this->renderView('partials/_user-comment-form.html.twig', [
                         'form' => $this->createForm(PostCommentForm::class)->createView(),
                         'post' => $post,
                     ]),
@@ -128,14 +128,14 @@ final class AsyncController extends AbstractController
 
             return $this->json([
                 'status' => 'validation_error',
-                'form' => $this->renderView('partials/_post-comment-form.html.twig', [
+                'form' => $this->renderView('partials/_user-comment-form.html.twig', [
                     'form' => $form->createView(),
                     'post' => $post,
                 ]),
             ]);
         }
 
-        return $this->render('partials/_post-comment-form.html.twig', [
+        return $this->render('partials/_user-comment-form.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
             'with_comments' => true,
@@ -145,7 +145,7 @@ final class AsyncController extends AbstractController
 
     #[Route('/post-comment/{id}/delete', name: 'post_comment_delete', methods: ['POST'])]
     #[IsGranted(User::ROLE_USER)]
-    public function postCommentDelete(Request $request, PostComment $postComment, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
+    public function postCommentDelete(Request $request, UserComment $postComment, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
     {
         if (!$csrfTokenManager->isTokenValid(new CsrfToken('comment-delete', $request->headers->get('X-CSRF-TOKEN')))) {
             throw new AccessDeniedHttpException('Invalid CSRF token.');
