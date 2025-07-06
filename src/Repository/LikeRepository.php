@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Post;
-use App\Entity\PostLike;
+use App\Entity\Like;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<PostLike>
+ * @extends ServiceEntityRepository<Like>
  */
-class PostLikeRepository extends ServiceEntityRepository
+class LikeRepository extends ServiceEntityRepository
 {
     public const QB_ALIAS = 'pl';
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, PostLike::class);
+        parent::__construct($registry, Like::class);
     }
 
     /**

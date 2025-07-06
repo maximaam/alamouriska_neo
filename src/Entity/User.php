@@ -107,16 +107,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $pendingEmail = null;
 
     /**
-     * @var Collection<int, PostLike>
+     * @var Collection<int, Like>
      */
-    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $postLikes;
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $likes;
 
     /**
-     * @var Collection<int, PostComment>
+     * @var Collection<int, Comment>
      */
-    #[ORM\OneToMany(targetEntity: PostComment::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $postComments;
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $comments;
 
     #[ORM\Column(length: 255, nullable: true, unique: true)]
     private ?string $googleId = null;
@@ -130,8 +130,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->posts = new ArrayCollection();
-        $this->postLikes = new ArrayCollection();
-        $this->postComments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->walls = new ArrayCollection();
     }
 
@@ -342,29 +342,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, PostLike>
+     * @return Collection<int, Like>
      */
-    public function getPostLikes(): Collection
+    public function getLikes(): Collection
     {
-        return $this->postLikes;
+        return $this->likes;
     }
 
-    public function addPostLike(PostLike $postLike): static
+    public function addLike(Like $like): static
     {
-        if (!$this->postLikes->contains($postLike)) {
-            $this->postLikes->add($postLike);
-            $postLike->setUser($this);
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setUser($this);
         }
 
         return $this;
     }
 
-    public function removePostLike(PostLike $postLike): static
+    public function removeLike(Like $like): static
     {
-        if ($this->postLikes->removeElement($postLike)) {
+        if ($this->likes->removeElement($like)) {
             // set the owning side to null (unless already changed)
-            if ($postLike->getUser() === $this) {
-                $postLike->setUser(null);
+            if ($like->getUser() === $this) {
+                $like->setUser(null);
             }
         }
 
@@ -372,29 +372,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, PostComment>
+     * @return Collection<int, Comment>
      */
-    public function getPostComments(): Collection
+    public function getComments(): Collection
     {
-        return $this->postComments;
+        return $this->comments;
     }
 
-    public function addPostComment(PostComment $postComment): static
+    public function addComment(Comment $comment): static
     {
-        if (!$this->postComments->contains($postComment)) {
-            $this->postComments->add($postComment);
-            $postComment->setUser($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUser($this);
         }
 
         return $this;
     }
 
-    public function removePostComment(PostComment $postComment): static
+    public function removeComment(Comment $comment): static
     {
-        if ($this->postComments->removeElement($postComment)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($postComment->getUser() === $this) {
-                $postComment->setUser(null);
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
 

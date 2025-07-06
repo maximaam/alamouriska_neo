@@ -58,25 +58,25 @@ class Post
     private string $titleSlug;
 
     /**
-     * @var Collection<int, PostLike>
+     * @var Collection<int, Like>
      */
-    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'post', orphanRemoval: true, fetch: 'EAGER')]
-    private Collection $postLikes;
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'post', orphanRemoval: true, fetch: 'EAGER')]
+    private Collection $likes;
 
     /**
-     * @var Collection<int, PostComment>
+     * @var Collection<int, Comment>
      */
-    #[ORM\OneToMany(targetEntity: PostComment::class, mappedBy: 'post', orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', orphanRemoval: true, fetch: 'EAGER')]
     #[ORM\OrderBy(['createdAt' => 'DESC'])]
-    private Collection $postComments;
+    private Collection $comments;
 
     #[ORM\Column]
     private bool $question = false;
 
     public function __construct()
     {
-        $this->postLikes = new ArrayCollection();
-        $this->postComments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,29 +194,29 @@ class Post
     */
 
     /**
-     * @return Collection<int, PostLike>
+     * @return Collection<int, Like>
      */
-    public function getPostLikes(): Collection
+    public function getLikes(): Collection
     {
-        return $this->postLikes;
+        return $this->likes;
     }
 
-    public function addPostLike(PostLike $postLike): static
+    public function addPostLike(Like $like): static
     {
-        if (!$this->postLikes->contains($postLike)) {
-            $this->postLikes->add($postLike);
-            $postLike->setPost($this);
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setPost($this);
         }
 
         return $this;
     }
 
-    public function removePostLike(PostLike $postLike): static
+    public function removeLike(Like $like): static
     {
-        if ($this->postLikes->removeElement($postLike)) {
+        if ($this->likes->removeElement($like)) {
             // set the owning side to null (unless already changed)
-            if ($postLike->getPost() === $this) {
-                $postLike->setPost(null);
+            if ($like->getPost() === $this) {
+                $like->setPost(null);
             }
         }
 
@@ -224,29 +224,29 @@ class Post
     }
 
     /**
-     * @return Collection<int, PostComment>
+     * @return Collection<int, Comment>
      */
-    public function getPostComments(): Collection
+    public function getComments(): Collection
     {
-        return $this->postComments;
+        return $this->comments;
     }
 
-    public function addPostComment(PostComment $postComment): static
+    public function addPostComment(Comment $comment): static
     {
-        if (!$this->postComments->contains($postComment)) {
-            $this->postComments->add($postComment);
-            $postComment->setPost($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setPost($this);
         }
 
         return $this;
     }
 
-    public function removePostComment(PostComment $postComment): static
+    public function removeComment(Comment $comment): static
     {
-        if ($this->postComments->removeElement($postComment)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($postComment->getPost() === $this) {
-                $postComment->setPost(null);
+            if ($comment->getPost() === $this) {
+                $comment->setPost(null);
             }
         }
 

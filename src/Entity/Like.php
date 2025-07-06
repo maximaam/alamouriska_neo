@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\PostCommentRepository;
-use Doctrine\DBAL\Types\Types;
+use App\Repository\LikeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: PostCommentRepository::class)]
-class PostComment
+#[ORM\Entity(repositoryClass: LikeRepository::class)]
+class Like
 {
     use TimestampableEntity;
 
@@ -19,16 +18,13 @@ class PostComment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'postComments')]
+    #[ORM\ManyToOne(inversedBy: 'likes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Post $post = null;
 
-    #[ORM\ManyToOne(inversedBy: 'postComments')]
+    #[ORM\ManyToOne(inversedBy: 'likes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $comment = null;
 
     public function getId(): ?int
     {
@@ -55,18 +51,6 @@ class PostComment
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(string $comment): static
-    {
-        $this->comment = $comment;
 
         return $this;
     }
