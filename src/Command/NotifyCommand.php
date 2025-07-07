@@ -68,18 +68,18 @@ class NotifyCommand extends Command
     private function sendWeeklyPosts(SymfonyStyle $io): void
     {
         $posts = $this->em->getRepository(Post::class)->countWeeklyPosts();
-        
+
         if ([] === $posts) {
             $io->warning('No new posts this week.');
 
             return;
         }
-          
+
         $userEmails = $this->em->getRepository(User::class)->findEnablePostNotification();
 
         $weeklyData = [];
         foreach ($posts as $post) {
-            $weeklyData[$post['type']->name] = (int) $post['count'];
+            $weeklyData[$post['type']->name] = $post['count'];
         }
 
         foreach ($userEmails as $email) {

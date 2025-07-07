@@ -8,57 +8,47 @@ final class SocialMediaUtils
 {
     public static function makeYoutubeEmbed(string $content): string
     {
-        // Match both full and short YouTube URLs
-        // $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/)|youtu\.be/)([a-zA-Z0-9_-]{11})~'; # old without extra params
-        // $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtube\.com/shorts/|youtu\.be/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?~i';
+        // Match both full and short/embed YouTube URLs
         $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/|embed/)|youtu\.be/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?~i';
 
-        return preg_replace_callback($pattern, function ($matches) {
+        $transformedContent = preg_replace_callback($pattern, function ($matches) {
             $videoId = $matches[1];
 
-            // Return embedded iframe
-            return sprintf(
+            return \sprintf(
                 '<iframe width="560" height="315" src="https://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>',
-                htmlspecialchars($videoId, ENT_QUOTES)
+                htmlspecialchars($videoId, \ENT_QUOTES)
             );
         }, $content);
+
+        return $transformedContent ?? $content;
     }
 
-    public static function replaceYouTubeWithThumbnail(string $text): string
+    public static function replaceYouTubeWithThumbnail(string $content): string
     {
         $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/)|youtu\.be/)([a-zA-Z0-9_-]{11})~';
 
-        return preg_replace_callback($pattern, function ($matches) {
+        $transformedContent = preg_replace_callback($pattern, function ($matches) {
             $videoId = $matches[1];
-            $thumbnailUrl = 'https://img.youtube.com/vi/' . htmlspecialchars($videoId, ENT_QUOTES) . '/hqdefault.jpg';
-            $videoUrl = 'https://www.youtube.com/watch?v=' . htmlspecialchars($videoId, ENT_QUOTES);
+            $thumbnailUrl = 'https://img.youtube.com/vi/'.htmlspecialchars($videoId, \ENT_QUOTES).'/hqdefault.jpg';
+            $videoUrl = 'https://www.youtube.com/watch?v='.htmlspecialchars($videoId, \ENT_QUOTES);
 
-            return '<a href="' . $videoUrl . '" target="_blank" rel="noopener noreferrer">
-                        <img src="' . $thumbnailUrl . '" alt="YouTube video thumbnail" width="480" height="360">
+            return '<a href="'.$videoUrl.'" target="_blank" rel="noopener noreferrer">
+                        <img src="'.$thumbnailUrl.'" alt="YouTube video thumbnail" width="480" height="360">
                     </a>';
-        }, $text);
+        }, $content);
 
-        /*
-        responsive thumbnails:
-
-        .youtube-thumb img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        }
-        */
+        return $transformedContent ?? $content;
     }
 
-    public static function linkifyUrls(string $text): string
+    public static function linkifyUrls(string $content, bool $excludeSocialMedia = false): string
     {
-        return preg_replace_callback('/(https?:\/\/[^\s<]+)/i', static function (array $matches) {
-                $url = $matches[1];
+        $transformedContent = preg_replace_callback('/(https?:\/\/[^\s<]+)/i', static function (array $matches) use ($excludeSocialMedia) {
+            $url = $matches[1];
 
-                // Parse the host to filter
-                $host = parse_url($url, PHP_URL_HOST);
+            // Parse the host to filter
+            $host = strtolower((string) parse_url($url, \PHP_URL_HOST));
 
-                // Normalize and check for excluded domains
-                $host = strtolower($host ?? '');
+            if (true === $excludeSocialMedia) {
                 $excludedHosts = ['youtube.com', 'www.youtube.com', 'youtu.be', 'tiktok.com', 'www.tiktok.com'];
 
                 foreach ($excludedHosts as $excluded) {
@@ -66,11 +56,14 @@ final class SocialMediaUtils
                         return $url; // return plain text URL (no link)
                     }
                 }
+            }
 
-                // Convert to clickable link
-                $escaped = htmlspecialchars($url, ENT_QUOTES);
-                
-                return '<a href="' . $escaped . '" target="_blank" rel="noopener noreferrer">' . $escaped . '</a>';
-            }, $text);
+            // Convert to clickable link
+            $escaped = htmlspecialchars($url, \ENT_QUOTES);
+
+            return '<a href="'.$escaped.'" target="_blank" rel="noopener noreferrer">'.$escaped.'</a>';
+        }, $content);
+
+        return $transformedContent ?? $content;
     }
 }

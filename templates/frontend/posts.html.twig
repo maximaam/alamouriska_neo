@@ -18,8 +18,8 @@
         {% for post in pagination %}
             {% include 'partials/_card-post.html.twig' with {
                 post: post,
-                liked_post_ids: liked_post_ids,
-                comment_post_ids: comment_post_ids
+                user_like_post_ids: user_like_post_ids,
+                user_comment_post_ids: user_comment_post_ids
             } only %}
         {% else %}
             <p class="alert alert-warning">{{ 'flash.search_none_found' | trans }}</p>

@@ -14,7 +14,7 @@ final class DiversUtils
         $ws = '&nbsp;';
         $randomClouds = random_int(1, 3);
 
-        for ($i = 0; $i <= $randomClouds; $i++) {
+        for ($i = 0; $i <= $randomClouds; ++$i) {
             $clouds .= str_repeat($cloud, random_int(1, 2)).str_repeat($ws, random_int(10, 30));
         }
 

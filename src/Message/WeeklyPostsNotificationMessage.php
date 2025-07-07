@@ -6,8 +6,11 @@ namespace App\Message;
 
 final readonly class WeeklyPostsNotificationMessage
 {
+    /**
+     * @param array<string, int> $posts
+     */
     public function __construct(
-        public array $weeklyPosts,
+        public array $posts,
         public string $userEmail,
     ) {
     }

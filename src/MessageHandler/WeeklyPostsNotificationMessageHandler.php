@@ -36,7 +36,7 @@ final readonly class WeeklyPostsNotificationMessageHandler
             ->subject($this->translator->trans('email.weekly_posts.subject'))
             ->htmlTemplate('emails/weekly_posts_notification.fr.html.twig')
             ->context([
-                'weekly_posts' => $message->weeklyPosts,
+                'weekly_posts' => $message->posts,
                 'userEmail' => $message->userEmail,
             ]);
 

@@ -6,11 +6,11 @@ namespace App\Controller;
 
 use App\Entity\Page;
 use App\Entity\Post;
-use App\Entity\UserComment;
-use App\Entity\UserLike;
 use App\Entity\User;
+use App\Entity\UserComment;
 use App\Entity\Wall;
 use App\Form\ContactMemberForm;
+use App\Service\UserInteraction;
 use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -28,6 +28,7 @@ final class FrontendController extends AbstractController
 
     public function __construct(
         private readonly EntityManagerInterface $em,
+        private readonly UserInteraction $userInteraction,
     ) {
     }
 
@@ -35,19 +36,11 @@ final class FrontendController extends AbstractController
     public function index(#[CurrentUser] ?User $user = null): Response
     {
         $latestPosts = $this->em->getRepository(Post::class)->findLatests();
-        $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($latestPosts, $user)
-            : [];
-
-        $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($latestPosts, $user)
-            : [];
 
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
-            'newest_posts' => $this->em->getRepository(Post::class)->findLatests(),
-            'liked_post_ids' => $likedPostIds,
-            'comment_post_ids' => $commentPostIds,
+            'newest_posts' => $latestPosts,
+            ...$this->userInteraction->getUserInteractionIds($latestPosts, $user),
         ]);
     }
 
@@ -60,23 +53,19 @@ final class FrontendController extends AbstractController
             return $this->redirectToRoute('app_frontend_index', status: Response::HTTP_SEE_OTHER);
         }
 
-        $form = $this->createForm(ContactMemberForm::class);
         $pagination = $paginator->paginate(
             $this->em->getRepository(Post::class)->findPaginatedByUserQuery($user),
             $request->query->getInt('page', 1),
             self::PAGE_MAX_POSTS,
         );
 
-        $posts = $this->em->getRepository(Post::class)->findBy(['user' => $user]);
-
         return $this->render('frontend/member_profile.html.twig', [
-            'form' => $form,
+            'form' => $this->createForm(ContactMemberForm::class),
             'member' => $user,
-            'posts' => $posts,
+            'posts_count' => $pagination->getTotalItemCount(),
             'pagination' => $pagination,
             'comments_count' => $this->em->getRepository(UserComment::class)->count(['user' => $user]),
-            'liked_post_ids' => $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($posts, $user),
-            'comment_post_ids' => $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($posts, $user),
+            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), $user),
         ]);
     }
 
@@ -88,17 +77,8 @@ final class FrontendController extends AbstractController
         ]);
     }
 
-    #[Route(
-        '/{seoTypeSlug}/{id}/{titleSlug}',
-        name: 'post',
-        methods: ['GET'],
-        requirements: [
-            'seoTypeSlug' => PostUtils::SEO_POST_SLUGS,
-            'id' => Requirement::POSITIVE_INT,
-            'titleSlug' => Requirement::ASCII_SLUG,
-        ],
-        // condition: "service('post_utils').isValidSlug('mots-algeriens')",
-    )]
+    #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS, 'id' => Requirement::POSITIVE_INT, 'titleSlug' => Requirement::ASCII_SLUG])]
+    // condition: "service('post_utils').isValidSlug('mots-algeriens')",
     public function postById(Post $post, string $seoTypeSlug, string $titleSlug, #[CurrentUser] ?User $user = null): Response
     {
         // URL manipulation, like changing the ID
@@ -110,18 +90,9 @@ final class FrontendController extends AbstractController
             ]);
         }
 
-        $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($post, $user)
-            : [];
-
-        $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($post, $user)
-            : [];
-
         return $this->render('frontend/post.html.twig', [
             'post' => $post,
-            'liked_post_ids' => $likedPostIds,
-            'comment_post_ids' => $commentPostIds,
+            ...$this->userInteraction->getUserInteractionIds($post, $user),
         ]);
     }
 
@@ -138,21 +109,9 @@ final class FrontendController extends AbstractController
             self::PAGE_MAX_POSTS,
         );
 
-        /** @var Post[] $posts */
-        $posts = $pagination->getItems();
-
-        $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($posts, $user)
-            : [];
-
-        $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($posts, $user)
-            : [];
-
         return $this->render('frontend/posts.html.twig', [
             'pagination' => $pagination,
-            'liked_post_ids' => $likedPostIds,
-            'comment_post_ids' => $commentPostIds,
+            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), $user),
         ]);
     }
 
@@ -165,21 +124,9 @@ final class FrontendController extends AbstractController
             self::PAGE_MAX_POSTS,
         );
 
-        /** @var Post[] $posts */
-        $posts = $pagination->getItems();
-
-        $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($posts, $user)
-            : [];
-
-        $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($posts, $user)
-            : [];
-
         return $this->render('frontend/questions.html.twig', [
             'pagination' => $pagination,
-            'liked_post_ids' => $likedPostIds,
-            'comment_post_ids' => $commentPostIds,
+            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), $user),
         ]);
     }
 
@@ -190,24 +137,15 @@ final class FrontendController extends AbstractController
         $searchLen = \strlen($searchInput);
 
         if ($searchLen <= 3 || $searchLen > 100) {
-            $this->redirectToRoute('app_frontend_index');
+            return $this->redirectToRoute('app_frontend_index');
         }
 
         $posts = $this->em->getRepository(Post::class)->search($searchInput);
 
-        $likedPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($posts, $user)
-            : [];
-
-        $commentPostIds = ($user instanceof User)
-            ? $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($posts, $user)
-            : [];
-
         return $this->render('frontend/search.html.twig', [
             'search_input' => $searchInput,
             'posts' => $posts,
-            'liked_post_ids' => $likedPostIds,
-            'comment_post_ids' => $commentPostIds,
+            ...$this->userInteraction->getUserInteractionIds($posts, $user),
         ]);
     }
 

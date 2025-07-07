@@ -361,12 +361,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeUserLike(UserLike $userLike): static
     {
-        if ($this->userLikes->removeElement($userLike)) {
-            // set the owning side to null (unless already changed)
-            if ($userLike->getUser() === $this) {
-                $userLike->setUser(null);
-            }
-        }
+        $this->userLikes->removeElement($userLike);
 
         return $this;
     }
@@ -391,12 +386,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeUserComment(UserComment $userComment): static
     {
-        if ($this->userComments->removeElement($userComment)) {
-            // set the owning side to null (unless already changed)
-            if ($userComment->getUser() === $this) {
-                $userComment->setUser(null);
-            }
-        }
+        $this->userComments->removeElement($userComment);
 
         return $this;
     }
@@ -433,12 +423,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeWall(Wall $wall): static
     {
-        if ($this->walls->removeElement($wall)) {
-            // set the owning side to null (unless already changed)
-            if ($wall->getUser() === $this) {
-                $wall->setUser(null);
-            }
-        }
+        $this->walls->removeElement($wall);
 
         return $this;
     }

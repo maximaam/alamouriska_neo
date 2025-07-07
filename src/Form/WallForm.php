@@ -19,7 +19,7 @@ class WallForm extends AbstractType
             'help' => 'form.help.wall_input',
             'attr' => [
                 'rows' => 8,
-            ]
+            ],
         ]);
     }
 

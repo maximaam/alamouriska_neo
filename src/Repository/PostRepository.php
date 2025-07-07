@@ -113,16 +113,9 @@ class PostRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
-    public function findWeekly(): array
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.createdAt >= :last_week')
-            ->setParameter('last_week', new \DateTimeImmutable('-1 week'))
-            ->orderBy('p.createdAt', 'DESC')
-            ->getQuery()
-            ->getArrayResult();
-    }
-
+    /**
+     * @return array<int, array{type: PostType, count: int}>
+     */
     public function countWeeklyPosts(): array
     {
         return $this->createQueryBuilder('p')

@@ -52,7 +52,7 @@
         <div class="row mt-2">
             <div class="col post-actions">
             {% set likeCount= '<span id="likes-counter-' ~ post.id ~ '" data-user-like-target="count">' ~ post.userLikes|length ~ '</span>' %}
-            {% set iconLikeName = (app.user and post.id in liked_post_ids) ? 'bi:heart-fill' : 'bi:heart' %}
+            {% set iconLikeName = (app.user and post.id in user_like_post_ids) ? 'bi:heart-fill' : 'bi:heart' %}
             {% set iconLike = '<span data-user-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
 
             <button
@@ -69,7 +69,7 @@
 
             <!-- Comment -->
             {% set commentCount= '<span id="comment-counter-' ~ post.id ~ '" data-user-comment-target="count">' ~ post.userComments|length ~ '</span>' %}
-            {% set iconCommentName = (app.user and post.id in comment_post_ids) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
+            {% set iconCommentName = (app.user and post.id in user_comment_post_ids) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
             {% set iconComment = '<span data-user-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon'}) ~ '</span>' %}
 
                 <button

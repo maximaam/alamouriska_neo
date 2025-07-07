@@ -213,12 +213,7 @@ class Post
 
     public function removeLike(UserLike $userLike): static
     {
-        if ($this->userLikes->removeElement($userLike)) {
-            // set the owning side to null (unless already changed)
-            if ($userLike->getPost() === $this) {
-                $userLike->setPost(null);
-            }
-        }
+        $this->userLikes->removeElement($userLike);
 
         return $this;
     }
@@ -243,12 +238,7 @@ class Post
 
     public function removeComment(UserComment $userComment): static
     {
-        if ($this->userComments->removeElement($userComment)) {
-            // set the owning side to null (unless already changed)
-            if ($userComment->getPost() === $this) {
-                $userComment->setPost(null);
-            }
-        }
+        $this->userComments->removeElement($userComment);
 
         return $this;
     }

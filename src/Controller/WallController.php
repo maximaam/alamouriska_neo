@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Wall;
+use App\Form\WallForm;
+use App\Utils\SocialMediaUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-use App\Entity\User;
-use App\Form\WallForm;
-use App\Utils\SocialMediaUtils;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/wall', name: 'app_wall_')]
 #[IsGranted(User::ROLE_USER)]
@@ -37,7 +37,7 @@ final class WallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $description = $form->get('description')->getData();
 
-            $descriptionHtml = SocialMediaUtils::linkifyUrls($description);   
+            $descriptionHtml = SocialMediaUtils::linkifyUrls($description, true);
             $descriptionHtml = SocialMediaUtils::makeYoutubeEmbed($descriptionHtml);
 
             $wall->setDescriptionHtml($descriptionHtml);
@@ -95,8 +95,8 @@ final class WallController extends AbstractController
 
         return $this->render('wall/delete.html.twig', [
             'wall' => $wall,
-            //'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
-            //'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
+            // 'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
+            // 'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
         ]);
     }
 }

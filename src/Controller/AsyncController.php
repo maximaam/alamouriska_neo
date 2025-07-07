@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Entity\UserComment;
 use App\Entity\UserLike;
-use App\Entity\User;
 use App\Form\ContactMemberForm;
 use App\Form\PostCommentForm;
 use App\Message\ContactMemberEmailMessage;
 use App\Message\PostCommentEmailMessage;
+use App\Utils\SocialMediaUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -93,12 +94,13 @@ final class AsyncController extends AbstractController
                     throw new \LogicException('Access denied.');
                 }
 
-                $comment = (new UserComment())
+                $commentData = SocialMediaUtils::linkifyUrls($form->get('comment')->getData());
+                $userComment = (new UserComment())
                     ->setPost($post)
                     ->setUser($user)
-                    ->setComment($form->get('comment')->getData());
+                    ->setComment($commentData);
 
-                $this->entityManager->persist($comment);
+                $this->entityManager->persist($userComment);
                 $this->entityManager->flush();
 
                 if ($post->getUser() !== $user) {
@@ -116,7 +118,7 @@ final class AsyncController extends AbstractController
                 return $this->json([
                     'status' => 'success',
                     'comment_item' => $this->renderView('partials/_user-comment-item.html.twig', [
-                        'userComment' => $comment,
+                        'userComment' => $userComment,
                     ]),
                     // Resend a fresh form, in case the previous contains errors
                     'form' => $this->renderView('partials/_user-comment-form.html.twig', [

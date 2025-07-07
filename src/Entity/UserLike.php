@@ -20,35 +20,35 @@ class UserLike
 
     #[ORM\ManyToOne(inversedBy: 'userLikes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Post $post = null;
+    private Post $post;
 
     #[ORM\ManyToOne(inversedBy: 'userLikes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPost(): ?Post
+    public function getPost(): Post
     {
         return $this->post;
     }
 
-    public function setPost(?Post $post): static
+    public function setPost(Post $post): static
     {
         $this->post = $post;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(User $user): static
     {
         $this->user = $user;
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Post;
-use App\Entity\UserComment;
 use App\Entity\User;
+use App\Entity\UserComment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,8 +15,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserCommentRepository extends ServiceEntityRepository
 {
-    public const QB_ALIAS = 'pc';
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserComment::class);
@@ -33,10 +31,10 @@ class UserCommentRepository extends ServiceEntityRepository
             $posts = [$posts];
         }
 
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->select('IDENTITY('.self::QB_ALIAS.'.post)')
-            ->andWhere(self::QB_ALIAS.'.post IN (:posts)')
-            ->andWhere(self::QB_ALIAS.'.user = :user')
+        return $this->createQueryBuilder('uc')
+            ->select('IDENTITY(uc.post)')
+            ->andWhere('uc.post IN (:posts)')
+            ->andWhere('uc.user = :user')
             ->setParameter('posts', $posts)
             ->setParameter('user', $user)
             ->getQuery()
