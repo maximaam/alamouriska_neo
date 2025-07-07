@@ -1,27 +1,6 @@
 <div class="sidebar col-sm-4">
     <div class="card bg-rocher mb-3">
         <div class="card-header fw-bold">
-            {{ 'label.newest_comments' | trans }}
-        </div>
-        <div class="card-body">
-            {% for comment in newset_comments %}
-                <div class="mb-2 pb-1 card-list">
-                    {%  include 'partials/_avatar.html.twig' with {'user': comment.user } only %}
-                    <a href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ comment.post.type.name ~'.seo_route') | trans, 'id' : comment.post.id, 'titleSlug': comment.post.titleSlug}) }}" title="Par: {{ comment.post.user.pseudo }} - Le: {{ comment.post.createdAt | date }}">
-                        {{ comment.comment }}
-                    </a>
-                </div>
-            {% endfor %}
-            <div class="text-center mt-3">
-                <a href="{{ path('app_post_new') }}" class="text-yellow">
-                    {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'post.label.create' | trans }}
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="card bg-rocher mb-3">
-        <div class="card-header fw-bold">
             {{ 'label.newest_questions' | trans }}
         </div>
         <div class="card-body">
@@ -31,8 +10,8 @@
             </p>
             {% for post in newset_questions %}
                 <div class="mb-2 pb-1 card-list">
-                    {%  include 'partials/_avatar.html.twig' with {'user': post.user } only %}
-                    <a href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}">
+                    {%  include 'partials/_avatar.html.twig' with {'pseudo': post.user.pseudo, 'avatarName': post.user.avatarName } only %}
+                    <a class="ms-1" href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}">
                         {{ post.title }}
                     </a>
                 </div>
@@ -52,12 +31,38 @@
         <div class="card-body">
             {% for user in newest_users %}
                 <div class="mb-2 pb-1 card-list">
-                    {%  include 'partials/_avatar.html.twig' with {'user': user } only %}
-                    <a href="{{ path('app_frontend_member_profile', {'pseudo': user.pseudo}) }}">
+                    {%  include 'partials/_avatar.html.twig' with {'pseudo': user.pseudo, 'avatarName': user.avatarName } only %}
+                    <a class="ms-1" href="{{ path('app_frontend_member_profile', {'pseudo': user.pseudo}) }}">
                         {{ user.pseudo }}
                     </a>
                 </div>
             {% endfor %}
+        </div>
+    </div>
+
+    <div class="card bg-rocher mb-3">
+        <div class="card-header fw-bold">
+            {{ 'label.newest_comments' | trans }}
+        </div>
+        <div class="card-body newest-comment">
+            {% for comment in newset_comments %}
+                <div class="mb-2 pb-1 card-list">
+                    {%  include 'partials/_avatar.html.twig' with {'pseudo': comment.user.pseudo, 'avatarName': comment.user.avatarName } only %}
+                    
+                    {{ comment.comment | raw }}
+
+                    <div class="d-block text-end">
+                        <a class="a-yellow" href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ comment.post.type.name ~'.seo_route') | trans, 'id' : comment.post.id, 'titleSlug': comment.post.titleSlug}) }}" title="Par: {{ comment.post.user.pseudo }} - Le: {{ comment.post.createdAt | date }}">
+                            {{ 'label.see_post' | trans }}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="text-center mt-3">
+                <a href="{{ path('app_post_new') }}" class="text-yellow">
+                    {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'post.label.create' | trans }}
+                </a>
+            </div>
         </div>
     </div>
 

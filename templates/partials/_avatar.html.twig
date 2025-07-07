@@ -1,8 +1,14 @@
 {% set avatar = asset('images/default-avatar.png') %}
 {% set size = size|default(32) %}
 
-{% if user.avatarName is not null %}
-    {% set avatar = asset(avatars_dir ~ '/' ~ user.avatarName) | imagine_filter('avatar_thumb_' ~ size) %}
+{% if avatarName is not null %}
+    {% set avatar = asset(avatars_dir ~ '/' ~ avatarName) | imagine_filter('avatar_thumb_' ~ size) %}
 {% endif %}
 
-<img class="user-avatar rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ user.pseudo }}" width="{{ size }}" height="{{ size }}">
+{% if withoutLink is defined and withoutLink == true %}
+    <img class="user-avatar rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ pseudo }}" width="{{ size }}" height="{{ size }}">
+{% else %}
+    <a href="{{ path('app_frontend_member_profile', {'pseudo': pseudo}) }}" title="{{ 'label.profile'|trans }} {{ pseudo }}">
+        <img class="user-avatar rounded-circle {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ pseudo }}" width="{{ size }}" height="{{ size }}">
+    </a>
+{% endif %}

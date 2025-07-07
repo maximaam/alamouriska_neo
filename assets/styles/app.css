@@ -149,15 +149,18 @@ main {
                 text-underline-offset: 0.250em;
             }
         }
+        .card-body.newest-comment a {
+            color: var(--bs-yellow) !important;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
         .card-header {
             background-color: var(--rocher);
         }
         .card-body {
             .card-list {
                 border-bottom: var(--border-moudja);
-                a {
-                    margin-left: 0.5rem;
-                }
             }
         }
     }
@@ -283,7 +286,6 @@ main {
     right: 10px;
     text-align: center;
 }
-
 /* Break points  */
 .app-centered {
     width: 100%;
@@ -296,13 +298,11 @@ main {
 
 @media (min-width: 600px) {
 }
-
 @media (max-width:1024px) {
     .page-content img {
         width: 100%;
     }
 }
-
 @media (min-width:1024px) { /* big landscape tablets, laptops, and desktops */
     nav.navbar {
         background-color: transparent;
@@ -322,15 +322,11 @@ main {
         height: 64px;
     }
 }
-
-
 .wall-container iframe {
     width: 100%;
 }
-
 @media (min-width:1440px) {
 }
-
 @keyframes marquee {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-100%); }

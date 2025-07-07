@@ -12,7 +12,7 @@
 {% block card_body %}
     <div>
         <div class="mb-3 text-center">
-            {% include 'partials/_avatar.html.twig' with {'user': app.user, 'size': 128 } only %}
+            {% include 'partials/_avatar.html.twig' with {'pseudo': app.user.pseudo, 'avatarName': app.user.avatarName, 'size': 128 } only %}
         </div>
         <div class="mb-3">
             <ul class="ml-0 pl-0">

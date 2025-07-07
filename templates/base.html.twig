@@ -84,7 +84,7 @@
                             <div class="col-2 top-nav-user">
                                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                                 <a href="{{ path('app_user_show') }}" title="{{ app.user.pseudo }} - {{ 'label.profile'|trans }}">
-                                    {%  include 'partials/_avatar.html.twig' with {'user': app.user } only %}
+                                    {%  include 'partials/_avatar.html.twig' with {'pseudo': app.user.pseudo, 'avatarName': app.user.avatarName, 'withoutLink': true } only %}
                                 </a>
                             {% else %}
                                 <a href="{{ path('app_security_login') }}" title="{{ 'label.login'|trans }}">
