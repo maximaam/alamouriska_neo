@@ -27,19 +27,8 @@
         </article>
         {% endif %}
 
-        <h3 class="white-hr">
-            <span>{{ 'label.newest_posts'|trans }}</span>
-        </h3>
-
-        {% for post in newest_posts %}
-            {% include 'partials/_card-post.html.twig' with {
-                post: post,
-                user_like_post_ids: user_like_post_ids,
-                user_comment_post_ids: user_comment_post_ids
-            } only %}
-        {% else %}
-            <p class="text-center text-muted">No posts found.</p>
-        {% endfor %}
+        <h3 class="white-hr"><span>{{ 'label.newest_posts'|trans }}</span></h3>
+        {% include 'partials/_entity-loop.html.twig' with {'entities': newest_posts} %}
 
         <div class="text-center mb-3">
             <a href="{{ path('app_post_new') }}" class="btn btn-secondary">

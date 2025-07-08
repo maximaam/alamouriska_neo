@@ -1,0 +1,71 @@
+{% if instanceof(entity, 'App\\Entity\\Post') %}
+    {% set social_url = url('app_frontend_post', {'seoTypeSlug': ('post.'~ entity.type.name ~'.seo_route') | trans, 'id' : entity.id, 'titleSlug': entity.titleSlug}) | url_encode %}
+    {% set entity_name = 'post' %}
+{% else %}
+    {% set social_url = "" %}
+    {% set entity_name = 'wall' %}
+{% endif %}
+
+
+<div class="row mt-2">
+    <div class="col post-actions">
+    {% set likeCount= '<span id="likes-counter-' ~ entity.id ~ '" data-user-like-target="count">' ~ entity.userLikes|length ~ '</span>' %}
+    {% set iconLikeName = (app.user and entity.id in user_like_interaction_ids) ? 'bi:heart-fill' : 'bi:heart' %}
+    {% set iconLike = '<span data-user-like-target="icon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
+
+    <button
+        type="button"
+        title="{{ 'label.i_like' | trans }}"
+        class="btn-likes p-2 rounded"
+        data-controller="user-like"
+        data-action="click->user-like#like"
+        data-user-like-url-value="{{ path('app_async_user_like', { 'id': entity.id, 'entityName': entity_name }) }}"
+        data-user-like-csrf-token-value="{{ csrf_token('like-interaction') }}">
+        {{ iconLike|raw }}
+        {{ likeCount|raw }}
+    </button>
+
+    <!-- Comment -->
+    {% set commentCount= '<span id="comment-counter-' ~ entity.id ~ '" data-user-comment-target="count">' ~ entity.userComments|length ~ '</span>' %}
+    {% set iconCommentName = (app.user and entity.id in user_comment_interaction_ids) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
+    {% set iconComment = '<span data-user-comment-target="icon">' ~ ux_icon(iconCommentName, {class: 'basic-icon'}) ~ '</span>' %}
+
+        <button
+            type="button"
+            title="{{ 'label.i_comment' | trans }}"
+            class="btn-likes p-2 rounded"
+            data-controller="user-comment"
+            data-action="click->user-comment#getForm"
+            data-user-comment-id-value="{{ entity.id }}"
+            data-user-comment-url-value="{{ path('app_async_user_comment', { 'id': entity.id, 'entityName': entity_name }) }}">
+            {{ iconComment|raw }}
+            {{ commentCount|raw }}
+        </button>
+    </div>
+
+    {# Social media shares #}
+    
+
+    <div class="col text-end">
+        <a 
+            href="https://x.com/intent/tweet?url={{ social_url }}" 
+            target="_blank"
+            class="btn btn-dark"
+            rel="noopener noreferrer"
+            title="{{ 'label.x_share'|trans }}">
+            {{ ux_icon('bi:twitter-x', {class: 'basic-icon'}) }}
+        </a>
+        <a 
+            href="https://www.facebook.com/sharer/sharer.php?u={{ social_url }}"
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+            title="{{ 'label.facebook_share'|trans }}">
+            {{ ux_icon('bi:facebook', {class: 'basic-icon'}) }} 
+        </a>
+    </div>
+    
+</div>
+
+<div data-controller="user-comment-delete" id="comment-container-{{ entity.id }}" class="comment-container slide-toggle mt-2" data-contentLoaded="false">
+</div>

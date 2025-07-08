@@ -21,7 +21,7 @@ framework:
             messenger.bus.default: []
 
         routing:
-            App\Message\PostCommentEmailMessage: async
+            App\Message\UserCommentEmailMessage: async
             App\Message\ContactMemberEmailMessage: async
             App\Message\WeeklyPostsNotificationMessage: async
             

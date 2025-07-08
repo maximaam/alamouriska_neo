@@ -8,13 +8,14 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
 use App\Entity\UserLike;
+use App\Entity\Wall;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class UserInteraction
 {
     private const INTERACTION_REPO_METHODS = [
-        'user_like_post_ids' => [UserLike::class, 'findLikedPostIdsByUser'],
-        'user_comment_post_ids' => [UserComment::class, 'findCommentPostIdsByUser'],
+        'user_like_interaction_ids' => [UserLike::class, 'getUserInteractionIds'],
+        'user_comment_interaction_ids' => [UserComment::class, 'getUserInteractionIds'],
     ];
 
     public function __construct(
@@ -27,11 +28,11 @@ final readonly class UserInteraction
      *
      * @return non-empty-array<'user_comment_post_ids'|'user_like_post_ids', array<int>>
      */
-    public function getUserInteractionIds(Post|iterable $posts, ?User $user = null): array
+    public function getUserInteractionIds(Post|Wall|iterable $entities, string $entityName, ?User $user = null): array
     {
-        $posts = \is_iterable($posts) ? $posts : [$posts];
+        $entities = \is_iterable($entities) ? $entities : [$entities];
 
-        if (null === $user || [] === $posts) {
+        if (null === $user || [] === $entities) {
             return array_fill_keys(array_keys(self::INTERACTION_REPO_METHODS), []);
         }
 
@@ -40,7 +41,7 @@ final readonly class UserInteraction
         foreach (self::INTERACTION_REPO_METHODS as $key => [$class, $method]) {
             // Dynamic class and method call, avoid keys duplicate, but it's fine
             // @phpstan-ignore-next-line
-            $results[$key] = $this->em->getRepository($class)->$method($posts, $user);
+            $results[$key] = $this->em->getRepository($class)->$method($entities, $entityName, $user);
         }
 
         return $results;

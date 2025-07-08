@@ -14,6 +14,12 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFunction('rolling_clouds', DiversUtils::rollingClouds(...), ['is_safe' => ['html']]),
+            new TwigFunction('instanceof', [$this, 'isInstanceof']),
         ];
+    }
+
+    public function isInstanceof($object, string $class): bool
+    {
+        return $object instanceof $class;
     }
 }

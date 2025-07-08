@@ -12,6 +12,7 @@ use App\Entity\Wall;
 use App\Form\ContactMemberForm;
 use App\Service\UserInteraction;
 use App\Utils\PostUtils;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,6 +30,7 @@ final class FrontendController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly UserInteraction $userInteraction,
+        private readonly PaginatorInterface $paginator,
     ) {
     }
 
@@ -40,12 +42,12 @@ final class FrontendController extends AbstractController
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
             'newest_posts' => $latestPosts,
-            ...$this->userInteraction->getUserInteractionIds($latestPosts, $user),
+            ...$this->userInteraction->getUserInteractionIds($latestPosts, 'post', $user),
         ]);
     }
 
     #[Route('/membre/{pseudo:user}', name: 'member_profile')]
-    public function memberProfile(PaginatorInterface $paginator, User $user, Request $request): Response
+    public function memberProfile(User $user, Request $request): Response
     {
         if (!$user->isVerified()) {
             $this->addFlash('warning', 'flash.user_not_verified');
@@ -53,7 +55,7 @@ final class FrontendController extends AbstractController
             return $this->redirectToRoute('app_frontend_index', status: Response::HTTP_SEE_OTHER);
         }
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $this->em->getRepository(Post::class)->findPaginatedByUserQuery($user),
             $request->query->getInt('page', 1),
             self::PAGE_MAX_POSTS,
@@ -65,7 +67,7 @@ final class FrontendController extends AbstractController
             'posts_count' => $pagination->getTotalItemCount(),
             'pagination' => $pagination,
             'comments_count' => $this->em->getRepository(UserComment::class)->count(['user' => $user]),
-            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), $user),
+            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), 'post', $user),
         ]);
     }
 
@@ -79,7 +81,7 @@ final class FrontendController extends AbstractController
 
     #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS, 'id' => Requirement::POSITIVE_INT, 'titleSlug' => Requirement::ASCII_SLUG])]
     // condition: "service('post_utils').isValidSlug('mots-algeriens')",
-    public function postById(Post $post, string $seoTypeSlug, string $titleSlug, #[CurrentUser] ?User $user = null): Response
+    public function post(Post $post, string $seoTypeSlug, string $titleSlug, #[CurrentUser] ?User $user = null): Response
     {
         // URL manipulation, like changing the ID
         if ($titleSlug !== $post->getTitleSlug()) {
@@ -91,43 +93,35 @@ final class FrontendController extends AbstractController
         }
 
         return $this->render('frontend/post.html.twig', [
-            'post' => $post,
-            ...$this->userInteraction->getUserInteractionIds($post, $user),
+            'entity' => $post,
+            ...$this->userInteraction->getUserInteractionIds($post, 'post', $user),
         ]);
     }
 
     #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS])]
-    public function postsByType(PaginatorInterface $paginator, Request $request, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
+    public function posts(Request $request, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
     {
         if (null === $type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) {
             return $this->redirectToRoute('app_frontend_index');
         }
 
-        $pagination = $paginator->paginate(
+        return $this->renderPaginatedEntities(
+            $request,
             $this->em->getRepository(Post::class)->findPaginatedQuery($type),
-            $request->query->getInt('page', 1),
-            self::PAGE_MAX_POSTS,
+            'frontend/posts.html.twig',
+            $user,
         );
-
-        return $this->render('frontend/posts.html.twig', [
-            'pagination' => $pagination,
-            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), $user),
-        ]);
     }
 
     #[Route('/questions', name: 'questions')]
-    public function questions(PaginatorInterface $paginator, Request $request, #[CurrentUser] ?User $user = null): Response
+    public function questions(Request $request, #[CurrentUser] ?User $user = null): Response
     {
-        $pagination = $paginator->paginate(
+        return $this->renderPaginatedEntities(
+            $request,
             $this->em->getRepository(Post::class)->findPaginatedQuestionsQuery(),
-            $request->query->getInt('page', 1),
-            self::PAGE_MAX_POSTS,
+            'frontend/questions.html.twig',
+            $user,
         );
-
-        return $this->render('frontend/questions.html.twig', [
-            'pagination' => $pagination,
-            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), $user),
-        ]);
     }
 
     #[Route('/recherche', name: 'search')]
@@ -145,15 +139,41 @@ final class FrontendController extends AbstractController
         return $this->render('frontend/search.html.twig', [
             'search_input' => $searchInput,
             'posts' => $posts,
-            ...$this->userInteraction->getUserInteractionIds($posts, $user),
+            ...$this->userInteraction->getUserInteractionIds($posts, 'post', $user),
         ]);
     }
 
-    #[Route('/el7it', name: 'wall')]
-    public function wall(): Response
+    #[Route('/el7it/{id}', name: 'wall')]
+    public function wallBricks(Wall $wall, #[CurrentUser] ?User $user = null): Response
     {
         return $this->render('frontend/wall.html.twig', [
-            'bricks' => $this->em->getRepository(Wall::class)->findBy([], ['createdAt' => 'DESC']),
+            'entity' => $wall,
+            ...$this->userInteraction->getUserInteractionIds($wall, 'wall', $user),
+        ]);
+    }
+
+    #[Route('/el7it', name: 'walls')]
+    public function wall(#[CurrentUser] ?User $user = null): Response
+    {
+        $walls = $this->em->getRepository(Wall::class)->findBy([], ['createdAt' => 'DESC']);
+
+        return $this->render('frontend/walls.html.twig', [
+            'entities' => $walls,
+            ...$this->userInteraction->getUserInteractionIds($walls, 'wall', $user),
+        ]);
+    }
+
+    private function renderPaginatedEntities(Request $request, Query $queryBuilder, string $template, ?User $user): Response
+    {
+        $pagination = $this->paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            self::PAGE_MAX_POSTS,
+        );
+
+        return $this->render($template, [
+            'pagination' => $pagination,
+            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), 'post', $user),
         ]);
     }
 }

@@ -1,0 +1,27 @@
+<div class="card mb-3 card-post">
+    <div class="card-header">
+        <div class="d-inline-block align-middle">
+            {% include 'partials/_avatar.html.twig' with {'pseudo': entity.user.pseudo, 'avatarName': entity.user.avatarName, 'size': 64 } only %}
+        </div>
+        <div class="d-inline-block align-middle">
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': entity.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="fw-bold">
+                {{ entity.user.pseudo }}
+            </a>
+            <br>
+            <time class="" datetime="{{ entity.createdAt | date('Y.m.d H:i') }}">
+                {{ 'label.date_on' | trans }} : {{ entity.createdAt | date('d.m.Y H:i') }}
+            </time>
+        </div>
+    </div>
+    <div class="card-body p-2">
+        {% if instanceof(entity, 'App\\Entity\\Post') %}
+            {{ include ('partials/_entity-card-post.html.twig') }}
+        {% else %}
+            {{ include ('partials/_entity-card-wall.html.twig') }}
+        {% endif %}
+    </div>
+
+    <div class="card-footer">
+        {{ include ('partials/_user-interactions.html.twig') }}
+    </div>
+</div>

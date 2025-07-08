@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\MessageHandler;
 
-use App\Message\PostCommentEmailMessage;
+use App\Message\UserCommentEmailMessage;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsMessageHandler]
-final readonly class PostCommentEmailMessageHandler
+final readonly class UserCommentEmailMessageHandler
 {
     public function __construct(
         private MailerInterface $mailer,
@@ -22,7 +22,7 @@ final readonly class PostCommentEmailMessageHandler
     ) {
     }
 
-    public function __invoke(PostCommentEmailMessage $message): void
+    public function __invoke(UserCommentEmailMessage $message): void
     {
         /** @var string $appNotifier */
         $appNotifier = $this->parameterBag->get('app_notifier_email');
@@ -34,14 +34,11 @@ final readonly class PostCommentEmailMessageHandler
             ->from(new Address($appNotifier, $appName))
             ->to($message->receiverEmail)
             ->subject($this->translator->trans('email.post_comment.subject'))
-            ->htmlTemplate('emails/post_comment.fr.html.twig')
+            ->htmlTemplate('emails/user_comment.fr.html.twig')
             ->context([
                 'sender' => $message->senderPseudo,
                 'receiver' => $message->receiverPseudo,
-                'post_title' => $message->postTitle,
-                'post_type' => $message->postType,
-                'post_id' => $message->postId,
-                'post_slug' => $message->postSlug,
+                'entityUrl' => $message->entityUrl,
             ]);
 
         $this->mailer->send($email);

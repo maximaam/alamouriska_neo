@@ -45,7 +45,7 @@ final class WallController extends AbstractController
             $entityManager->persist($wall);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_frontend_wall', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_frontend_walls', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('wall/new.html.twig', [

@@ -18,5 +18,28 @@
 
 to do 
 - optimize:
-    'liked_post_ids' => $likedPostIds,
-    'comment_post_ids' => $commentPostIds,
+    ##'liked_post_ids' => $likedPostIds,
+    ##'comment_post_ids' => $commentPostIds,
+    post like EAGER -> check
+
+
+
+
+<div class="col text-end">
+        <a 
+            href="https://x.com/intent/tweet?url={{ url('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) | url_encode }}" 
+            target="_blank"
+            class="btn btn-dark"
+            rel="noopener noreferrer"
+            title="{{ 'label.x_share'|trans }}">
+            {{ ux_icon('bi:twitter-x', {class: 'basic-icon'}) }}
+        </a>
+        <a 
+            href="https://www.facebook.com/sharer/sharer.php?u={{ url('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) | url_encode }}"
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+            title="{{ 'label.facebook_share'|trans }}">
+            {{ ux_icon('bi:facebook', {class: 'basic-icon'}) }} 
+        </a>
+    </div>

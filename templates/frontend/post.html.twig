@@ -1,21 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ post.title }}
+    {{ entity.title }}
     {{ parent() }}
 {% endblock %}
 
 {% block opengraph_title %}
-    <meta property="og:title" content="{{ post.title }} - {{ app_name }}" />
+    <meta property="og:title" content="{{ entity.title }} - {{ app_name }}" />
 {% endblock %}
 
 {% block body %}
     <div class="col-sm-8">
-        {% include 'partials/_card-post.html.twig' with {
-            post: post,
-            user_like_post_ids: user_like_post_ids,
-            user_comment_post_ids: user_comment_post_ids
-        } only %}
+        {{ include ('partials/_entity-card.html.twig') }}
     </div>
     {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}
 {% endblock %}

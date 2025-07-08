@@ -1,0 +1,34 @@
+<div class="text-end">
+    {% if entity.question is true %}
+    <span title="{{ 'label.post_is_question' | trans }}" class="bg-info p-1 ps-3 pe-3 rounded-bottom fw-bold post-features">
+        {{ ux_icon('bi:question', {class: 'basic-icon'}) }}
+    </span>
+    {% endif %}
+    <span title="{{ 'label.post_type' | trans }}" class="p-1 ps-3 pe-3 rounded-bottom fw-bold post-features">
+        {{ ('post.' ~ entity.type.name ~ '.singular') | trans }}
+    </span>
+</div>
+
+<h2>
+    {{ entity.title }}
+    {% if entity.titleArabic is not null %}
+        <br>
+        {{ entity.titleArabic }}
+    {% endif %}
+</h2>
+
+<p>{{ entity.description | nl2br }}</p>
+
+{% if entity.postImageName is not null %}
+    <div class="card-post-image">
+        <img src="{{ asset(posts_dir ~ '/' ~ entity.postImageName) | imagine_filter('post_image') }}" alt="">
+    </div>
+{% endif %}
+
+{% if app.user == entity.user %}
+    <div class="text-end mt-2">
+        <a href="{{ path('app_post_delete', {'id': entity.id} ) }}">{{ 'label.post_delete' | trans }}</a>
+        | 
+        <a href="{{ path('app_post_edit', {'id': entity.id} ) }}">{{ 'label.post_edit' | trans }}</a>
+    </div>
+{% endif %}

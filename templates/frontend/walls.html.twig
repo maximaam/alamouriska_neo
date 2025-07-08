@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% set header_meta = 'label.posts_questions' | trans %}
+{% set header_meta = 'label.wall_h1' | trans %}
 
 {% block title %}
     {{ header_meta }}
@@ -12,9 +12,11 @@
 
 {% block body %}
     <div class="col-sm-8">
-        <h1 class="mb-3 text-center">{{ header_meta }}</h1>
-        {% include 'partials/_entity-loop.html.twig' with {'entities': pagination} %}
-        {{ knp_pagination_render(pagination, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+        <h1 class="mb-3 text-center">
+            {{ header_meta }}
+            <small><a href="{{ path('app_wall_new') }}">(+)</a></small>
+        </h1>
+        {% include 'partials/_entity-loop.html.twig' with {'entities': entities} %}
     </div>
 
     {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}

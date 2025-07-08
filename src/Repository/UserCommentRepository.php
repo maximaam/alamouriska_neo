@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
+use App\Entity\Wall;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,21 +22,21 @@ class UserCommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Post[]|Post $posts A single Post or an array of Posts
+     * @param Post[]|Wall[]|Post|Wall $posts A single Post or an array of Posts
      *
      * @return int[] Array of liked post IDs
      */
-    public function findCommentPostIdsByUser(array|Post $posts, User $user): array
+    public function getUserInteractionIds(array|Post|Wall $entities, string $entityName, User $user): array
     {
-        if ($posts instanceof Post) {
-            $posts = [$posts];
+        if (!\is_iterable($entities)) {
+            $entities = [$entities];
         }
 
         return $this->createQueryBuilder('uc')
-            ->select('IDENTITY(uc.post)')
-            ->andWhere('uc.post IN (:posts)')
+            ->select('IDENTITY(uc.'.$entityName.')')
+            ->andWhere('uc.'.$entityName.' IN (:entities)')
             ->andWhere('uc.user = :user')
-            ->setParameter('posts', $posts)
+            ->setParameter('entities', $entities)
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleColumnResult();
@@ -51,34 +52,10 @@ class UserCommentRepository extends ServiceEntityRepository
             ->leftJoin('c.post', 'p')
             ->leftJoin('p.user', 'postUser')       // author of the post
             ->leftJoin('c.user', 'commentUser')    // author of the comment
+            ->where('c.post IS NOT NULL')
             ->orderBy('c.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();
     }
-
-    //    /**
-    //     * @return PostComment[] Returns an array of PostComment objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?PostComment
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

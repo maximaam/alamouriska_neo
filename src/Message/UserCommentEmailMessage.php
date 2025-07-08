@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-final readonly class PostCommentEmailMessage
+final readonly class UserCommentEmailMessage
 {
     public function __construct(
         public string $senderPseudo,
         public string $receiverPseudo,
         public string $receiverEmail,
-        public int $postId,
-        public string $postTitle,
-        public string $postType,
-        public string $postSlug
+        public string $entityUrl,
     ) {
     }
 }

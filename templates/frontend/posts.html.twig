@@ -15,16 +15,7 @@
 {% block body %}
     <div class="col-sm-8">
         <h1 class="mb-4 text-center">{{ post_type_slug }}</h1>
-        {% for post in pagination %}
-            {% include 'partials/_card-post.html.twig' with {
-                post: post,
-                user_like_post_ids: user_like_post_ids,
-                user_comment_post_ids: user_comment_post_ids
-            } only %}
-        {% else %}
-            <p class="alert alert-warning">{{ 'flash.search_none_found' | trans }}</p>
-        {% endfor %}
-
+        {% include 'partials/_entity-loop.html.twig' with {'entities': pagination} %}
         {{ knp_pagination_render(pagination, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
     </div>
     {{ render(controller('App\\Controller\\EmbedController::sidebar')) }}

@@ -20,15 +20,31 @@ class UserLike
 
     #[ORM\ManyToOne(inversedBy: 'userLikes')]
     #[ORM\JoinColumn(nullable: false)]
-    private Post $post;
+    private User $user;
 
     #[ORM\ManyToOne(inversedBy: 'userLikes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private User $user;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Post $post = null;
+
+    #[ORM\ManyToOne(inversedBy: 'userLikes')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Wall $wall = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     public function getPost(): Post
@@ -43,14 +59,14 @@ class UserLike
         return $this;
     }
 
-    public function getUser(): User
+    public function getWall(): ?Wall
     {
-        return $this->user;
+        return $this->wall;
     }
 
-    public function setUser(User $user): static
+    public function setWall(?Wall $wall): static
     {
-        $this->user = $user;
+        $this->wall = $wall;
 
         return $this;
     }

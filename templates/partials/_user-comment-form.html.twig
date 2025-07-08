@@ -16,7 +16,7 @@
 
 {% if with_comments is defined %}
     <div class="comments mb-3">
-        {% for userComment in post.userComments %}
+        {% for userComment in entity.userComments %}
             {% include 'partials/_user-comment-item.html.twig' with {'userComment': userComment} only %}   
         {% endfor %}
     </div>

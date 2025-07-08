@@ -1,0 +1,11 @@
+<div class="wall-container">
+    <p>{{ entity.descriptionHtml | raw | nl2br }}</p>
+</div>
+
+{% if app.user == entity.user %}
+    <div class="text-end mt-2">
+        <a href="{{ path('app_wall_delete', {'id': entity.id} ) }}">{{ 'label.post_delete' | trans }}</a>
+        | 
+        <a href="{{ path('app_wall_edit', {'id': entity.id} ) }}">{{ 'label.post_edit' | trans }}</a>
+    </div>
+{% endif %}

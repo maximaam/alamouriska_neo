@@ -15,18 +15,7 @@
         <div class="row">
             <div class="col-sm-8">
                 <h1 class="mb-3 text-center">{{ header_meta }}</h1>
-
-                {% for post in posts %}
-                    {% include 'partials/_card-post.html.twig' with {
-                        post: post,
-                        user_like_post_ids: user_like_post_ids,
-                        user_comment_post_ids: user_comment_post_ids
-                    } only %}
-                {% else %}
-                    <p class="alert alert-warning">
-                        {{ 'flash.search_none_found' | trans }}
-                    </p>
-                {% endfor %}
+                {% include 'partials/_entity-loop.html.twig' with {'entities': posts} %}            
             </div>
             {{ render(controller('App\\Controller\\EmbedController::sidebar', {max: 3})) }}
         </div>

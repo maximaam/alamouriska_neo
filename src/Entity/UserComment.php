@@ -19,30 +19,34 @@ class UserComment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'userComments')]
-    #[ORM\JoinColumn(nullable: false)]
-    private Post $post;
+    #[ORM\Column(type: Types::TEXT)]
+    private string $comment;
 
     #[ORM\ManyToOne(inversedBy: 'userComments')]
     #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private string $comment;
+    #[ORM\ManyToOne(inversedBy: 'userComments')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Post $post = null;
+
+    #[ORM\ManyToOne(inversedBy: 'userComments')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Wall $wall = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPost(): Post
+    public function getComment(): string
     {
-        return $this->post;
+        return $this->comment;
     }
 
-    public function setPost(Post $post): static
+    public function setComment(string $comment): static
     {
-        $this->post = $post;
+        $this->comment = $comment;
 
         return $this;
     }
@@ -59,14 +63,26 @@ class UserComment
         return $this;
     }
 
-    public function getComment(): string
+    public function getPost(): ?Post
     {
-        return $this->comment;
+        return $this->post;
     }
 
-    public function setComment(string $comment): static
+    public function setPost(?Post $post): static
     {
-        $this->comment = $comment;
+        $this->post = $post;
+
+        return $this;
+    }
+
+    public function getWall(): ?Wall
+    {
+        return $this->wall;
+    }
+
+    public function setWall(?Wall $wall): static
+    {
+        $this->wall = $wall;
 
         return $this;
     }

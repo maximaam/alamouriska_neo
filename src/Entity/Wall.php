@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\WallRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -35,6 +37,25 @@ class Wall
     #[ORM\ManyToOne(inversedBy: 'walls')]
     #[ORM\JoinColumn(nullable: false)]
     private User $User;
+
+    /**
+     * @var Collection<int, UserLike>
+     */
+    #[ORM\OneToMany(targetEntity: UserLike::class, mappedBy: 'wall', orphanRemoval: true, fetch: 'EAGER')]
+    private Collection $userLikes;
+
+    /**
+     * @var Collection<int, UserComment>
+     */
+    #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'wall', orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
+    private Collection $userComments;
+
+    public function __construct()
+    {
+        $this->userLikes = new ArrayCollection();
+        $this->userComments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -73,6 +94,56 @@ class Wall
     public function setUser(User $User): static
     {
         $this->User = $User;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserLike>
+     */
+    public function getUserLikes(): Collection
+    {
+        return $this->userLikes;
+    }
+
+    public function addPostLike(UserLike $userLike): static
+    {
+        if (!$this->userLikes->contains($userLike)) {
+            $this->userLikes->add($userLike);
+            $userLike->setWall($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(UserLike $userLike): static
+    {
+        $this->userLikes->removeElement($userLike);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserComment>
+     */
+    public function getUserComments(): Collection
+    {
+        return $this->userComments;
+    }
+
+    public function addPostComment(UserComment $userComment): static
+    {
+        if (!$this->userComments->contains($userComment)) {
+            $this->userComments->add($userComment);
+            $userComment->setWall($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(UserComment $userComment): static
+    {
+        $this->userComments->removeElement($userComment);
 
         return $this;
     }
