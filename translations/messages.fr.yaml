@@ -76,7 +76,7 @@ label:
   manage_my_stuff: Modifier mes contributions
   edit_email: "Modifier l'adresse email"
   wall_delete: Supprimer la brique
-  see_post: Voir la publicatiob 
+  see_post: Voir la publication
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
