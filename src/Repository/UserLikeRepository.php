@@ -22,7 +22,7 @@ class UserLikeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Post[]|Wall[]|Post|Wall $posts A single Post or an array of Posts
+     * @param Post[]|Wall[]|Post|Wall $entities Either a single Post/Wall or an array of them
      *
      * @return int[] Array of liked post IDs
      */

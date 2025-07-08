@@ -6,8 +6,6 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\User;
-use App\Entity\UserComment;
-use App\Entity\UserLike;
 use App\Form\PostForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,16 +41,6 @@ final class PostController extends AbstractController
         return $this->render('post/new.html.twig', [
             'post' => $post,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}/show', name: 'show', methods: ['GET'])]
-    public function show(#[CurrentUser] User $user, Post $post): Response
-    {
-        return $this->render('post/show.html.twig', [
-            'post' => $post,
-            'liked_post_ids' => $this->em->getRepository(UserLike::class)->findLikedPostIdsByUser($post, $user),
-            'comment_post_ids' => $this->em->getRepository(UserComment::class)->findCommentPostIdsByUser($post, $user),
         ]);
     }
 

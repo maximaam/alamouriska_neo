@@ -12,8 +12,8 @@ use App\Entity\Wall;
 use App\Form\ContactMemberForm;
 use App\Service\UserInteraction;
 use App\Utils\PostUtils;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -163,13 +163,12 @@ final class FrontendController extends AbstractController
         ]);
     }
 
-    private function renderPaginatedEntities(Request $request, Query $queryBuilder, string $template, ?User $user): Response
+    /**
+     * @param Query<mixed> $query
+     */
+    private function renderPaginatedEntities(Request $request, Query $query, string $template, ?User $user): Response
     {
-        $pagination = $this->paginator->paginate(
-            $queryBuilder,
-            $request->query->getInt('page', 1),
-            self::PAGE_MAX_POSTS,
-        );
+        $pagination = $this->paginator->paginate($query, $request->query->getInt('page', 1), self::PAGE_MAX_POSTS);
 
         return $this->render($template, [
             'pagination' => $pagination,

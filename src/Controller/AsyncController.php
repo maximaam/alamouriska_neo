@@ -16,6 +16,7 @@ use App\Message\UserCommentEmailMessage;
 use App\Utils\SocialMediaUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Form\FormInterface;
 
 #[Route('/async', name: 'app_async_', condition: 'request.isXmlHttpRequest()')]
 final class AsyncController extends AbstractController
@@ -125,9 +125,9 @@ final class AsyncController extends AbstractController
             if ($entity instanceof Post) {
                 $userComment->setPost($entity);
                 $entityUrl = $this->urlGenerator->generate('app_frontend_post', [
-                        'seoTypeSlug' => $this->translator->trans(sprintf('post.%s.seo_route', $entity->getType()->name)),
-                        'id' => $entity->getId(),
-                        'titleSlug' => $entity->getTitleSlug(),
+                    'seoTypeSlug' => $this->translator->trans(\sprintf('post.%s.seo_route', $entity->getType()->name)),
+                    'id' => $entity->getId(),
+                    'titleSlug' => $entity->getTitleSlug(),
                 ]);
             } else {
                 $userComment->setWall($entity);
@@ -142,7 +142,7 @@ final class AsyncController extends AbstractController
                     (string) $user->getPseudo(),
                     (string) $entity->getUser()->getPseudo(),
                     (string) $entity->getUser()->getEmail(),
-                    (string) $entityUrl,
+                    $entityUrl,
                 ));
             }
 

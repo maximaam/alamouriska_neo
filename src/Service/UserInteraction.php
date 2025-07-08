@@ -24,9 +24,9 @@ final readonly class UserInteraction
     }
 
     /**
-     * @param iterable<int, Post> $posts
+     * @param iterable<int, mixed>|Post[]|Wall[]|Post|Wall $entities Either a single Post/Wall or an array of them
      *
-     * @return non-empty-array<'user_comment_post_ids'|'user_like_post_ids', array<int>>
+     * @return array<'user_like_interaction_ids'|'user_comment_interaction_ids', int[]>
      */
     public function getUserInteractionIds(Post|Wall|iterable $entities, string $entityName, ?User $user = null): array
     {
