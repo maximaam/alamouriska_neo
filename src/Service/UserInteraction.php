@@ -28,7 +28,7 @@ final readonly class UserInteraction
      *
      * @return array<'user_like_interaction_ids'|'user_comment_interaction_ids', int[]>
      */
-    public function getUserInteractionIds(Post|Wall|iterable $entities, ?User $user = null): array
+    public function getUserInteractionIds(Post|Wall|iterable $entities, string $entityName, ?User $user = null): array
     {
         $entities = \is_iterable($entities) ? $entities : [$entities];
 
@@ -42,10 +42,11 @@ final readonly class UserInteraction
         }
 
         $results = [];
+
         foreach (self::INTERACTION_REPO_METHODS as $key => [$class, $method]) {
             // Dynamic class and method call, avoid keys duplicate, but it's fine
             // @phpstan-ignore-next-line
-            $results[$key] = $this->em->getRepository($class)->$method($entityIds, $user);
+            $results[$key] = $this->em->getRepository($class)->$method($entityIds, $entityName, $user);
         }
 
         return $results;

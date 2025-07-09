@@ -63,7 +63,7 @@ final class WallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $description = $form->get('description')->getData();
 
-            $descriptionHtml = SocialMediaUtils::linkifyUrls($description);
+            $descriptionHtml = SocialMediaUtils::linkifyUrls($description, true);
             $descriptionHtml = SocialMediaUtils::makeYoutubeEmbed($descriptionHtml);
 
             $wall->setDescriptionHtml($descriptionHtml);
@@ -71,7 +71,7 @@ final class WallController extends AbstractController
             $entityManager->persist($wall);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_frontend_wall', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_frontend_walls', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('wall/edit.html.twig', [
@@ -95,8 +95,7 @@ final class WallController extends AbstractController
 
         return $this->render('wall/delete.html.twig', [
             'wall' => $wall,
-            // 'liked_post_ids' => $this->em->getRepository(PostLike::class)->findLikedPostIdsByUser($post, $user),
-            // 'comment_post_ids' => $this->em->getRepository(PostComment::class)->findCommentPostIdsByUser($post, $user),
         ]);
     }
 }
+

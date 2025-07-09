@@ -26,15 +26,15 @@ class UserCommentRepository extends ServiceEntityRepository
      *
      * @return int[] Array of liked post IDs
      */
-    public function getUserInteractionIds(array $entityIds, User $user): array
+    public function getUserInteractionIds(array $entityIds, string $entityName, User $user): array
     {
         if (!\is_iterable($entityIds)) {
             $entityIds = [$entityIds];
         }
 
         return $this->createQueryBuilder('uc')
-            ->select('uc.id')
-            ->andWhere('uc.id IN (:entityIds)')
+            ->select('IDENTITY(uc.'.$entityName.')')
+            ->andWhere('uc.'.$entityName.' IN (:entityIds)')
             ->andWhere('uc.user = :user')
             ->setParameter('entityIds', $entityIds)
             ->setParameter('user', $user)
