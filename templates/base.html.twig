@@ -20,7 +20,7 @@
         <meta property="og:type" content="{{ (app.request.get('_route') == 'index_index') ? 'website' : 'article' }}">
 
         {% block opengraph_image %}
-            <meta property="og:image" content="https://www.alamouriska.com/images/deep-sea2.jpg">
+            <meta property="og:image" content="{{ absolute_url(asset('images/logo-200.png'))}}">
         {% endblock %}
 
         {% block opengraph_title %}
