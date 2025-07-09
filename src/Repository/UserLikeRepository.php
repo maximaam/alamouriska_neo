@@ -26,17 +26,17 @@ class UserLikeRepository extends ServiceEntityRepository
      *
      * @return int[] Array of liked post IDs
      */
-    public function getUserInteractionIds(array|Post|Wall $entities, string $entityName, User $user): array
+    public function getUserInteractionIds(array $entityIds, User $user): array
     {
-        if (!\is_iterable($entities)) {
-            $entities = [$entities];
+        if (!\is_iterable($entityIds)) {
+            $entityIds = [$entityIds];
         }
 
-        return $this->createQueryBuilder('l')
-            ->select('IDENTITY(l.'.$entityName.')') // returns just the post IDs
-            ->andWhere('l.'.$entityName.' IN (:entities)')
-            ->andWhere('l.user = :user')
-            ->setParameter('entities', $entities)
+        return $this->createQueryBuilder('ul')
+            ->select('ul.id') // returns just the post IDs
+            ->andWhere('ul.id IN (:entityIds)')
+            ->andWhere('ul.user = :user')
+            ->setParameter('entityIds', $entityIds)
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleColumnResult(); // returns array of post IDs

@@ -1,29 +1,40 @@
 AddDefaultCharset utf-8
-Header unset X-Powered-By
-#Header set Strict-Transport-Security "max-age=16070400"
 
+# Security headers
+Header unset X-Powered-By
+# Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" # Enable only if SSL is stable
+Header set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set Content-Security-Policy "default-src 'self'; frame-src 'self' https://*.youtube.com https://*.youtube-nocookie.com; script-src 'self' 'unsafe-inline' data:; style-src 'self' 'unsafe-inline'"
+
+# Force HTTPS and canonical www domain
 RewriteEngine On
-RewriteCond 	%{HTTPS} off
-RewriteRule 	(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-RewriteCond 	%{HTTP_HOST} !^www\. [NC]
-RewriteRule 	(.*) https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\.alamouriska\.com$ [NC]
+RewriteRule ^ https://www.alamouriska.com%{REQUEST_URI} [L,R=301]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Compression
+SetOutputFilter DEFLATE
+
+# Cache static assets for 1 year
+FileETag MTime Size
+ExpiresActive On
+ExpiresByType image/gif "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/webp "access plus 1 year"
+ExpiresByType image/x-icon "access plus 1 year"
+ExpiresByType image/svg+xml "access plus 1 year"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType application/x-javascript "access plus 1 year"
+ExpiresByType font/woff2 "access plus 1 year"
+ExpiresByType font/woff "access plus 1 year"
 
 #AuthUserFile /home/strato/www/re/www.rezouani.com/htdocs/rezouani/var/.htpasswd
 #AuthType Basic
 #AuthName "Bitte Passwort eingeben..."
 #Require valid-user
-
-SetOutputFilter DEFLATE
-
-FileETag MTime Size
-
-ExpiresActive On
-ExpiresByType text/css "access plus 1 weeks"
-ExpiresByType application/javascript "access plus 1 weeks"
-ExpiresByType application/x-javascript "access plus 1 weeks"
-ExpiresByType image/gif "access plus 1 months"
-ExpiresByType image/jpeg "access plus 1 months"
-ExpiresByType image/png "access plus 1 months"
-ExpiresByType image/x-icon "access plus 1 months"

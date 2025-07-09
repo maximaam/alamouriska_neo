@@ -42,7 +42,7 @@ final class FrontendController extends AbstractController
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
             'newest_posts' => $latestPosts,
-            ...$this->userInteraction->getUserInteractionIds($latestPosts, 'post', $user),
+            ...$this->userInteraction->getUserInteractionIds($latestPosts, $user),
         ]);
     }
 
@@ -67,7 +67,7 @@ final class FrontendController extends AbstractController
             'posts_count' => $pagination->getTotalItemCount(),
             'pagination' => $pagination,
             'comments_count' => $this->em->getRepository(UserComment::class)->count(['user' => $user]),
-            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), 'post', $user),
+            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), $user),
         ]);
     }
 
@@ -94,7 +94,7 @@ final class FrontendController extends AbstractController
 
         return $this->render('frontend/post.html.twig', [
             'entity' => $post,
-            ...$this->userInteraction->getUserInteractionIds($post, 'post', $user),
+            ...$this->userInteraction->getUserInteractionIds($post, $user),
         ]);
     }
 
@@ -139,7 +139,7 @@ final class FrontendController extends AbstractController
         return $this->render('frontend/search.html.twig', [
             'search_input' => $searchInput,
             'posts' => $posts,
-            ...$this->userInteraction->getUserInteractionIds($posts, 'post', $user),
+            ...$this->userInteraction->getUserInteractionIds($posts, $user),
         ]);
     }
 
@@ -148,7 +148,7 @@ final class FrontendController extends AbstractController
     {
         return $this->render('frontend/wall.html.twig', [
             'entity' => $wall,
-            ...$this->userInteraction->getUserInteractionIds($wall, 'wall', $user),
+            ...$this->userInteraction->getUserInteractionIds($wall, $user),
         ]);
     }
 
@@ -159,7 +159,7 @@ final class FrontendController extends AbstractController
 
         return $this->render('frontend/walls.html.twig', [
             'entities' => $walls,
-            ...$this->userInteraction->getUserInteractionIds($walls, 'wall', $user),
+            ...$this->userInteraction->getUserInteractionIds($walls, $user),
         ]);
     }
 
@@ -172,7 +172,7 @@ final class FrontendController extends AbstractController
 
         return $this->render($template, [
             'pagination' => $pagination,
-            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), 'post', $user),
+            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), $user),
         ]);
     }
 }

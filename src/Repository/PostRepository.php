@@ -70,8 +70,8 @@ class PostRepository extends ServiceEntityRepository
     public function search(string $searchInput, int $maxResult = 10): array
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.title LIKE :search_input OR p.titleArabic LIKE :search_input')
-            ->setParameter('search_input', '%'.$searchInput.'%')
+            ->andWhere('LOWER(p.title) LIKE :search_input OR p.titleArabic LIKE :search_input')
+            ->setParameter('search_input', '%'.strtolower($searchInput).'%')
             ->orderBy('p.createdAt', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()

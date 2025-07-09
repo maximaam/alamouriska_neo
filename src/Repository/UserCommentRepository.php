@@ -22,21 +22,21 @@ class UserCommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Post[]|Wall[]|Post|Wall $entities Either a single Post/Wall or an array of them
+     * @param array<int, int> $entityIds Either a single Post/Wall or an array of them
      *
      * @return int[] Array of liked post IDs
      */
-    public function getUserInteractionIds(array|Post|Wall $entities, string $entityName, User $user): array
+    public function getUserInteractionIds(array $entityIds, User $user): array
     {
-        if (!\is_iterable($entities)) {
-            $entities = [$entities];
+        if (!\is_iterable($entityIds)) {
+            $entityIds = [$entityIds];
         }
 
         return $this->createQueryBuilder('uc')
-            ->select('IDENTITY(uc.'.$entityName.')')
-            ->andWhere('uc.'.$entityName.' IN (:entities)')
+            ->select('uc.id')
+            ->andWhere('uc.id IN (:entityIds)')
             ->andWhere('uc.user = :user')
-            ->setParameter('entities', $entities)
+            ->setParameter('entityIds', $entityIds)
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleColumnResult();
