@@ -17,82 +17,10 @@
 /opt/RZphp82/bin/php-cli bin/console asset-map:compile
 /opt/RZphp82/bin/php-cli bin/console messenger:consume async -vv --time-limit=30 --memory-limit=128M
 /opt/RZphp82/bin/php-cli bin/console liip:imagine:cache:remove
+/opt/RZphp82/bin/php-cli /mnt/web319/b1/37/51912237/htdocs/bin/composer update
 
 to do 
 - optimize:
     ##'liked_post_ids' => $likedPostIds,
     ##'comment_post_ids' => $commentPostIds,
     post like EAGER -> check
-
-
-AddDefaultCharset utf-8
-
-# Security headers
-Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" # Enable only if SSL is stable
-Header unset X-Powered-By # Hide apache
-Header set X-Content-Type-Options "nosniff"
-Header always set X-Frame-Options "SAMEORIGIN"
-Header set Referrer-Policy "strict-origin-when-cross-origin"
-Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
-
-# Force www and HTTPS in one go (improves redirect efficiency)
-RewriteEngine On
-RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP_HOST} !^www\.
-RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php [QSA,L]
-
-#AuthUserFile /home/strato/www/re/www.rezouani.com/htdocs/rezouani/var/.htpasswd
-#AuthType Basic
-#AuthName "Bitte Passwort eingeben..."
-#Require valid-user
-
-# Compression
-SetOutputFilter DEFLATE
-
-# Cache Headers
-ExpiresActive On
-FileETag MTime Size
-ExpiresByType text/css "access plus 1 weeks"
-ExpiresByType application/javascript "access plus 1 weeks"
-ExpiresByType application/x-javascript "access plus 1 weeks"
-ExpiresByType image/gif "access plus 1 months"
-ExpiresByType image/jpeg "access plus 1 months"
-ExpiresByType image/png "access plus 1 months"
-ExpiresByType image/x-icon "access plus 1 months"
-
--------------
-
-AddDefaultCharset utf-8
-
-# Security headers
-#Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" # Enable only if SSL is stable
-Header unset X-Powered-By # Hide apache
-# Header set X-Content-Type-Options "nosniff"
-# Header always set X-Frame-Options "SAMEORIGIN"
-# Header set Referrer-Policy "strict-origin-when-cross-origin"
-# Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
-
-# Force HTTPS and canonical www domain
-RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP_HOST} !^www\.alamouriska\.com$ [NC]
-RewriteRule ^ https://www.alamouriska.com%{REQUEST_URI} [L,R=301]
-
-#AuthUserFile /home/strato/www/re/www.rezouani.com/htdocs/rezouani/var/.htpasswd
-#AuthType Basic
-#AuthName "Bitte Passwort eingeben..."
-#Require valid-user
-
-SetOutputFilter DEFLATE
-
-FileETag MTime Size
-
-ExpiresActive On
-ExpiresByType text/css "access plus 1 weeks"
-ExpiresByType application/javascript "access plus 1 weeks"
-ExpiresByType application/x-javascript "access plus 1 weeks"
-ExpiresByType image/gif "access plus 1 months"
-ExpiresByType image/jpeg "access plus 1 months"
-ExpiresByType image/png "access plus 1 months"
-ExpiresByType image/x-icon "access plus 1 months"

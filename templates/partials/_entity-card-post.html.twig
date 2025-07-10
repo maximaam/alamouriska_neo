@@ -24,11 +24,3 @@
         <img src="{{ asset(posts_dir ~ '/' ~ entity.postImageName) | imagine_filter('post_image') }}" alt="">
     </div>
 {% endif %}
-
-{% if app.user == entity.user %}
-    <div class="text-end mt-2">
-        <a href="{{ path('app_post_delete', {'id': entity.id} ) }}">{{ 'label.post_delete' | trans }}</a>
-        | 
-        <a href="{{ path('app_post_edit', {'id': entity.id} ) }}">{{ 'label.post_edit' | trans }}</a>
-    </div>
-{% endif %}

@@ -77,6 +77,7 @@ label:
   edit_email: "Modifier l'adresse email"
   wall_delete: Supprimer la brique
   see_post: Voir la publication
+  view_single_entity: Ouvrir séparément
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."
