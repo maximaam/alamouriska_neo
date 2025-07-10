@@ -42,7 +42,6 @@ final readonly class UserInteraction
         }
 
         $results = [];
-
         foreach (self::INTERACTION_REPO_METHODS as $key => [$class, $method]) {
             // Dynamic class and method call, avoid keys duplicate, but it's fine
             // @phpstan-ignore-next-line

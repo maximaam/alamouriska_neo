@@ -47,7 +47,7 @@ final class FrontendController extends AbstractController
     }
 
     #[Route('/membre/{pseudo:user}', name: 'member_profile')]
-    public function memberProfile(User $user, Request $request): Response
+    public function memberProfile(User $user, Request $request, #[CurrentUser] ?User $currentUser = null): Response
     {
         if (!$user->isVerified()) {
             $this->addFlash('warning', 'flash.user_not_verified');
@@ -64,10 +64,10 @@ final class FrontendController extends AbstractController
         return $this->render('frontend/member_profile.html.twig', [
             'form' => $this->createForm(ContactMemberForm::class),
             'member' => $user,
-            'posts_count' => $pagination->getTotalItemCount(),
             'pagination' => $pagination,
+            'posts_count' => $pagination->getTotalItemCount(),
             'comments_count' => $this->em->getRepository(UserComment::class)->count(['user' => $user]),
-            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), 'post', $user),
+            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), 'post', $currentUser),
         ]);
     }
 
@@ -81,7 +81,7 @@ final class FrontendController extends AbstractController
 
     #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS, 'id' => Requirement::POSITIVE_INT, 'titleSlug' => Requirement::ASCII_SLUG])]
     // condition: "service('post_utils').isValidSlug('mots-algeriens')",
-    public function post(Post $post, string $seoTypeSlug, string $titleSlug, #[CurrentUser] ?User $user = null): Response
+    public function post(Post $post, string $seoTypeSlug, string $titleSlug, #[CurrentUser] ?User $currentUser = null): Response
     {
         // URL manipulation, like changing the ID
         if ($titleSlug !== $post->getTitleSlug()) {
@@ -94,12 +94,12 @@ final class FrontendController extends AbstractController
 
         return $this->render('frontend/post.html.twig', [
             'entity' => $post,
-            ...$this->userInteraction->getUserInteractionIds($post, 'post', $user),
+            ...$this->userInteraction->getUserInteractionIds($post, 'post', $currentUser),
         ]);
     }
 
     #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS])]
-    public function posts(Request $request, string $seoTypeSlug, #[CurrentUser] ?User $user = null): Response
+    public function posts(Request $request, string $seoTypeSlug, #[CurrentUser] ?User $currentUser = null): Response
     {
         if (null === $type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) {
             return $this->redirectToRoute('app_frontend_index');
@@ -109,23 +109,23 @@ final class FrontendController extends AbstractController
             $request,
             $this->em->getRepository(Post::class)->findPaginatedQuery($type),
             'frontend/posts.html.twig',
-            $user,
+            $currentUser,
         );
     }
 
     #[Route('/questions', name: 'questions')]
-    public function questions(Request $request, #[CurrentUser] ?User $user = null): Response
+    public function questions(Request $request, #[CurrentUser] ?User $currentUser = null): Response
     {
         return $this->renderPaginatedEntities(
             $request,
             $this->em->getRepository(Post::class)->findPaginatedQuestionsQuery(),
             'frontend/questions.html.twig',
-            $user,
+            $currentUser,
         );
     }
 
     #[Route('/recherche', name: 'search')]
-    public function search(Request $request, #[CurrentUser] ?User $user = null): Response
+    public function search(Request $request, #[CurrentUser] ?User $currentUser = null): Response
     {
         $searchInput = $request->query->getString('q');
         $searchLen = \strlen($searchInput);
@@ -139,27 +139,27 @@ final class FrontendController extends AbstractController
         return $this->render('frontend/search.html.twig', [
             'search_input' => $searchInput,
             'posts' => $posts,
-            ...$this->userInteraction->getUserInteractionIds($posts, 'post', $user),
+            ...$this->userInteraction->getUserInteractionIds($posts, 'post', $currentUser),
         ]);
     }
 
     #[Route('/el7it/{id}', name: 'wall')]
-    public function wallBricks(Wall $wall, #[CurrentUser] ?User $user = null): Response
+    public function wallBricks(Wall $wall, #[CurrentUser] ?User $currentUser = null): Response
     {
         return $this->render('frontend/wall.html.twig', [
             'entity' => $wall,
-            ...$this->userInteraction->getUserInteractionIds($wall, 'wall', $user),
+            ...$this->userInteraction->getUserInteractionIds($wall, 'wall', $currentUser),
         ]);
     }
 
     #[Route('/el7it', name: 'walls')]
-    public function wall(#[CurrentUser] ?User $user = null): Response
+    public function wall(#[CurrentUser] ?User $currentUser = null): Response
     {
         $walls = $this->em->getRepository(Wall::class)->findBy([], ['createdAt' => 'DESC']);
 
         return $this->render('frontend/walls.html.twig', [
             'entities' => $walls,
-            ...$this->userInteraction->getUserInteractionIds($walls, 'wall', $user),
+            ...$this->userInteraction->getUserInteractionIds($walls, 'wall', $currentUser),
         ]);
     }
 
