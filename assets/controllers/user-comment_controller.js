@@ -97,4 +97,20 @@ export default class extends Controller {
             }
         });
     }
+
+    copyToClipboard(event) {
+        const button = event.currentTarget;
+        const url = button.getAttribute('data-entity-url');
+        const labelCopied = button.getAttribute('data-label-copied');
+        const buttonSpan = button.querySelector('span');
+
+        navigator.clipboard.writeText(url).then(() => {
+            buttonSpan.innerText = labelCopied;
+            setTimeout(() => {
+                buttonSpan.innerText = '';
+            }, 2000);
+        }).catch((err) => {
+            console.error('Erratum : ', err);
+        });
+    }
 }

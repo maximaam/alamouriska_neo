@@ -21,25 +21,15 @@
         {% set entityName = 'wall' %}
             {{ include ('partials/_entity-card-wall.html.twig') }}
         {% endif %}
-
-        <div class="row mt-2">
-            {% if app.request.attributes.get('_route') == 'app_frontend_posts' %}
-            <div class="col">
-                <a href="{{ path('app_frontend_' ~ entityName, {'seoTypeSlug': ('post.'~ entity.type.name ~'.seo_route') | trans, 'id' : entity.id, 'titleSlug': entity.titleSlug}) }}">
-                    {{ 'label.view_single_entity' | trans }}
-                </a>
-            </div>
-            {% endif %}
-            {% if app.user == entity.user %}
-            <div class="col text-end">
-                <a href="{{ path('app_' ~ entityName ~ '_delete', {'id': entity.id} ) }}" class="text-danger">{{ 'label.delete' | trans }}</a>
-                | 
-                <a href="{{ path('app_' ~ entityName ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
-            </div>
-            {% endif %}
-        </div>
-        
     </div>
+
+    {% if app.user == entity.user %}
+        <div class="text-end">
+            <a href="{{ path('app_' ~ entityName ~ '_delete', {'id': entity.id} ) }}">{{ 'label.delete' | trans }}</a>
+            | 
+            <a href="{{ path('app_' ~ entityName ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
+        </div>
+    {% endif %}
 
     <div class="card-footer">
         {{ include ('partials/_user-interactions.html.twig') }}

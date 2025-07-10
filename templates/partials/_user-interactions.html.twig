@@ -1,8 +1,8 @@
 {% if instanceof(entity, 'App\\Entity\\Post') %}
-    {% set social_url = url('app_frontend_post', {'seoTypeSlug': ('post.'~ entity.type.name ~'.seo_route') | trans, 'id' : entity.id, 'titleSlug': entity.titleSlug}) | url_encode %}
+    {% set entity_url = url('app_frontend_post', {'seoTypeSlug': ('post.'~ entity.type.name ~'.seo_route') | trans, 'id' : entity.id, 'titleSlug': entity.titleSlug}) %}
     {% set entity_name = 'post' %}
 {% else %}
-    {% set social_url = "" %}
+    {% set entity_url = url('app_frontend_wall', {'id' : entity.id }) %}
     {% set entity_name = 'wall' %}
 {% endif %}
 
@@ -47,8 +47,19 @@
     
 
     <div class="col text-end">
+
+        <button
+            type="button"
+            title="{{ 'label.copy_entity_link' | trans }}"
+            class="btn btn-info"
+            data-controller="user-comment"
+            data-action="click->user-comment#copyToClipboard"
+            data-entity-url="{{ entity_url }}"
+            data-label-copied="{{ 'label.copied' | trans }}">
+            {{ ux_icon('bi:link', {class: 'basic-icon'}) }} <span></span>
+        </button>
         <a 
-            href="https://x.com/intent/tweet?url={{ social_url }}" 
+            href="https://x.com/intent/tweet?url={{ entity_url | url_encode }}" 
             target="_blank"
             class="btn btn-dark"
             rel="noopener noreferrer"
@@ -56,7 +67,7 @@
             {{ ux_icon('bi:twitter-x', {class: 'basic-icon'}) }}
         </a>
         <a 
-            href="https://www.facebook.com/sharer/sharer.php?u={{ social_url }}"
+            href="https://www.facebook.com/sharer/sharer.php?u={{ entity_url | url_encode }}"
             target="_blank" 
             rel="noopener noreferrer"
             class="btn btn-primary"
