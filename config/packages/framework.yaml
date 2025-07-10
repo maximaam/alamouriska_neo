@@ -11,6 +11,9 @@ framework:
     router:
         default_uri: 'https://www.alamouriska.com'
 
+    property_info:
+        with_constructor_extractor: true
+
 when@test:
     framework:
         test: true

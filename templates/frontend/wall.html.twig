@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% set virtual_title = entity.description[:50]  %}
+
 {% block title %}
+    {{ virtual_title }}
     {{ parent() }}
 {% endblock %}
 
 {% block opengraph_title %}
-    <meta property="og:title" content=" - {{ app_name }}" />
+    <meta property="og:title" content="{{ virtual_title }} - {{ app_name }}" />
 {% endblock %}
 
 {% block body %}
