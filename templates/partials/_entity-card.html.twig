@@ -21,17 +21,18 @@
         {% set entityName = 'wall' %}
             {{ include ('partials/_entity-card-wall.html.twig') }}
         {% endif %}
-    </div>
 
-    {% if app.user == entity.user %}
-        <div class="text-end">
-            <a href="{{ path('app_' ~ entityName ~ '_delete', {'id': entity.id} ) }}">{{ 'label.delete' | trans }}</a>
-            | 
-            <a href="{{ path('app_' ~ entityName ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
+        {% if app.user == entity.user %}
+            <div class="text-end">
+                <a href="{{ path('app_' ~ entityName ~ '_delete', {'id': entity.id} ) }}">{{ 'label.delete' | trans }}</a>
+                | 
+                <a href="{{ path('app_' ~ entityName ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
+            </div>
+        {% endif %}
+
+        <div class="card-footer">
+            {{ include ('partials/_user-interactions.html.twig') }}
         </div>
-    {% endif %}
-
-    <div class="card-footer">
-        {{ include ('partials/_user-interactions.html.twig') }}
     </div>
+    
 </div>

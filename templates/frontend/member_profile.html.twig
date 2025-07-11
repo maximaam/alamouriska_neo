@@ -23,20 +23,25 @@
                     <dt class="col-6">{{ 'label.profile_comments_count' | trans }}</dt>
                     <dd class="col-6">{{ comments_count }}</dd>
                 </dl>
-
+                {% if app.user and app.user == member %}
+                    <a title="{{ 'label.profile_edit' | trans }}" href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="d-block text-end mb-4">
+                        {{ ux_icon('bi:person-fill-gear', {class: 'basic-icon'}) }} {{ 'label.profile_edit' | trans }}
+                    </a>
+                {% endif %}
                 {% if app.user and app.user != member and member.enableCommunityContact %}
-                <div class="p-2 bg-rocher rounded">
-                    {% include 'partials/_form.html.twig' with {
-                        form: form,
-                        attr: {
-                            id: 'contact-member',
-                            method: 'post',
-                            'data-controller': 'contact-member',
-                            'data-action': 'submit->contact-member#contact',
-                            'data-contact-member-url-value': path('app_async_contact_member', { 'id': member.id }),
-                        }
-                    } only %}
-                </div>
+                    <h3 class="white-hr"><span>{{ 'label.contact_member' | trans }}</span></h3>
+                    <div class="p-2 bg-rocher rounded">
+                        {% include 'partials/_form.html.twig' with {
+                            form: form,
+                            attr: {
+                                id: 'contact-member',
+                                method: 'post',
+                                'data-controller': 'contact-member',
+                                'data-action': 'submit->contact-member#contact',
+                                'data-contact-member-url-value': path('app_async_contact_member', { 'id': member.id }),
+                            }
+                        } only %}
+                    </div>
                 {% endif %}
             </div>
         </div>

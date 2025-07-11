@@ -4,6 +4,23 @@
             {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'post.label.create' | trans }}
         </a>
     </div>
+
+    <div class="card bg-rocher mb-3">
+        <div class="card-header fw-bold">
+            {{ 'label.newest_posts' | trans }}
+        </div>
+        <div class="card-body">
+            {% for post in newest_posts %}
+                <div class="mb-2 pb-1 card-list">
+                    {%  include 'partials/_avatar.html.twig' with {'pseudo': post.user.pseudo, 'avatarName': post.user.avatarName } only %}
+                    <a class="ms-1" href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}">
+                        {{ post.title[:100] }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="card bg-rocher mb-3">
         <div class="card-header fw-bold">
             {{ 'label.newest_questions' | trans }}

@@ -37,12 +37,12 @@ final class FrontendController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(#[CurrentUser] ?User $user = null): Response
     {
-        $latestPosts = $this->em->getRepository(Post::class)->findLatests();
+        $newestPosts = $this->em->getRepository(Post::class)->findNewest();
 
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
-            'newest_posts' => $latestPosts,
-            ...$this->userInteraction->getUserInteractionIds($latestPosts, 'post', $user),
+            'newest_posts' => $newestPosts,
+            ...$this->userInteraction->getUserInteractionIds($newestPosts, 'post', $user),
         ]);
     }
 

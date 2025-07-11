@@ -26,7 +26,7 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @return array<mixed, mixed>
      */
-    public function findLatests(int $maxResult = 10): array
+    public function findNewest(int $maxResult = 10): array
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.createdAt', 'DESC')

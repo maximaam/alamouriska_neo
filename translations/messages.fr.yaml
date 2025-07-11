@@ -80,6 +80,7 @@ label:
   copy_entity_link: Copier le lien de cette publication
   copied: "Copié !"
   copy: Copier
+  message: Message
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

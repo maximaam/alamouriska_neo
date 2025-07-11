@@ -54,7 +54,7 @@ final class PostController extends AbstractController
             $this->em->flush();
             $this->addFlash('success', 'flash.post_edit_success');
 
-            return $this->redirectToRoute('app_user_show', status: Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_frontend_member_profile', ['pseudo' => $post->getUser()->getPseudo()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('post/edit.html.twig', [
@@ -71,7 +71,7 @@ final class PostController extends AbstractController
             $this->em->flush();
             $this->addFlash('success', 'flash.post_deleted_success');
 
-            return $this->redirectToRoute('app_user_show', status: Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_frontend_member_profile', ['pseudo' => $post->getUser()->getPseudo()], Response::HTTP_SEE_OTHER);
         }
 
         $this->addFlash('warning', 'flash.post_delete_warning');

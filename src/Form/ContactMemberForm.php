@@ -18,7 +18,7 @@ class ContactMemberForm extends AbstractType
             ->add('message', TextareaType::class, [
                 'attr' => [
                     'class' => 'p-2',
-                    'placeholder' => 'label.contact_member',
+                    'placeholder' => 'label.message',
                 ],
                 'label_attr' => [
                     'class' => 'd-none',
