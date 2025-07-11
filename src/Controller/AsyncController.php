@@ -128,10 +128,12 @@ final class AsyncController extends AbstractController
                     'seoTypeSlug' => $this->translator->trans(\sprintf('post.%s.seo_route', $entity->getType()->name)),
                     'id' => $entity->getId(),
                     'titleSlug' => $entity->getTitleSlug(),
-                ]);
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
             } else {
                 $userComment->setWall($entity);
-                $entityUrl = $this->urlGenerator->generate('app_frontend_wall', ['id' => $entity->getId()]);
+                $entityUrl = $this->urlGenerator->generate('app_frontend_wall', [
+                    'id' => $entity->getId(),
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
             }
 
             $this->entityManager->persist($userComment);
