@@ -20,7 +20,7 @@
         <meta property="og:type" content="{{ (app.request.get('_route') == 'index_index') ? 'website' : 'article' }}">
 
         {% block opengraph_image %}
-            <meta property="og:image" content="{{ absolute_url(asset('images/logo-200.png'))}}">
+            <meta property="og:image" content="{{ absolute_url(asset('images/bg-main2.jpg'))}}">
         {% endblock %}
 
         {% block opengraph_title %}
@@ -42,7 +42,7 @@
         <div class="cloud-marquee">
             <div class="cloud-track">
                 {% set bird = asset('images/fly-bird.gif') %}
-                {{ rolling_clouds(bird)|raw }}
+                {{ marquee_images(bird) | raw }}
             </div>
         </div>
         <header class="main-header">

@@ -163,8 +163,8 @@ final class FrontendController extends AbstractController
         ]);
     }
 
-    /** 
-     * @param Query<mixed> $query 
+    /**
+     * @param Query<mixed> $query
      */
     private function renderPaginatedEntities(Request $request, Query $query, string $template, ?User $user): Response
     {

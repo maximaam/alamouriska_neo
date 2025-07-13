@@ -8,11 +8,9 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Message\WeeklyPostsNotificationMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -20,37 +18,29 @@ use Symfony\Component\Messenger\MessageBusInterface;
     name: 'app:notify',
     description: 'Notify users about previous week posts.',
 )]
-class NotifyCommand extends Command
+class NotifyCommand
 {
     private const ACTION_WEEKLY_POSTS = 'weeklyPosts';
+    private const VALID_ACTIONS = [
+        self::ACTION_WEEKLY_POSTS,
+    ];
 
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly MessageBusInterface $messageBus,
     ) {
-        parent::__construct();
     }
 
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('action', InputArgument::REQUIRED, 'The notification action (e.g. "weeklyPosts")');
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $io = new SymfonyStyle($input, $output);
-        $action = $input->getArgument('action');
-
-        $validActions = [
-            self::ACTION_WEEKLY_POSTS,
-        ];
-
-        if (!\in_array($action, $validActions, true)) {
+    public function __invoke(
+        #[Argument(description: 'The notification action (e.g. "weeklyPosts")')]
+        string $action,
+        SymfonyStyle $io
+    ): int {
+        if (!\in_array($action, self::VALID_ACTIONS, true)) {
             throw new \RuntimeException(\sprintf(
                 'Invalid action "%s". Valid actions are: %s',
                 $action,
-                implode(', ', $validActions)
+                implode(', ', self::VALID_ACTIONS)
             ));
         }
 

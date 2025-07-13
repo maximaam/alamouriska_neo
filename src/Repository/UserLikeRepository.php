@@ -7,7 +7,6 @@ namespace App\Repository;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserLike;
-use App\Entity\Wall;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,16 +21,12 @@ class UserLikeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Post[]|Wall[]|Post|Wall $entities Either a single Post/Wall or an array of them
+     * @param array<int, int> $entityIds
      *
      * @return int[] Array of liked post IDs
      */
     public function getUserInteractionIds(array $entityIds, string $entityName, User $user): array
     {
-        if (!\is_iterable($entityIds)) {
-            $entityIds = [$entityIds];
-        }
-
         return $this->createQueryBuilder('ul')
             ->select('IDENTITY(ul.'.$entityName.')') // returns just the post IDs
             ->andWhere('ul.'.$entityName.' IN (:entityIds)')

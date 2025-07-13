@@ -7,7 +7,6 @@ namespace App\Repository;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
-use App\Entity\Wall;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,16 +21,12 @@ class UserCommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array<int, int> $entityIds Either a single Post/Wall or an array of them
+     * @param array<int, int> $entityIds
      *
      * @return int[] Array of liked post IDs
      */
     public function getUserInteractionIds(array $entityIds, string $entityName, User $user): array
     {
-        if (!\is_iterable($entityIds)) {
-            $entityIds = [$entityIds];
-        }
-
         return $this->createQueryBuilder('uc')
             ->select('IDENTITY(uc.'.$entityName.')')
             ->andWhere('uc.'.$entityName.' IN (:entityIds)')

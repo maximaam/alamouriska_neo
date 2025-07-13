@@ -1,6 +1,6 @@
 <div class="row mt-2">
     <div class="col">
-        <!-- Likes -->
+        {# Likes #}
         {% set iconLikeName = (app.user and entity.id in user_like_interaction_ids) ? 'bi:heart-fill' : 'bi:heart' %}
         {% set iconLike = '<span data-user-interactions-target="likeIcon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
         <button
@@ -12,7 +12,7 @@
             <span data-user-interactions-target="likeCount">{{ entity.userLikes | length }}</span>
         </button>
 
-        <!-- Comments -->
+        {# Comments #}
         {% set iconCommentName = (app.user and entity.id in user_comment_interaction_ids) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
         {% set iconComment = '<span data-user-interactions-target="commentIcon">' ~ ux_icon(iconCommentName, {class: 'basic-icon'}) ~ '</span>' %}
         <button
@@ -53,8 +53,7 @@
             {{ ux_icon('bi:facebook', {class: 'basic-icon'}) }} 
         </a>
     </div>
-    
 </div>
 
-<div id="comment-container-{{ entity.id }}" class="comment-container slide-toggle mt-2">
+<div id="comment-container-{{ entity.id }}" class="slide-toggle mt-2">
 </div>

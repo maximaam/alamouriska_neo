@@ -9,21 +9,21 @@ final class SocialMediaUtils
     public static function makeYoutubeEmbed(string $content): string
     {
         // Match both full and short/embed YouTube URLs
-        //$pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/|embed/)|youtu\.be/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?~i';
+        // $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/|embed/)|youtu\.be/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?~i';
         $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/|embed/)|youtu\.be/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?~i';
 
         $transformedContent = preg_replace_callback($pattern, function ($matches) {
             $url = $matches[0];
             $videoId = $matches[1];
-            $timeParam = parse_url($url, \PHP_URL_QUERY);
-            $src = 'https://www.youtube.com/embed/' . htmlspecialchars($videoId, \ENT_QUOTES);
+            $timeParam = (string) parse_url($url, \PHP_URL_QUERY);
+            $src = 'https://www.youtube.com/embed/'.htmlspecialchars($videoId, \ENT_QUOTES);
 
             // video with timeframe, but embed use the param "start, end" not "t"
-            if (str_starts_with($timeParam, 't=')) {
+            if ('' !== $timeParam && str_starts_with($timeParam, 't=')) {
                 $src .= '?'.str_replace('t=', 'start=', $timeParam);
             }
 
-            return sprintf(
+            return \sprintf(
                 '<iframe width="560" height="315" src="%s" frameborder="0" allowfullscreen></iframe>',
                 $src
             );

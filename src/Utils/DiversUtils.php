@@ -6,7 +6,7 @@ namespace App\Utils;
 
 final class DiversUtils
 {
-    public static function rollingClouds(string $img): string
+    public static function marqueeImages(string $img): string
     {
         $clouds = '';
         // $cloud = '☁️';
