@@ -210,7 +210,7 @@ main {
     padding: 0.5rem;
 }
 
-.btn-likes {
+.btn-likes, .btn-comments {
     color: var(--rocher);
     background-color: transparent;
     margin-right: 0.1rem;

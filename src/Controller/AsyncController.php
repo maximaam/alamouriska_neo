@@ -51,7 +51,7 @@ final class AsyncController extends AbstractController
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        if (!$csrfTokenManager->isTokenValid(new CsrfToken('like-interaction', $request->headers->get('X-CSRF-TOKEN')))) {
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('user-interactions', $request->headers->get('X-CSRF-TOKEN')))) {
             throw new AccessDeniedHttpException('Invalid CSRF token.');
         }
 
@@ -170,7 +170,7 @@ final class AsyncController extends AbstractController
     #[IsGranted(User::ROLE_USER)]
     public function postCommentDelete(Request $request, UserComment $postComment, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
     {
-        if (!$csrfTokenManager->isTokenValid(new CsrfToken('comment-delete', $request->headers->get('X-CSRF-TOKEN')))) {
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('user-interactions', $request->headers->get('X-CSRF-TOKEN')))) {
             throw new AccessDeniedHttpException('Invalid CSRF token.');
         }
 

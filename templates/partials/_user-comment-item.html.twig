@@ -4,13 +4,11 @@
         <a href="{{ path('app_frontend_member_profile', {'pseudo': userComment.user.pseudo}) }}" title="{{ 'label.profile'|trans }}">
             {{ userComment.user.pseudo }}
         </a>
-
         | Le: {{ userComment.createdAt | date('d-m-Y') }}
+
         {% if app.user is not null and userComment.user == app.user %}
             <button role="button" title="{{ 'label.comment_delete' | trans }}"
-                data-action="click->user-comment-delete#delete"
-                data-user-comment-delete-target="button"
-                data-csrf="{{ csrf_token('comment-delete') }}"
+                data-action="click->user-interactions#deleteComment"
                 data-id="{{ userComment.id }}"
                 data-confirm="{{ 'label.comment_delete_confirm_msg' | trans }}"
                 data-url="{{ path('app_async_post_comment_delete', { id: userComment.id }) }}">

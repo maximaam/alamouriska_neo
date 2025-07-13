@@ -20,7 +20,7 @@ export default class extends Controller {
 
     handleTitleChange() {
         this.title.addEventListener('change', (event) => {
-            const latinTitle = event.target.value;
+            const latinTitle = event.target.value.replace(/,/g, '');
             fetch('https://inputtools.google.com/request?itc=ar-t-i0-und&num=1', {
                 method: 'POST',
                 headers: {

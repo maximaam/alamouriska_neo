@@ -1,3 +1,11 @@
+{% if instanceof(entity, 'App\\Entity\\Post') %}
+    {% set entity_url = url('app_frontend_post', {'seoTypeSlug': ('post.'~ entity.type.name ~'.seo_route') | trans, 'id' : entity.id, 'titleSlug': entity.titleSlug}) %}
+    {% set entity_name = 'post' %}
+{% else %}
+    {% set entity_url = url('app_frontend_wall', {'id' : entity.id }) %}
+    {% set entity_name = 'wall' %}
+{% endif %}
+
 <div class="card mb-3 card-post">
     <div class="card-header">
         <div class="d-inline-block align-middle">
@@ -15,22 +23,25 @@
     </div>
     <div class="card-body p-2">
         {% if instanceof(entity, 'App\\Entity\\Post') %}
-        {% set entityName = 'post' %}
             {{ include ('partials/_entity-card-post.html.twig') }}
         {% else %}
-        {% set entityName = 'wall' %}
             {{ include ('partials/_entity-card-wall.html.twig') }}
         {% endif %}
 
         {% if app.user == entity.user %}
             <div class="text-end">
-                <a href="{{ path('app_' ~ entityName ~ '_delete', {'id': entity.id} ) }}">{{ 'label.delete' | trans }}</a>
+                <a href="{{ path('app_' ~ entity_name ~ '_delete', {'id': entity.id} ) }}">{{ 'label.delete' | trans }}</a>
                 | 
-                <a href="{{ path('app_' ~ entityName ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
+                <a href="{{ path('app_' ~ entity_name ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
             </div>
         {% endif %}
 
-        <div class="card-footer">
+        <div class="card-footer" {{ stimulus_controller('user-interactions', {
+            csrfToken: csrf_token('user-interactions'),
+            entityId: entity.id,
+            likeUrl: path('app_async_user_like', { 'id': entity.id, 'entityName': entity_name }),
+            commentUrl: path('app_async_user_comment', { 'id': entity.id, 'entityName': entity_name }),
+        }) }}>
             {{ include ('partials/_user-interactions.html.twig') }}
         </div>
     </div>
