@@ -48,7 +48,7 @@ class Wall
      * @var Collection<int, UserComment>
      */
     #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'wall', orphanRemoval: true, fetch: 'EAGER')]
-    #[ORM\OrderBy(['createdAt' => 'DESC'])]
+    // #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $userComments;
 
     public function __construct()

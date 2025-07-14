@@ -67,7 +67,7 @@ class Post
      * @var Collection<int, UserComment>
      */
     #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'post', orphanRemoval: true, fetch: 'EAGER')]
-    #[ORM\OrderBy(['createdAt' => 'DESC'])]
+    // #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $userComments;
 
     #[ORM\Column]
