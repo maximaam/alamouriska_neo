@@ -39,9 +39,9 @@ final readonly class NavBuilder
             ]);
         }
 
-        $menu->addChild(strtoupper($this->translator->trans('label.wall')), [
+        $menu->addChild($this->translator->trans('label.wall_ar'), [
             'route' => 'app_frontend_walls',
-            'attributes' => ['class' => 'nav-item'],
+            'attributes' => ['class' => 'nav-item', 'title' => sprintf('%s | %s', $this->translator->trans('label.wall_fr'), $this->translator->trans('label.wall_dz'))],
             'linkAttributes' => ['class' => 'nav-link'],
         ]);
 

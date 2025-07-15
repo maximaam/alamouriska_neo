@@ -8,8 +8,7 @@ final readonly class UserCommentEmailMessage
 {
     public function __construct(
         public string $senderPseudo,
-        public string $receiverPseudo,
-        public string $receiverEmail,
+        public array $receiverEmails, // Post owner and commentators
         public string $entityUrl,
     ) {
     }

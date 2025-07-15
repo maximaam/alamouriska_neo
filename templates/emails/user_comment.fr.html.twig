@@ -5,9 +5,9 @@
 
 {% block body %}
     <p>
-    Bonjour {{ receiver }},<br><br>
-    <a href="{{ url('app_frontend_member_profile', {'pseudo': sender }) }}" target="_blank">{{ sender }}</a>
-    a ajouté un commentaire sur ta publication : 
+    Bonjour,<br><br>
+    <a href="{{ url('app_frontend_member_profile', {'pseudo': commentator }) }}" target="_blank">{{ commentator }}</a>
+    a ajouté un commentaire sur la publication que tu suis : 
     <a href="{{ entityUrl }}" target="_blank">{{ 'label.see_post' | trans }}</a>
     </p>
 {% endblock %}

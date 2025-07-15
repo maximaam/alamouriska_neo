@@ -32,12 +32,13 @@ final readonly class UserCommentEmailMessageHandler
 
         $email = (new TemplatedEmail())
             ->from(new Address($appNotifier, $appName))
-            ->to($message->receiverEmail)
+            ->to(new Address($appNotifier, $appName))
+            // ->to($message->receiverEmail)
+            ->bcc(...$message->receiverEmails)
             ->subject($this->translator->trans('email.post_comment.subject'))
             ->htmlTemplate('emails/user_comment.fr.html.twig')
             ->context([
-                'sender' => $message->senderPseudo,
-                'receiver' => $message->receiverPseudo,
+                'commentator' => $message->senderPseudo,
                 'entityUrl' => $message->entityUrl,
             ]);
 

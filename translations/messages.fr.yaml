@@ -70,7 +70,9 @@ label:
   posts_questions: Les questions des membres
   login_with_google: Se connecter avec Google
   posts: Publications
-  wall: el7itt
+  wall_ar: "الحيطْ"
+  wall_dz: el7itt
+  wall_fr: Le Mur
   wall_create_new: "Ajouter une brique fel 7itt"
   wall_h1: El7itt Parade
   manage_my_stuff: Modifier mes contributions
@@ -146,6 +148,6 @@ email:
   contact_member:
     subject: "Message d'un membre"
   post_comment:
-    subject: "Commentaire sur ta publication!"
+    subject: "Nouveau commentaire ajouté"
   weekly_posts:
     subject: "Les publications de la semaine"

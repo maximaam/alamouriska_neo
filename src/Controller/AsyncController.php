@@ -13,6 +13,7 @@ use App\Form\ContactMemberForm;
 use App\Form\PostCommentForm;
 use App\Message\ContactMemberEmailMessage;
 use App\Message\UserCommentEmailMessage;
+use App\Helper\EntityHelper;
 use App\Utils\SocialMediaUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,9 +36,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class AsyncController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly EntityManagerInterface $em,
         private readonly TranslatorInterface $translator,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly EntityHelper $entityHelper,
     ) {
     }
 
@@ -55,20 +57,20 @@ final class AsyncController extends AbstractController
             throw new AccessDeniedHttpException('Invalid CSRF token.');
         }
 
-        $entity = $this->resolveEntity($entityName, $id);
+        $entity = $this->entityHelper->resolveEntity($this->em, EntityHelper::ENTITY_CLASS_MAP[$entityName], $id);
         if (null === $entity) {
             return $this->json(['error' => 'Invalid entity type or not found.'], 400);
         }
 
         $sumLikes = \count($entity->getUserLikes());
 
-        $hasLiked = $this->entityManager
+        $hasLiked = $this->em
             ->getRepository(UserLike::class)
             ->findOneBy(['user' => $user, $entityName => $entity]);
 
         if ($hasLiked instanceof UserLike) {
-            $this->entityManager->remove($hasLiked);
-            $this->entityManager->flush();
+            $this->em->remove($hasLiked);
+            $this->em->flush();
 
             return $this->json([
                 'status' => 'success',
@@ -84,8 +86,8 @@ final class AsyncController extends AbstractController
             $userLike->setWall($entity);
         }
 
-        $this->entityManager->persist($userLike);
-        $this->entityManager->flush();
+        $this->em->persist($userLike);
+        $this->em->flush();
 
         return $this->json([
             'status' => 'success',
@@ -97,7 +99,7 @@ final class AsyncController extends AbstractController
     #[Route('/user-comment/{entityName}/{id}/comment', name: 'user_comment', methods: ['GET', 'POST'])]
     public function postComment(Request $request, string $entityName, int $id, MessageBusInterface $messageBus, #[CurrentUser] ?User $user = null): JsonResponse|Response
     {
-        $entity = $this->resolveEntity($entityName, $id);
+        $entity = $this->entityHelper->resolveEntity($this->em, EntityHelper::ENTITY_CLASS_MAP[$entityName], $id);
         if (null === $entity) {
             return $this->json(['error' => 'Invalid entity type or not found.'], 400);
         }
@@ -105,64 +107,43 @@ final class AsyncController extends AbstractController
         $form = $this->createForm(PostCommentForm::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if (!$form->isValid()) {
-                return $this->json([
-                    'status' => 'validation_error',
-                    'form' => $this->renderCommentForm($form, $entity),
-                ]);
-            }
-
-            if (!$user instanceof User) {
-                throw new \LogicException('Access denied.');
-            }
-
-            $commentData = SocialMediaUtils::linkifyUrls($form->get('comment')->getData());
-            $userComment = (new UserComment())
-                ->setUser($user)
-                ->setComment($commentData);
-
-            if ($entity instanceof Post) {
-                $userComment->setPost($entity);
-                $entityUrl = $this->urlGenerator->generate('app_frontend_post', [
-                    'seoTypeSlug' => $this->translator->trans(\sprintf('post.%s.seo_route', $entity->getType()->name)),
-                    'id' => $entity->getId(),
-                    'titleSlug' => $entity->getTitleSlug(),
-                ], UrlGeneratorInterface::ABSOLUTE_URL);
-            } else {
-                $userComment->setWall($entity);
-                $entityUrl = $this->urlGenerator->generate('app_frontend_wall', [
-                    'id' => $entity->getId(),
-                ], UrlGeneratorInterface::ABSOLUTE_URL);
-            }
-
-            $this->entityManager->persist($userComment);
-            $this->entityManager->flush();
-
-            if ($entity->getUser() !== $user) {
-                $messageBus->dispatch(new UserCommentEmailMessage(
-                    (string) $user->getPseudo(),
-                    (string) $entity->getUser()->getPseudo(),
-                    (string) $entity->getUser()->getEmail(),
-                    $entityUrl,
-                ));
-            }
-
-            return $this->json([
-                'status' => 'success',
-                'comment_item' => $this->renderView('partials/_user-comment-item.html.twig', [
-                    'userComment' => $userComment,
-                ]),
-                // Resend a fresh form, in case the previous contains errors
-                'form' => $this->renderCommentForm($this->createForm(PostCommentForm::class), $entity),
+        if (!$form->isSubmitted()) {
+            return $this->render('partials/_user-comment-form.html.twig', [
+                'entity' => $entity,
+                'form' => $form->createView(),
+                'with_comments' => true,
+                'with_form_container' => true,
             ]);
         }
 
-        return $this->render('partials/_user-comment-form.html.twig', [
-            'entity' => $entity,
-            'form' => $form->createView(),
-            'with_comments' => true,
-            'with_form_container' => true,
+        if (!$form->isValid()) {
+            return $this->json([
+                'status' => 'validation_error',
+                'form' => $this->renderCommentForm($form, $entity),
+            ]);
+        }
+
+        if (!$user instanceof User) {
+            throw new \LogicException('Access denied.');
+        }
+
+        $userComment = $this->entityHelper->createUserComment($entity, $user, $form->get('comment')->getData());
+        $this->em->persist($userComment);
+        $this->em->flush();
+
+        $messageBus->dispatch(new UserCommentEmailMessage(
+            (string) $user->getPseudo(),
+            $this->entityHelper->collectCommentators($entity, $user),
+            $this->entityHelper->generateEntityUrl($entity, $this->urlGenerator, $this->translator),
+        ));
+
+        return $this->json([
+            'status' => 'success',
+            'comment_item' => $this->renderView('partials/_user-comment-item.html.twig', [
+                'userComment' => $userComment,
+            ]),
+            // Resend a fresh form, in case the previous contains errors
+            'form' => $this->renderCommentForm($this->createForm(PostCommentForm::class), $entity),
         ]);
     }
 
@@ -174,8 +155,8 @@ final class AsyncController extends AbstractController
             throw new AccessDeniedHttpException('Invalid CSRF token.');
         }
 
-        $this->entityManager->remove($postComment);
-        $this->entityManager->flush();
+        $this->em->remove($postComment);
+        $this->em->flush();
 
         return $this->json([
             'status' => 'success',
@@ -207,20 +188,6 @@ final class AsyncController extends AbstractController
             'status' => 'error',
             'error' => $normalizer->normalize($form, null, ['groups' => ['Default']]),
         ]);
-    }
-
-    private function resolveEntity(string $entityName, int $id): Post|Wall|null
-    {
-        $map = [
-            'post' => Post::class,
-            'wall' => Wall::class,
-        ];
-
-        if (!isset($map[$entityName])) {
-            return null;
-        }
-
-        return $this->entityManager->getRepository($map[$entityName])->find($id);
     }
 
     private function renderCommentForm(FormInterface $form, Post|Wall $entity): string
