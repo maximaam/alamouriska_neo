@@ -27,15 +27,16 @@
 
     {# Social media shares #}
     <div class="col text-end">
-        <button
-            type="button"
+        <a
+            role="button"
+            href="#"
             title="{{ 'label.copy_entity_link' | trans }}"
-            class="btn btn-info"
+            class="btn btn-secondary"
             data-action="click->user-interactions#copyEntityUrl"
             data-entity-url="{{ entity_url }}"
             data-label-copied="{{ 'label.copied' | trans }}">
             {{ ux_icon('bi:link', {class: 'basic-icon'}) }} <span></span>
-        </button>
+        </a>
         <a 
             href="https://x.com/intent/tweet?url={{ entity_url | url_encode }}" 
             target="_blank"

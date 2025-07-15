@@ -132,6 +132,8 @@ export default class extends Controller {
      * @param {*} event 
      */
     copyEntityUrl(event) {
+        event.preventDefault();
+        
         const button = event.currentTarget,
             url = button.getAttribute('data-entity-url'),
             labelCopied = button.getAttribute('data-label-copied'),
