@@ -1,17 +1,12 @@
 {% set avatar = asset('images/default-avatar.png') %}
 {% set size = size|default(32) %}
-{% set avatar_border = 'border-3' %}
-
-{% if size == 32 %}
-    {% set avatar_border = 'border-1' %}
-{% endif %}
 
 {% if avatarName is not null %}
     {% set avatar = asset(avatars_dir ~ '/' ~ avatarName) | imagine_filter('avatar_thumb_' ~ size) %}
 {% endif %}
 
 {% if withoutLink is defined and withoutLink == true %}
-    <img class="user-avatar rounded-circle border " ~ avatar_border ~ " border-white {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ pseudo }}" width="{{ size }}" height="{{ size }}">
+    <img class="user-avatar rounded-circle border border-" ~ (size == 32 ? 1 : 3) ~ " border-white {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ pseudo }}" width="{{ size }}" height="{{ size }}">
 {% else %}
     <a href="{{ path('app_frontend_member_profile', {'pseudo': pseudo}) }}" title="{{ 'label.profile'|trans }} {{ pseudo }}">
         <img class="user-avatar rounded-circle border border-3 border-white {{ classes|default(null) }}" src="{{ avatar }}" alt="Avatar {{ pseudo }}" width="{{ size }}" height="{{ size }}">
