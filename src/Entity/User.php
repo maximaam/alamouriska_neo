@@ -66,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         maxMessage: 'user_pseudo_long',
         // groups: ['Profile', 'Registration']
     )]
-    private ?string $pseudo = null;
+    private string $pseudo;
 
     #[ORM\Column]
     private bool $enableCommunityContact = true;
@@ -140,7 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -219,7 +219,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPseudo(): ?string
+    public function getPseudo(): string
     {
         return $this->pseudo;
     }

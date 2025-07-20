@@ -71,6 +71,12 @@ final class FrontendController extends AbstractController
         ]);
     }
 
+    #[Route('/unsubscribe', name: 'unsubscribe')]
+    public function unsubscribe(): Response
+    {
+        return $this->redirectToRoute('app_user_edit');
+    }
+
     #[Route('/page/{alias:page}', name: 'page')]
     public function page(Page $page): Response
     {

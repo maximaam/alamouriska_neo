@@ -11,10 +11,9 @@ use App\Entity\UserLike;
 use App\Entity\Wall;
 use App\Form\ContactMemberForm;
 use App\Form\PostCommentForm;
+use App\Helper\EntityHelper;
 use App\Message\ContactMemberEmailMessage;
 use App\Message\UserCommentEmailMessage;
-use App\Helper\EntityHelper;
-use App\Utils\SocialMediaUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -57,7 +56,7 @@ final class AsyncController extends AbstractController
             throw new AccessDeniedHttpException('Invalid CSRF token.');
         }
 
-        $entity = $this->entityHelper->resolveEntity($this->em, EntityHelper::ENTITY_CLASS_MAP[$entityName], $id);
+        $entity = $this->entityHelper->resolveEntity($this->em, $entityName, $id);
         if (null === $entity) {
             return $this->json(['error' => 'Invalid entity type or not found.'], 400);
         }
@@ -99,7 +98,7 @@ final class AsyncController extends AbstractController
     #[Route('/user-comment/{entityName}/{id}/comment', name: 'user_comment', methods: ['GET', 'POST'])]
     public function postComment(Request $request, string $entityName, int $id, MessageBusInterface $messageBus, #[CurrentUser] ?User $user = null): JsonResponse|Response
     {
-        $entity = $this->entityHelper->resolveEntity($this->em, EntityHelper::ENTITY_CLASS_MAP[$entityName], $id);
+        $entity = $this->entityHelper->resolveEntity($this->em, $entityName, $id);
         if (null === $entity) {
             return $this->json(['error' => 'Invalid entity type or not found.'], 400);
         }
@@ -132,7 +131,7 @@ final class AsyncController extends AbstractController
         $this->em->flush();
 
         $messageBus->dispatch(new UserCommentEmailMessage(
-            (string) $user->getPseudo(),
+            $user->getPseudo(),
             $this->entityHelper->collectCommentators($entity, $user),
             $this->entityHelper->generateEntityUrl($entity, $this->urlGenerator, $this->translator),
         ));
@@ -172,10 +171,10 @@ final class AsyncController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $messageBus->dispatch(new ContactMemberEmailMessage(
-                (string) $user->getPseudo(),
+                $user->getPseudo(),
                 $form->get('message')->getData(),
-                (string) $member->getPseudo(),
-                (string) $member->getEmail(),
+                $member->getPseudo(),
+                $member->getEmail(),
             ));
 
             return $this->json([

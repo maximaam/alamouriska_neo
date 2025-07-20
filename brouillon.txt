@@ -24,3 +24,7 @@ to do
     ##'liked_post_ids' => $likedPostIds,
     ##'comment_post_ids' => $commentPostIds,
     post like EAGER -> check
+
+
+
+# dig +short TXT _dmarc.alamouriska.com

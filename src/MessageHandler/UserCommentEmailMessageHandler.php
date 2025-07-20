@@ -42,6 +42,9 @@ final readonly class UserCommentEmailMessageHandler
                 'entityUrl' => $message->entityUrl,
             ]);
 
+        $email->getHeaders()
+            ->addTextHeader('List-Unsubscribe', '<https://www.alamouriska.com/unsubscribe>');
+
         $this->mailer->send($email);
     }
 }

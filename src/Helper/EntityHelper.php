@@ -22,14 +22,14 @@ final class EntityHelper
 
     public function resolveEntity(EntityManagerInterface $em, string $entityName, int $id): Post|Wall|null
     {
-        return $em->getRepository($entityName)->find($id);
+        return $em->getRepository(self::ENTITY_CLASS_MAP[$entityName])->find($id);
     }
 
     public function generateEntityUrl(Wall|Post $entity, UrlGeneratorInterface $urlGenerator, TranslatorInterface $translator): string
     {
         if ($entity instanceof Post) {
             return $urlGenerator->generate('app_frontend_post', [
-                'seoTypeSlug' => $translator->trans(sprintf('post.%s.seo_route', $entity->getType()->name)),
+                'seoTypeSlug' => $translator->trans(\sprintf('post.%s.seo_route', $entity->getType()->name)),
                 'id' => $entity->getId(),
                 'titleSlug' => $entity->getTitleSlug(),
             ], UrlGeneratorInterface::ABSOLUTE_URL);
