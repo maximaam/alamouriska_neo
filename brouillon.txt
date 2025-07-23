@@ -28,3 +28,6 @@ to do
 
 
 # dig +short TXT _dmarc.alamouriska.com
+
+# ssh strato:
+ssh alamouriska.com@ssh.strato.de:25%RezRez%25
