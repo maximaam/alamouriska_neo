@@ -18,7 +18,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
     name: 'app:notify',
     description: 'Notify users about previous week posts.',
 )]
-class NotifyCommand
+readonly class NotifyCommand
 {
     private const ACTION_WEEKLY_POSTS = 'weeklyPosts';
     private const VALID_ACTIONS = [

@@ -57,7 +57,7 @@ final class SocialMediaUtils
             // Parse the host to filter
             $host = strtolower((string) parse_url($url, \PHP_URL_HOST));
 
-            if (true === $excludeSocialMedia) {
+            if ($excludeSocialMedia) {
                 $excludedHosts = ['youtube.com', 'www.youtube.com', 'youtu.be'];
 
                 foreach ($excludedHosts as $excluded) {

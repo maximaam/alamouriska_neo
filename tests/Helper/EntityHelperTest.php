@@ -72,7 +72,7 @@ final class EntityHelperTest extends WebTestCase
         $url = $this->entityHelper->generateEntityUrl($post, $urlGenerator, $translator);
 
         self::assertSame(
-            sprintf('https://www.alamouriska.com/mots-algeriens/%s/ba3ouk-fi-souk-d-lala', $post->getId()),
+            \sprintf('https://www.alamouriska.com/mots-algeriens/%s/ba3ouk-fi-souk-d-lala', $post->getId()),
             $url,
         );
     }
@@ -92,7 +92,7 @@ final class EntityHelperTest extends WebTestCase
         $url = $this->entityHelper->generateEntityUrl($wall, $urlGenerator, $translator);
 
         self::assertSame(
-            sprintf('https://www.alamouriska.com/el7it/%s', $wall->getId()),
+            \sprintf('https://www.alamouriska.com/el7it/%s', $wall->getId()),
             $url,
         );
     }

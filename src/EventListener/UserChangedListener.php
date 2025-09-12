@@ -81,10 +81,8 @@ final readonly class UserChangedListener
     {
         $avatarName = $user->getAvatarName();
 
-        if (null === $avatarName) {
-            if ($event instanceof PreUpdateEventArgs && $event->hasChangedField('avatarName')) {
-                $avatarName = $event->getOldValue('avatarName');
-            }
+        if (null === $avatarName && ($event instanceof PreUpdateEventArgs && $event->hasChangedField('avatarName'))) {
+            $avatarName = $event->getOldValue('avatarName');
         }
 
         if (null === $avatarName) {

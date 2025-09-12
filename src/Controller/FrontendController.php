@@ -107,7 +107,7 @@ final class FrontendController extends AbstractController
     #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS])]
     public function posts(Request $request, string $seoTypeSlug, #[CurrentUser] ?User $currentUser = null): Response
     {
-        if (null === $type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) {
+        if (!($type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) instanceof \App\Enum\PostType) {
             return $this->redirectToRoute('app_frontend_index');
         }
 

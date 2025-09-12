@@ -37,7 +37,7 @@ final class RegistrationController extends AbstractController
     #[Route('/register', name: 'register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Security $security): Response
     {
-        if (null !== $redirect = $this->redirectIfAuthenticated($security)) {
+        if (($redirect = $this->redirectIfAuthenticated($security)) instanceof \Symfony\Component\HttpFoundation\RedirectResponse) {
             return $redirect;
         }
 

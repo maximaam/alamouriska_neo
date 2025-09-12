@@ -11,7 +11,7 @@ trait RedirectIfAuthenticatedTrait
 {
     protected function redirectIfAuthenticated(Security $security, string $routeName = 'app_home_index'): ?RedirectResponse
     {
-        if (null !== $security->getUser()) {
+        if ($security->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
             return new RedirectResponse($this->generateUrl($routeName));
         }
 

@@ -80,10 +80,9 @@ class RegistrationControllerTest extends WebTestCase
         $this->client->request('GET', $resetLink[1]);
         $this->client->followRedirect();
 
-        $user = static::getContainer()->get(UserRepository::class)->findAll()[0];
-
         /**
          * fix later
+         * $user = static::getContainer()->get(UserRepository::class)->findAll()[0];
          * self::assertTrue($user->isVerified());.
          */
     }

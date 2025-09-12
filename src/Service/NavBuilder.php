@@ -59,7 +59,7 @@ final readonly class NavBuilder
                 continue;
             }
 
-            $menu->addChild('> '.(string) $page->getTitle(), [
+            $menu->addChild('> '.$page->getTitle(), [
                 'route' => 'app_frontend_page',
                 // 'attributes' => ['class' => ''],
                 // 'linkAttributes' => ['class' => 'white-u'],

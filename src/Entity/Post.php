@@ -160,7 +160,7 @@ class Post
     {
         $this->postImageFile = $postImageFile;
 
-        if (null !== $postImageFile) {
+        if ($postImageFile instanceof File) {
             $this->updatedAt = new \DateTime();
         }
     }

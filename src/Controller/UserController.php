@@ -127,19 +127,15 @@ final class UserController extends AbstractController
     #[Route('/delete', name: 'delete', methods: ['GET', 'POST'])]
     public function delete(#[CurrentUser] User $user, Request $request, TokenStorageInterface $tokenStorage): Response
     {
-        if (Request::METHOD_POST === $request->getMethod()) {
-            if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
-                $this->entityManager->remove($user);
-                $this->entityManager->flush();
+        if (Request::METHOD_POST === $request->getMethod() && $this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
+            // Clear the runnig session
+            $tokenStorage->setToken(null);
+            $request->getSession()->invalidate();
+            $this->addFlash('success', 'flash.user_deleted_success');
 
-                // Clear the runnig session
-                $tokenStorage->setToken(null);
-                $request->getSession()->invalidate();
-
-                $this->addFlash('success', 'flash.user_deleted_success');
-
-                return $this->redirectToRoute('app_frontend_index', [], Response::HTTP_SEE_OTHER);
-            }
+            return $this->redirectToRoute('app_frontend_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $this->addFlash('warning', 'flash.user_delete_warning');

@@ -32,7 +32,7 @@ final readonly class UserInteraction
     {
         $entities = \is_iterable($entities) ? $entities : [$entities];
 
-        if (null === $user || [] === $entities) {
+        if (!$user instanceof User || [] === $entities) {
             return array_fill_keys(array_keys(self::INTERACTION_REPO_METHODS), []);
         }
 

@@ -71,7 +71,7 @@ abstract class AbstractOAuthAuthenticator extends OAuth2Authenticator
         $credentials = $this->fetchAccessToken($this->getClient());
         $resourceOwner = $this->getResourceOwnerFromCredentials($credentials);
 
-        if (null === $user = $this->getUserFromResourceOwner($resourceOwner, $this->userRepository)) {
+        if (!($user = $this->getUserFromResourceOwner($resourceOwner, $this->userRepository)) instanceof User) {
             $user = $this->oAuthRegistration->register($resourceOwner, $this->em);
         }
 

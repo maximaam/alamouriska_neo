@@ -287,11 +287,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removePost(Post $post): static
     {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getUser() === $this) {
-                // $post->setUser();
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->posts->removeElement($post) && $post->getUser() === $this) {
+            // $post->setUser();
         }
 
         return $this;
@@ -303,7 +301,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->avatarFile = $avatarFile;
 
-        if (null !== $avatarFile) {
+        if ($avatarFile instanceof File) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTime();

@@ -6,7 +6,6 @@ namespace App\EventListener;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
-use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Events;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager as LiipCacheManager;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -31,7 +30,7 @@ final readonly class PostChangedListener
         $this->removeCachedImages($post);
     }
 
-    public function preRemove(Post $post, PreRemoveEventArgs $event): void
+    public function preRemove(Post $post): void
     {
         $this->removeCachedImages($post);
     }

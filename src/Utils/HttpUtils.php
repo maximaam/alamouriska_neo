@@ -19,7 +19,7 @@ final readonly class HttpUtils
 
     public function redirectToReferer(string $fallbackRoute, int $status = Response::HTTP_SEE_OTHER): RedirectResponse
     {
-        if (null === $request = $this->requestStack->getCurrentRequest()) {
+        if (!($request = $this->requestStack->getCurrentRequest()) instanceof \Symfony\Component\HttpFoundation\Request) {
             return new RedirectResponse($this->urlGenerator->generate($fallbackRoute));
         }
 
