@@ -24,12 +24,7 @@ class ContactMemberForm extends AbstractType
                     'class' => 'd-none',
                 ],
                 'constraints' => [
-                    new Length([
-                        'min' => 10,
-                        'max' => 1000,
-                        'minMessage' => 'contact_member_message_min',
-                        'maxMessage' => 'contact_member_message_max',
-                    ]),
+                    new Length(min: 10, max: 1000, minMessage: 'contact_member_message_min', maxMessage: 'contact_member_message_max'),
                 ],
             ]);
     }

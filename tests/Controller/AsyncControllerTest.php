@@ -11,7 +11,7 @@ final class AsyncControllerTest extends WebTestCase
 {
     public function testIndex(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/async');
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);

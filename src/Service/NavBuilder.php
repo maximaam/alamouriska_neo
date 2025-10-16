@@ -16,7 +16,7 @@ final readonly class NavBuilder
 {
     public function __construct(
         private FactoryInterface $factory,
-        private readonly EntityManagerInterface $entityManager,
+        private EntityManagerInterface $entityManager,
         // private readonly RequestStack $requestStack,
         private TranslatorInterface $translator,
     ) {

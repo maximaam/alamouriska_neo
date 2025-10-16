@@ -21,8 +21,8 @@ final class UserControllerTest extends WebTestCase
     {
         self::markTestSkipped('must be revisited.');
 
-        $this->client = static::createClient();
-        $this->manager = static::getContainer()->get('doctrine')->getManager();
+        $this->client = self::createClient();
+        $this->manager = self::getContainer()->get('doctrine')->getManager();
         $this->userRepository = $this->manager->getRepository(User::class);
 
         foreach ($this->userRepository->findAll() as $object) {

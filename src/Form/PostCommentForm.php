@@ -24,12 +24,7 @@ class PostCommentForm extends AbstractType
                     'class' => 'd-none',
                 ],
                 'constraints' => [
-                    new Length([
-                        'min' => 10,
-                        'max' => 1000,
-                        'minMessage' => 'post_comment_min',
-                        'maxMessage' => 'post_comment_max',
-                    ]),
+                    new Length(min: 10, max: 1000, minMessage: 'post_comment_min', maxMessage: 'post_comment_max'),
                 ],
             ]);
     }

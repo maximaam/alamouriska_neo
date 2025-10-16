@@ -27,9 +27,7 @@ class ResetPasswordRequestForm extends AbstractType
                 ],
                 'help' => 'form.help.reset_password_request',
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter your email',
-                    ]),
+                    new NotBlank(message: 'Please enter your email'),
                 ],
             ]);
     }

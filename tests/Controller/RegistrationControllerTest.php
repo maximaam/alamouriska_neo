@@ -17,10 +17,10 @@ class RegistrationControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
 
         // Ensure we have a clean database
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         /** @var EntityManager $em */
         $em = $container->get('doctrine')->getManager();

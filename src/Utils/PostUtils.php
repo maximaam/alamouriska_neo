@@ -28,7 +28,7 @@ final class PostUtils
 
     public static function getValidSeoSlugs(): string
     {
-        return implode('|', array_keys(static::$typesSeoSlugs));
+        return implode('|', array_keys(self::$typesSeoSlugs));
     }
 
     public function isValidSlug(string $slug): bool

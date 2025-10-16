@@ -31,3 +31,7 @@ to do
 
 # ssh strato:
 ssh alamouriska.com@ssh.strato.de:25%RezRez%25
+
+# helpers shh
+ex: composer-helper.sh update
+ex: symfony-helpder.sh c:c

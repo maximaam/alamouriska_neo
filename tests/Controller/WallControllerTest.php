@@ -21,8 +21,8 @@ final class WallControllerTest extends WebTestCase
     {
         self::markTestSkipped();
 
-        $this->client = static::createClient();
-        $this->manager = static::getContainer()->get('doctrine')->getManager();
+        $this->client = self::createClient();
+        $this->manager = self::getContainer()->get('doctrine')->getManager();
         $this->wallRepository = $this->manager->getRepository(Wall::class);
 
         foreach ($this->wallRepository->findAll() as $object) {

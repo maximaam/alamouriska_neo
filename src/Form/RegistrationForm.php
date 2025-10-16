@@ -48,15 +48,8 @@ class RegistrationForm extends AbstractType
                 ],
                 'help' => 'label.password_constraints',
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'password_required',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'max' => 64,
-                        'minMessage' => 'password_min_length',
-                        'maxMessage' => 'password_max_length',
-                    ]),
+                    new NotBlank(message: 'password_required'),
+                    new Length(min: 6, max: 64, minMessage: 'password_min_length', maxMessage: 'password_max_length'),
                 ],
             ])
             ->add('pseudo', null, [

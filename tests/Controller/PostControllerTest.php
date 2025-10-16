@@ -22,8 +22,8 @@ final class PostControllerTest extends WebTestCase
     {
         self::markTestSkipped('must be revisited.');
 
-        $this->client = static::createClient();
-        $this->manager = static::getContainer()->get('doctrine')->getManager();
+        $this->client = self::createClient();
+        $this->manager = self::getContainer()->get('doctrine')->getManager();
         $this->postRepository = $this->manager->getRepository(Post::class);
 
         foreach ($this->postRepository->findAll() as $object) {

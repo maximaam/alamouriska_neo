@@ -26,8 +26,8 @@ readonly class NotifyCommand
     ];
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly MessageBusInterface $messageBus,
+        private EntityManagerInterface $em,
+        private MessageBusInterface $messageBus,
     ) {
     }
 

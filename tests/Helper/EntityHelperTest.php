@@ -23,8 +23,8 @@ final class EntityHelperTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->manager = static::getContainer()->get('doctrine')->getManager();
-        $this->entityHelper = static::getContainer()->get(EntityHelper::class);
+        $this->manager = self::getContainer()->get('doctrine')->getManager();
+        $this->entityHelper = self::getContainer()->get(EntityHelper::class);
 
         foreach ($this->manager->getRepository(User::class)->findAll() as $user) {
             $this->manager->remove($user);
@@ -67,8 +67,8 @@ final class EntityHelperTest extends WebTestCase
         $this->manager->persist($post);
         $this->manager->flush();
 
-        $urlGenerator = static::getContainer()->get(UrlGeneratorInterface::class);
-        $translator = static::getContainer()->get(TranslatorInterface::class);
+        $urlGenerator = self::getContainer()->get(UrlGeneratorInterface::class);
+        $translator = self::getContainer()->get(TranslatorInterface::class);
         $url = $this->entityHelper->generateEntityUrl($post, $urlGenerator, $translator);
 
         self::assertSame(
@@ -87,8 +87,8 @@ final class EntityHelperTest extends WebTestCase
         $this->manager->persist($wall);
         $this->manager->flush();
 
-        $urlGenerator = static::getContainer()->get(UrlGeneratorInterface::class);
-        $translator = static::getContainer()->get(TranslatorInterface::class);
+        $urlGenerator = self::getContainer()->get(UrlGeneratorInterface::class);
+        $translator = self::getContainer()->get(TranslatorInterface::class);
         $url = $this->entityHelper->generateEntityUrl($wall, $urlGenerator, $translator);
 
         self::assertSame(
