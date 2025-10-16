@@ -39,4 +39,4 @@ phpstan.neon
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
 
-/.brouillon.txt
+/brouillon.txt
