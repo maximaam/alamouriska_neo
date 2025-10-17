@@ -33,8 +33,13 @@ cc: cache-clear ## Alias for cache-clear
 mk-mig: ## Make migration migrations
 	$(PHP) $(CONSOLE) make:migration
 
-migrate: ## Run Doctrine migrations
+migrate: ## Run Doctrine migrations - @hides the echo of the command
 	$(PHP) $(CONSOLE) doctrine:migrations:migrate
+
+sql: ## Run sql queries
+	@$(PHP) $(CONSOLE) dbal:run-sql "$(SQL)"
+
+# php bin/console dbal:run-sql "SELECT VERSION();"
 
 fixtures: ## Load Doctrine fixtures
 	$(PHP) $(CONSOLE) doctrine:fixtures:load --no-interaction
