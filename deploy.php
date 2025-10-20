@@ -31,6 +31,8 @@ set('writable_mode', 'chmod');
 set('http_user', '1260468');
 set('bin/php', '/opt/RZphp83/bin/php-cli');
 set('bin/composer', '{{bin/php}} /mnt/web319/b1/37/51912237/htdocs/bin/composer');
+set('bin/console', '{{release_path}}/bin/console');
+set('php', '/opt/RZphp83/bin/php-cli');
 
 // -------------------------------
 // Force Git to use your SSH key
@@ -76,18 +78,27 @@ task('database:migrate', function () {
 // -------------------------------
 task('deploy', [
     'deploy:prepare',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
-    'deploy:writable',
     'deploy:vendors',
     'deploy:cache:clear',
-    'deploy:symlink',
-    'cleanup',
+    'deploy:publish',
 ]);
+
+
+// -------------------------------
+// Copy latest releass to app folder, so that strato can see it 
+// Strato does not list symlinked folders in the domain redirect dropdown list
+// -------------------------------
+task('deploy:publish_app', function () {
+    $releasePath = get('release_path');
+    run('rm -rf ~/alamouriska_neo/app/*');
+    run("cp -a $releasePath/. ~/alamouriska_neo/app/");
+    run("ln -sf ~/alamouriska_neo/shared/.env.local ~/alamouriska_neo/app/.env.local");
+});
+after('deploy:symlink', 'deploy:publish_app');
 
 after('deploy:failed', 'deploy:unlock');
 
 // Optional: add assets and migrations
-after('deploy:vendors', 'deploy:assets');
-after('deploy:cache:clear', 'database:migrate');
+// after('deploy:cache:clear', 'database:migrate');
+// after('deploy:failed', 'deploy:unlock');
+
