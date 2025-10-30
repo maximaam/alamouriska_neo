@@ -15,9 +15,12 @@ use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -25,7 +28,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route(name: 'app_frontend_', methods: ['GET'], priority: 1)]
 final class FrontendController extends AbstractController
 {
-    public const PAGE_MAX_POSTS = 10;
+    public const int PAGE_MAX_POSTS = 10;
 
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -44,6 +47,20 @@ final class FrontendController extends AbstractController
             'newest_posts' => $newestPosts,
             ...$this->userInteraction->getUserInteractionIds($newestPosts, 'post', $user),
         ]);
+    }
+
+    #[Route('/sendmail', name: 'send_mail')]
+    public function sendMail(MailerInterface $mailer): Response
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address('mimo@gmail.com', 'bla'))
+            ->to('mimo2@gmail.com')
+            ->subject('bla sujet')
+            ->text('body body');
+
+        $mailer->send($email);
+
+        return $this->redirectToRoute('app_frontend_index', status: Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/membre/{pseudo:user}', name: 'member_profile')]

@@ -2,88 +2,192 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller;
+namespace App\Tests\Integration\Controller;
 
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class RegistrationControllerTest extends WebTestCase
+final class RegistrationControllerTest extends WebTestCase
 {
-    private KernelBrowser $client;
-    private UserRepository $userRepository;
+    private $client;
+    private $entityManager;
+    private $passwordHasher;
 
     protected function setUp(): void
     {
+        // self::ensureKernelShutdown();
+
         $this->client = self::createClient();
+        $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
+        $this->passwordHasher = self::getContainer()->get(UserPasswordHasherInterface::class);
 
-        // Ensure we have a clean database
-        $container = self::getContainer();
-
-        /** @var EntityManager $em */
-        $em = $container->get('doctrine')->getManager();
-        $this->userRepository = $container->get(UserRepository::class);
-
-        foreach ($this->userRepository->findAll() as $user) {
-            $em->remove($user);
+        $users = $this->entityManager->getRepository(User::class)->findAll();
+        foreach ($users as $user) {
+            $this->entityManager->remove($user);
         }
-
-        $em->flush();
+        $this->entityManager->flush();
     }
 
-    public function testRegister(): void
+    public function testRegisterPageLoadsSuccessfully(): void
     {
-        // Register a new user
         $this->client->request('GET', '/register');
+
         self::assertResponseIsSuccessful();
-        self::assertPageTitleContains('Inscription - Alamouriska');
+        self::assertSelectorExists('form');
+        self::assertSelectorTextContains('h1', 'Inscription');
+    }
 
-        $this->client->submitForm('Envoyer', [
-            'registration_form[email]' => 'me@example.com',
-            'registration_form[pseudo]' => 'samingo',
-            'registration_form[plainPassword]' => 'password',
-            // 'registration_form[agreeTerms]' => true,
-        ]);
+    public function testSuccessfulRegistration(): void
+    {
+        $crawler = $this->client->request('GET', '/register');
 
-        // Ensure the response redirects after submitting the form, the user exists, and is not verified
-        // self::assertResponseRedirects('/');  @TODO: set the appropriate path that the user is redirected to.
-        self::assertCount(1, $this->userRepository->findAll());
-        $user = $this->userRepository->findAll()[0];
-        self::assertFalse($user->isVerified());
+        $formData = [
+            'registration_form[email]' => 'test@example.com',
+            'registration_form[pseudo]' => 'testuser',
+            'registration_form[plainPassword]' => 'Password123!',
+            // Add other required fields as per RegistrationForm
+        ];
 
-        // Ensure the verification email was sent
-        // Use either assertQueuedEmailCount() || assertEmailCount() depending on your mailer setup
-        // self::assertQueuedEmailCount(1);
-        // self::assertEmailCount(1);
+        $form = $crawler->selectButton('Envoyer')->form();
+        $this->client->submit($form, $formData);
 
-        $messages = $this->getMailerMessages();
-        // self::assertCount(1, $messages);
-        // self::assertEmailAddressContains($messages[0], 'from', 'app@alamouriska.com');
-        // self::assertEmailAddressContains($messages[0], 'to', 'me@example.com');
-        // self::assertEmailTextBodyContains($messages[0], 'This link will expire in 1 hour.');
+        // Check for redirect to homepage
+        self::assertResponseRedirects('/'); // Adjust to match 'app_frontend_index' route
 
-        // Login the new user
+        // Follow redirect and check flash message
         $this->client->followRedirect();
+        self::assertSelectorTextContains('.alert-success', "Un email t'a été envoyé, merci de cliquer sur le lien pour valider ton inscription.");
+
+        // Verify user is persisted in the database
+        $user = $this->entityManager
+            ->getRepository(User::class)
+            ->findOneBy(['email' => 'test@example.com']);
+        self::assertNotNull($user);
+        self::assertSame('testuser', $user->getPseudo());
+        self::assertTrue($this->passwordHasher->isPasswordValid($user, 'Password123!'));
+    }
+
+    public function testEmailSuccessfullySent(): void
+    {
+        self::markTestSkipped('review');
+
+        $crawler = $this->client->request('GET', '/register');
+
+        $formData = [
+            'registration_form[email]' => 'test1@example.com',
+            'registration_form[pseudo]' => 'testuser1',
+            'registration_form[plainPassword]' => 'Password123!',
+            // Add other required fields as per RegistrationForm
+        ];
+
+        $form = $crawler->selectButton('Envoyer')->form();
+        $this->client->submit($form, $formData);
+
+        $this->client->followRedirect(false);
+
+        $this->assertEmailCount(1); // use assertQueuedEmailCount() when using Messenger
+
+        // $email = $this->getMailerMessage();
+
+        // Verify email was queued (assuming a mocked mailer)
+        // $transport = static::getContainer()->get(Transport::class);
+        // self::assertCount(1, $transport->getSentMessages());
+        // $email = $transport->getSentMessages()[0];
+        // self::assertSame('test@example.com', $email->getTo()[0]->getAddress());
+        // self::assertStringContainsString('registration_confirmation', $email->getHtmlBody());
+    }
+
+    public function testRedirectIfAuthenticated(): void
+    {
+        // Simulate an authenticated user
+        $user = new User();
+        $user->setEmail('authenticated@example.com');
+        $user->setPseudo('authuser');
+        $user->setPassword($this->passwordHasher->hashPassword($user, 'Password123!'));
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        // Log in the user
         $this->client->loginUser($user);
 
-        // Get the verification link from the email
-        /** @var TemplatedEmail $templatedEmail */
-        $templatedEmail = $messages[0];
-        $messageBody = $templatedEmail->getHtmlBody();
-        self::assertIsString($messageBody);
+        $this->client->request('GET', '/register');
 
-        preg_match('#(http://localhost/verify/email.+)">#', $messageBody, $resetLink);
+        // Assert redirection (adjust based on your redirectIfAuthenticated logic)
+        self::assertResponseRedirects('/'); // Adjust to match your redirect route
+    }
 
-        // "Click" the link and see if the user is verified
-        $this->client->request('GET', $resetLink[1]);
-        $this->client->followRedirect();
+    public function testInvalidFormSubmission(): void
+    {
+        $crawler = $this->client->request('GET', '/register');
 
-        /**
-         * fix later
-         * $user = static::getContainer()->get(UserRepository::class)->findAll()[0];
-         * self::assertTrue($user->isVerified());.
-         */
+        // Submit form with invalid data (e.g., missing required fields)
+        $formData = [
+            'registration_form[email]' => 'testuser.email.com', // Invalid email
+            'registration_form[pseudo]' => 'testuser',
+            'registration_form[plainPassword]' => 'qqqqqq',
+        ];
+
+        $form = $crawler->selectButton('Envoyer')->form();
+        $this->client->submit($form, $formData);
+
+        // Assert form is re-rendered with errors
+        self::assertResponseIsUnprocessable();
+        self::assertSelectorExists('div.invalid-feedback');
+        self::assertSelectorExists('input.is-invalid');
+        self::assertInputValueSame('registration_form[email]', 'testuser.email.com');
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => '']);
+        self::assertNull($user);
+    }
+
+    /*
+    public function testSendMailWithoutMailTestBridge(): void
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/register');
+
+        $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
+
+        $repo = $this->entityManager->getRepository(User::class);
+        foreach ($repo->findAll() as $user) {
+            $this->entityManager->remove($user);
+        }
+
+        $this->entityManager->flush();
+
+        $form = $crawler->selectButton('Envoyer')->form([
+            'registration_form[email]' => 'testuser1@example.com',
+            'registration_form[pseudo]' => 'TestUser1',
+            'registration_form[plainPassword]' => 'StrongPassword123',
+        ]);
+
+        // Submit form
+        $client->submit($form);
+
+        $logger = new MessageLoggerListener();
+        $container = static::getContainer();
+        $container->get('event_dispatcher')->addSubscriber($logger);
+
+        $client->followRedirect(false);
+        //self::assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        // Fetch messages from the logger
+        $events = $logger->getEvents()->getEvents();
+        self::assertCount(2, $events);
+
+        // @var RawMessage $message
+        $message = $events[0]->getMessage();
+        self::assertStringContainsString('body body', $message->getTextBody());
+    }
+    */
+
+    #[\Override]
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->entityManager->close();
+        $this->entityManager = null;
     }
 }

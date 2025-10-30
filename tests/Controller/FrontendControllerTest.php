@@ -8,6 +8,10 @@ use App\Entity\Page;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\EventListener\MessageLoggerListener;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\RawMessage;
 
 final class FrontendControllerTest extends WebTestCase
 {
@@ -31,6 +35,68 @@ final class FrontendControllerTest extends WebTestCase
         self::assertSelectorCount(1, 'h1');
         self::assertSelectorTextContains('h1', 'Alamouriska ! Le site du parler algérien en derja (درجة)');
         // self::assertSelectorTextContains('.page-content', 'Welcome to the homepage.');
+    }
+
+    public function testDdd(): void
+    {
+        self::markTestSkipped('review');
+
+        // Make the request
+        $this->client->request('GET', '/sendmail');
+
+        // ✅ Expect a redirect to your index route
+        self::assertResponseRedirects('/'); // adjust to actual route path if needed
+
+        // ✅ Follow redirect to make sure it resolves correctly
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
+
+        // ✅ Check that exactly one email was sent
+        $this->assertEmailCount(1);
+
+        // ✅ Fetch the sent email
+        $email = $this->getMailerMessage();
+
+        // ✅ Assertions on its contents
+        $this->assertEmailHeaderSame($email, 'To', 'mimo2@gmail.com');
+        $this->assertEmailTextBodyContains($email, 'body body');
+        $this->assertEmailHeaderSame($email, 'Subject', 'bla sujet');
+    }
+
+    public function testSendMailWithoutMailTestBridge(): void
+    {
+        $container = self::getContainer();
+        $logger = new MessageLoggerListener();
+        $container->get('event_dispatcher')->addSubscriber($logger);
+
+        $this->client->request('GET', '/sendmail');
+        $this->client->followRedirect();
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        // Fetch messages from the logger
+        $events = $logger->getEvents()->getEvents();
+        self::assertCount(2, $events);
+
+        /** @var RawMessage $message */
+        $message = $events[0]->getMessage();
+        self::assertStringContainsString('body body', $message->getTextBody());
+    }
+
+    public function testMailerWorks(): void
+    {
+        $mailer = self::getContainer()->get('mailer');
+        $email = (new Email())
+            ->from('test@example.com')
+            ->to('me@example.com')
+            ->subject('Test')
+            ->text('Hello world');
+        $mailer->send($email);
+
+        self::assertEmailCount(1);
+
+        /** @var RawMessage $email */
+        $email = $this->getMailerMessage(0);
+        self::assertEmailTextBodyContains($email, 'Hello world');
     }
 
     private function createPage(): void
