@@ -5,4 +5,5 @@ framework:
 when@test:
     framework:
         mailer:
+            message_bus: false
             dsn: '%env(MAILER_DSN)%'

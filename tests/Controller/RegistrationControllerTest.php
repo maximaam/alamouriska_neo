@@ -6,7 +6,10 @@ namespace App\Tests\Integration\Controller;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\EventListener\MessageLoggerListener;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class RegistrationControllerTest extends WebTestCase
@@ -141,20 +144,19 @@ final class RegistrationControllerTest extends WebTestCase
         self::assertNull($user);
     }
 
-    /*
     public function testSendMailWithoutMailTestBridge(): void
     {
-        $client = static::createClient();
+        self::markTestSkipped('mail send test fails');
 
-        $crawler = $client->request('GET', '/register');
+        $crawler = $this->client->request('GET', '/register');
+        $this->client->followRedirects(false);
 
-        $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
 
         $repo = $this->entityManager->getRepository(User::class);
         foreach ($repo->findAll() as $user) {
             $this->entityManager->remove($user);
         }
-
         $this->entityManager->flush();
 
         $form = $crawler->selectButton('Envoyer')->form([
@@ -162,26 +164,26 @@ final class RegistrationControllerTest extends WebTestCase
             'registration_form[pseudo]' => 'TestUser1',
             'registration_form[plainPassword]' => 'StrongPassword123',
         ]);
-
-        // Submit form
-        $client->submit($form);
+        $this->client->submit($form);
 
         $logger = new MessageLoggerListener();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $container->get('event_dispatcher')->addSubscriber($logger);
 
-        $client->followRedirect(false);
-        //self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         // Fetch messages from the logger
+        /*
         $events = $logger->getEvents()->getEvents();
         self::assertCount(2, $events);
+        */
 
-        // @var RawMessage $message
+        /** @var TemplatedEmail $message */
+        /*
         $message = $events[0]->getMessage();
         self::assertStringContainsString('body body', $message->getTextBody());
+        */
     }
-    */
 
     #[\Override]
     protected function tearDown(): void
