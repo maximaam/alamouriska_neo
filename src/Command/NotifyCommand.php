@@ -20,8 +20,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 )]
 readonly class NotifyCommand
 {
-    private const ACTION_WEEKLY_POSTS = 'weeklyPosts';
-    private const VALID_ACTIONS = [
+    private const string ACTION_WEEKLY_POSTS = 'weeklyPosts';
+    private const array VALID_ACTIONS = [
         self::ACTION_WEEKLY_POSTS,
     ];
 

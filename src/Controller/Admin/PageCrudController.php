@@ -21,6 +21,7 @@ class PageCrudController extends AbstractCrudController
         return Page::class;
     }
 
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         /** @var string $pagesDir */

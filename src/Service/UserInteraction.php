@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class UserInteraction
 {
-    private const INTERACTION_REPO_METHODS = [
+    private const array INTERACTION_REPO_METHODS = [
         'user_like_interaction_ids' => [UserLike::class, 'getUserInteractionIds'],
         'user_comment_interaction_ids' => [UserComment::class, 'getUserInteractionIds'],
     ];

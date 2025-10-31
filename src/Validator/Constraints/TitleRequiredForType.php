@@ -11,6 +11,7 @@ class TitleRequiredForType extends Constraint
 {
     public string $message = 'Title is required unless type is 3 or 4.';
 
+    #[\Override]
     public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;

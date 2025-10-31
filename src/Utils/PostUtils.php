@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Attribute\AsRoutingConditionService;
 #[AsRoutingConditionService(alias: 'post_utils')]
 final class PostUtils
 {
-    public const SEO_POST_SLUGS = 'mots-algeriens|expressions-algeriennes|proverbes-algeriens';
+    public const string SEO_POST_SLUGS = 'mots-algeriens|expressions-algeriennes|proverbes-algeriens';
 
     /**
      * @var array<string, PostType>

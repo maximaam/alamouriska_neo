@@ -19,6 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted(User::ROLE_ADMIN)]
 class DashboardController extends AbstractDashboardController
 {
+    #[\Override]
     public function index(): Response
     {
         $urlGenerator = $this->container->get(AdminUrlGenerator::class);
@@ -48,12 +49,14 @@ class DashboardController extends AbstractDashboardController
         // return $this->render('admin/dashboard.html.twig');
     }
 
+    #[\Override]
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
             ->setTitle('Alamouriska Neo');
     }
 
+    #[\Override]
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');

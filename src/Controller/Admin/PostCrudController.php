@@ -23,6 +23,7 @@ class PostCrudController extends AbstractCrudController
         return Post::class;
     }
 
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         /** @var string $postsDir */

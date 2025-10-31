@@ -15,7 +15,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class EntityHelper
 {
-    public const ENTITY_CLASS_MAP = [
+    public const array ENTITY_CLASS_MAP = [
         'post' => Post::class,
         'wall' => Wall::class,
     ];

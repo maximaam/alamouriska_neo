@@ -22,6 +22,7 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         /** @var string $avatarsDir */
