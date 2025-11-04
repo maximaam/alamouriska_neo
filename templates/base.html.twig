@@ -82,7 +82,7 @@
                                 </form>
                             </div>
                             <div class="col-2 top-nav-user">
-                                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                {% if app.user %}
                                 <a href="{{ path('app_user_show') }}" title="{{ app.user.pseudo }} - {{ 'label.profile'|trans }}">
                                     {%  include 'partials/_avatar.html.twig' with {'pseudo': app.user.pseudo, 'avatarName': app.user.avatarName, 'withoutLink': true } only %}
                                 </a>
@@ -100,6 +100,7 @@
 
         <main>
             <div class="container">
+            {% if app.user %}
                 {% set flashes = app.flashes %}
                 {% if flashes is not empty %}
                     <div class="row">
@@ -112,6 +113,7 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+            {% endif %}
                 <div class="row">
                     {% block body %}{% endblock %}
                 </div>

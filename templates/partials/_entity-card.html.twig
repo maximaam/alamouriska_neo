@@ -37,7 +37,7 @@
         {% endif %}
 
         <div class="card-footer" {{ stimulus_controller('user-interactions', {
-            csrfToken: csrf_token('user-interactions'),
+            csrfToken: app.user ? csrf_token('user-interactions') : '',
             entityId: entity.id,
             likeUrl: path('app_async_user_like', { 'id': entity.id, 'entityName': entity_name }),
             commentUrl: path('app_async_user_comment', { 'id': entity.id, 'entityName': entity_name }),

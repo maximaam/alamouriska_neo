@@ -13,10 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/post', name: 'app_post_', priority: 2)]
-#[IsGranted(User::ROLE_USER)]
 final class PostController extends AbstractController
 {
     public function __construct(
