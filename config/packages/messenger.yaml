@@ -1,5 +1,6 @@
 framework:
     messenger:
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         failure_transport: failed
 
         transports:
@@ -24,7 +25,7 @@ framework:
             App\Message\UserCommentEmailMessage: async
             App\Message\ContactMemberEmailMessage: async
             App\Message\WeeklyPostsNotificationMessage: async
-            
+
             # Changé pour envoyer sync par défaut
             # Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async
@@ -32,3 +33,11 @@ framework:
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
+
+# when@test:
+#    framework:
+#        messenger:
+#            transports:
+#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+#                async: 'in-memory://'
