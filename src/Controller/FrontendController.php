@@ -52,16 +52,21 @@ final class FrontendController extends AbstractController
     #[Route('/sw', name: 'sw')]
     public function sw(Request $request): Response
     {
-        $data = fopen('sw.txt', 'a+');
+        $stream = fopen('sw.txt', 'a+');
+        if (false === $stream) {
+            // handle error
+            throw new \RuntimeException('Failed to open SW file for writing.');
+        }
+
         $code = '';
-        $existingCodes = explode("\n", file_get_contents('sw.txt'));
+        $existingCodes = explode("\n", (string) file_get_contents('sw.txt'));
 
         if ($request->query->has('generate')) {
             $code = random_int(1, 9999);
             $code = str_pad((string) $code, 4, '0', \STR_PAD_LEFT);
 
             if (!\in_array($code, $existingCodes, true)) {
-                fwrite($data, $code."\n");
+                fwrite($stream, $code."\n");
             }
         }
 
@@ -124,7 +129,7 @@ final class FrontendController extends AbstractController
         ]);
     }
 
-    #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', methods: ['GET'], requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS, 'id' => Requirement::POSITIVE_INT, 'titleSlug' => Requirement::ASCII_SLUG])]
+    #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS, 'id' => Requirement::POSITIVE_INT, 'titleSlug' => Requirement::ASCII_SLUG], methods: ['GET'])]
     // condition: "service('post_utils').isValidSlug('mots-algeriens')",
     public function post(Post $post, string $seoTypeSlug, string $titleSlug, #[CurrentUser] ?User $currentUser = null): Response
     {

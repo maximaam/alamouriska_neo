@@ -41,13 +41,13 @@ class Wall
     /**
      * @var Collection<int, UserLike>
      */
-    #[ORM\OneToMany(targetEntity: UserLike::class, mappedBy: 'wall', orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OneToMany(targetEntity: UserLike::class, mappedBy: 'wall', fetch: 'EAGER', orphanRemoval: true)]
     private Collection $userLikes;
 
     /**
      * @var Collection<int, UserComment>
      */
-    #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'wall', orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'wall', fetch: 'EAGER', orphanRemoval: true)]
     // #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $userComments;
 

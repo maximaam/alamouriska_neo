@@ -60,13 +60,13 @@ class Post
     /**
      * @var Collection<int, UserLike>
      */
-    #[ORM\OneToMany(targetEntity: UserLike::class, mappedBy: 'post', orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OneToMany(targetEntity: UserLike::class, mappedBy: 'post', fetch: 'EAGER', orphanRemoval: true)]
     private Collection $userLikes;
 
     /**
      * @var Collection<int, UserComment>
      */
-    #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'post', orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'post', fetch: 'EAGER', orphanRemoval: true)]
     // #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $userComments;
 

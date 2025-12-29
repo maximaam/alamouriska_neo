@@ -28,8 +28,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
 
-    public const ROLE_USER = 'ROLE_USER';
-    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const string ROLE_USER = 'ROLE_USER';
+    public const string ROLE_ADMIN = 'ROLE_ADMIN';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,9 +46,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [self::ROLE_USER];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -79,20 +76,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'avatarName')]
     #[Assert\Image(
-        allowLandscape: true,
-        allowPortrait: true,
         maxSize: '1M',
         mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
         minWidth: 128,
-        minHeight: 128,
         maxWidth: 2048,
         maxHeight: 2048,
-        minWidthMessage: 'avatar_min_width',
-        minHeightMessage: 'avatar_min_height',
-        maxWidthMessage: 'avatar_max_width',
-        maxHeightMessage: 'avatar_max_height',
+        minHeight: 128,
+        allowLandscape: true,
+        allowPortrait: true,
         maxSizeMessage: 'avatar_max_size',
-        mimeTypesMessage: 'avatar_mime_types_allowed'
+        mimeTypesMessage: 'avatar_mime_types_allowed',
+        maxWidthMessage: 'avatar_max_width',
+        minWidthMessage: 'avatar_min_width',
+        maxHeightMessage: 'avatar_max_height',
+        minHeightMessage: 'avatar_min_height'
     )]
     private ?File $avatarFile = null;
 
@@ -102,7 +99,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $posts;
 
-    #[ORM\Column(length: 180, nullable: true, unique: true)]
+    #[ORM\Column(length: 180, unique: true, nullable: true)]
     #[Assert\Email]
     private ?string $pendingEmail = null;
 
@@ -118,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $userComments;
 
-    #[ORM\Column(length: 255, nullable: true, unique: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $googleId = null;
 
     /**
