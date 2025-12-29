@@ -53,10 +53,7 @@ final class FrontendController extends AbstractController
     public function sw(Request $request): Response
     {
         $stream = fopen('sw.txt', 'a+');
-        if (false === $stream) {
-            // handle error
-            throw new \RuntimeException('Failed to open SW file for writing.');
-        }
+        \assert(false !== $stream);
 
         $code = '';
         $existingCodes = explode("\n", (string) file_get_contents('sw.txt'));
