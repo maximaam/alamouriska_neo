@@ -49,6 +49,28 @@ final class FrontendController extends AbstractController
         ]);
     }
 
+    #[Route('/sw', name: 'sw')]
+    public function sw(Request $request): Response
+    {
+        $data = fopen('sw.txt', 'a+');
+        $code = '';
+        $existingCodes = explode("\n", file_get_contents('sw.txt'));
+
+        if ($request->query->has('generate')) {
+            $code = random_int(1, 9999);
+            $code = str_pad((string) $code, 4, '0', \STR_PAD_LEFT);
+
+            if (!\in_array($code, $existingCodes, true)) {
+                fwrite($data, $code."\n");
+            }
+        }
+
+        return $this->render('frontend/sw.html.twig', [
+            'code' => $code,
+            'existing_codes' => $existingCodes,
+        ]);
+    }
+
     #[Route('/sendmail', name: 'send_mail')]
     public function sendMail(MailerInterface $mailer): Response
     {

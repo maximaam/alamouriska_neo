@@ -30,7 +30,7 @@ class Post
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::SMALLINT, enumType: PostType::class, nullable: false)]
+    #[ORM\Column(type: Types::SMALLINT, nullable: false, enumType: PostType::class)]
     #[Assert\NotBlank]
     private PostType $type;
 

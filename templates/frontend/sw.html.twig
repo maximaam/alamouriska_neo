@@ -1,0 +1,13 @@
+
+    <h1 style="text-align: center">{{ code }}</h1>
+    <h2><a href="/sw?generate=true" style="">Nouveau code</a></h2>
+
+    <ul>
+        {% for existing_code in existing_codes %}
+            <li style="border:1px solid #000; display: inline-block; background: yellow; margin: 2px; padding: 3px">
+                {{ existing_code }}
+            </li>
+        {% endfor %}
+    </ul>
+
+
