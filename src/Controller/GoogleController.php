@@ -8,15 +8,16 @@ use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/connect', name: 'connect_google_')]
 class GoogleController extends AbstractController
 {
-    public const SCOPES = [
+    public const array SCOPES = [
         'google' => [],
     ];
 
-    #[Route('/connect/{service}', name: 'connect_google_start')]
+    #[Route('/{service}', name: 'start')]
     public function connect(ClientRegistry $clientRegistry, string $service): RedirectResponse
     {
         if (!\in_array($service, array_keys(self::SCOPES), true)) {
@@ -28,7 +29,7 @@ class GoogleController extends AbstractController
             ->redirect(self::SCOPES[$service], []);
     }
 
-    #[Route('/connect/{service}/check', name: 'connect_google_check', requirements: ['service' => 'google|facebook'])]
+    #[Route('/{service}/check', name: 'check', requirements: ['service' => 'google|facebook'])]
     public function check(): Response
     {
         return new Response(status: Response::HTTP_OK);
