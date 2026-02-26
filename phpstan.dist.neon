@@ -6,6 +6,8 @@ parameters:
         - public/
         - src/
         # - tests/
+    excludePaths:
+        - config/reference.php
 
 includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
