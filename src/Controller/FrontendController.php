@@ -76,7 +76,7 @@ final class FrontendController extends AbstractController
     #[Route('/sendmail', name: 'send_mail')]
     public function sendMail(MailerInterface $mailer): Response
     {
-        $email = (new TemplatedEmail())
+        $email = new TemplatedEmail()
             ->from(new Address('mimo@gmail.com', 'bla'))
             ->to('mimo2@gmail.com')
             ->subject('bla sujet')
