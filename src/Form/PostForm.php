@@ -21,8 +21,8 @@ class PostForm extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'choices' => PostType::cases(),
-                'choice_label' => fn (PostType $type) => \sprintf('post.%s.singular', $type->name),
-                'choice_value' => fn (?PostType $type) => $type?->value,
+                'choice_label' => static fn (PostType $type) => \sprintf('post.%s.singular', $type->name),
+                'choice_value' => static fn (?PostType $type) => $type?->value,
                 'placeholder' => 'label.select_type',
                 'attr' => [
                     'data-controller' => 'post-form',

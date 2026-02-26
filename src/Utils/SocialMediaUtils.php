@@ -12,7 +12,7 @@ final class SocialMediaUtils
         // $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/|embed/)|youtu\.be/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?~i';
         $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/|embed/)|youtu\.be/)([a-zA-Z0-9_-]{11})(?:[^\s<]*)?~i';
 
-        $transformedContent = preg_replace_callback($pattern, function ($matches) {
+        $transformedContent = preg_replace_callback($pattern, static function ($matches) {
             $url = $matches[0];
             $videoId = $matches[1];
             $timeParam = (string) parse_url($url, \PHP_URL_QUERY);
@@ -36,7 +36,7 @@ final class SocialMediaUtils
     {
         $pattern = '~(?:https?://)?(?:www\.)?(?:youtube\.com/(?:watch\?v=|shorts/)|youtu\.be/)([a-zA-Z0-9_-]{11})~';
 
-        $transformedContent = preg_replace_callback($pattern, function ($matches) {
+        $transformedContent = preg_replace_callback($pattern, static function ($matches) {
             $videoId = $matches[1];
             $thumbnailUrl = 'https://img.youtube.com/vi/'.htmlspecialchars($videoId, \ENT_QUOTES).'/hqdefault.jpg';
             $videoUrl = 'https://www.youtube.com/watch?v='.htmlspecialchars($videoId, \ENT_QUOTES);

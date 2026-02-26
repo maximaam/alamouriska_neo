@@ -76,7 +76,7 @@ abstract class AbstractOAuthAuthenticator extends OAuth2Authenticator
         }
 
         return new SelfValidatingPassport(
-            new UserBadge($user->getUserIdentifier(), fn () => $user),
+            new UserBadge($user->getUserIdentifier(), static fn () => $user),
             badges: [
                 new RememberMeBadge(),
             ]
