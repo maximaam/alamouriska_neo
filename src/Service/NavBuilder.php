@@ -36,7 +36,7 @@ final readonly class NavBuilder
                 ],
                 'attributes' => ['class' => 'nav-item'],
                 'linkAttributes' => ['class' => 'nav-link'],
-            ]);
+            ])->setExtra('translation_domain', false);
         }
 
         $menu->addChild($this->translator->trans('label.wall_ar'), [

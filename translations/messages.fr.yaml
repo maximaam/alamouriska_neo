@@ -83,6 +83,7 @@ label:
   copied: "Copié !"
   copy: Copier
   message: Message
+  x_share: "Partager sur X"
 
 error:
   profile_not_found: "L'utilisateur {{user}} n'existe pas."

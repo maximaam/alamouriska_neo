@@ -17,7 +17,7 @@
         {% set iconComment = '<span data-user-interactions-target="commentIcon">' ~ ux_icon(iconCommentName, {class: 'basic-icon'}) ~ '</span>' %}
         <button
             type="button"
-            title="{{ 'label.i_comment' | trans }}"
+            title="{{ 'label.add_comment' | trans }}"
             class="btn-comments p-2 rounded"
             data-action="click->user-interactions#getCommentForm">
             {{ iconComment|raw }}
@@ -37,21 +37,21 @@
             data-label-copied="{{ 'label.copied' | trans }}">
             {{ ux_icon('bi:link', {class: 'basic-icon'}) }} <span></span>
         </a>
-        <a 
-            href="https://x.com/intent/tweet?url={{ entity_url | url_encode }}" 
+        <a
+            href="https://x.com/intent/tweet?url={{ entity_url | url_encode }}"
             target="_blank"
             class="btn btn-dark"
             rel="noopener noreferrer"
             title="{{ 'label.x_share'|trans }}">
             {{ ux_icon('bi:twitter-x', {class: 'basic-icon'}) }}
         </a>
-        <a 
+        <a
             href="https://www.facebook.com/sharer/sharer.php?u={{ entity_url | url_encode }}"
-            target="_blank" 
+            target="_blank"
             rel="noopener noreferrer"
             class="btn btn-primary"
             title="{{ 'label.facebook_share'|trans }}">
-            {{ ux_icon('bi:facebook', {class: 'basic-icon'}) }} 
+            {{ ux_icon('bi:facebook', {class: 'basic-icon'}) }}
         </a>
     </div>
 </div>
