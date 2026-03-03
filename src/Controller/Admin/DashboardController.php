@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Page;
-use App\Entity\Post;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -60,8 +58,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Pages', 'fas fa-book', Page::class);
-        yield MenuItem::linkToCrud('Posts', 'fas fa-newspaper', Post::class);
-        yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class);
+        yield MenuItem::linkTo(PageCrudController::class, 'Pages', 'fas fa-book');
+        yield MenuItem::linkTo(PostCrudController::class, 'Posts', 'fas fa-newspaper');
+        yield MenuItem::linkTo(UserCrudController::class, 'Users', 'fas fa-users');
     }
 }

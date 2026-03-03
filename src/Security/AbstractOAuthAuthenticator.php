@@ -44,7 +44,7 @@ abstract class AbstractOAuthAuthenticator extends OAuth2Authenticator
     public function supports(Request $request): bool
     {
         return 'connect_google_check' === $request->attributes->get('_route')
-            && $request->get('service') === $this->oauthServiceName;
+            && $request->attributes->get('service') === $this->oauthServiceName;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
