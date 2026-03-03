@@ -1,16 +1,18 @@
 <?php
 
-use PhpCsFixer\Config;
-use PhpCsFixer\Finder;
+declare(strict_types=1);
 
-$finder = Finder::create()
-    ->in(__DIR__.'/src')
-    ->in(__DIR__.'/tests')
-    ->name('*.php')
+$finder = new PhpCsFixer\Finder()
+    ->in(__DIR__)
+    ->exclude(['var', 'migrations'])
+    ->notPath([
+        'config/bundles.php',
+        'config/reference.php',
+    ])
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
-return (new Config())
+return new PhpCsFixer\Config()
     ->setRiskyAllowed(true)
     ->setFinder($finder)
     ->setRules([
@@ -29,23 +31,13 @@ return (new Config())
         'types_spaces' => ['space' => 'none'],
         'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
         'binary_operator_spaces' => [
-            //'operators' => ['=>' => 'align', '=' => 'align_single_space_minimal']
-            'operators' => ['=>' => 'single_space', '='  => 'single_space'],
+            // 'operators' => ['=>' => 'align', '=' => 'align_single_space_minimal']
+            'operators' => ['=>' => 'single_space', '=' => 'single_space'],
         ],
         'yoda_style' => true,
         'native_function_invocation' => [
-            //'include' => ['@all'],
+            // 'include' => ['@all'],
             'include' => ['@compiler_optimized'],
             'strict' => false,
         ],
     ]);
-
-
-/*
-return (new PhpCsFixer\Config())
-    ->setRules([
-        '@Symfony' => true,
-    ])
-    ->setFinder($finder)
-;
-*/

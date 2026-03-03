@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Deployer;
 
 require 'recipe/common.php';
@@ -38,17 +41,17 @@ set('php', '/opt/RZphp83/bin/php-cli');
 // Force Git to use your SSH key
 // -------------------------------
 set('git_env', [
-    'GIT_SSH_COMMAND' => 'ssh -i /mnt/web319/b1/37/51912237/htdocs/.ssh/github_deploy_key -o StrictHostKeyChecking=no'
+    'GIT_SSH_COMMAND' => 'ssh -i /mnt/web319/b1/37/51912237/htdocs/.ssh/github_deploy_key -o StrictHostKeyChecking=no',
 ]);
 set('git_tty', true); // required for some SSH setups
 
 // -------------------------------
 // Override update_code to use bash -lc
 // -------------------------------
-task('deploy:update_code', function () {
+task('deploy:update_code', static function () {
     $releasePath = get('release_path');
-    $repository  = get('repository');
-    $branch      = get('branch', 'main');
+    $repository = get('repository');
+    $branch = get('branch', 'main');
 
     // Make sure the release folder exists and is empty
     run("mkdir -p $releasePath && rm -rf $releasePath/*");
@@ -83,16 +86,15 @@ task('deploy', [
     'deploy:publish',
 ]);
 
-
 // -------------------------------
-// Copy latest releass to app folder, so that strato can see it 
+// Copy latest releass to app folder, so that strato can see it
 // Strato does not list symlinked folders in the domain redirect dropdown list
 // -------------------------------
-task('deploy:publish_app', function () {
+task('deploy:publish_app', static function () {
     $releasePath = get('release_path');
     run('rm -rf ~/alamouriska_neo/app/*');
     run("cp -a $releasePath/. ~/alamouriska_neo/app/");
-    run("ln -sf ~/alamouriska_neo/shared/.env.local ~/alamouriska_neo/app/.env.local");
+    run('ln -sf ~/alamouriska_neo/shared/.env.local ~/alamouriska_neo/app/.env.local');
 });
 after('deploy:symlink', 'deploy:publish_app');
 
@@ -101,4 +103,3 @@ after('deploy:failed', 'deploy:unlock');
 // Optional: add assets and migrations
 // after('deploy:cache:clear', 'database:migrate');
 // after('deploy:failed', 'deploy:unlock');
-
