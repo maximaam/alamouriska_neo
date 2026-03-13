@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Page;
+use App\Dto\PostDto;use App\Entity\Page;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
@@ -17,13 +17,17 @@ use Doctrine\ORM\Query;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface as CacheItemInterface;
 
 #[Route(name: 'app_frontend_', methods: ['GET'], priority: 1)]
 final class FrontendController extends AbstractController
@@ -34,18 +38,30 @@ final class FrontendController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly UserInteraction $userInteraction,
         private readonly PaginatorInterface $paginator,
+        #[Autowire(service: 'app.index_latest_posts')]
+        private readonly CacheInterface $cache,
     ) {
     }
 
     #[Route('/', name: 'index')]
-    public function index(#[CurrentUser] ?User $user = null): Response
+    # #[Cache(maxage: 86400, smaxage: 86400, public: true)]
+    public function index(#[CurrentUser] ?User $user = null, PostDto $postDto): Response
     {
-        $newestPosts = $this->em->getRepository(Post::class)->findNewest();
+        /*
+        $newestPosts = $this->cache->get('index_latest_posts', function (CacheItemInterface $item) {
+            $item->expiresAfter(null);
+            $item->tag(['index_latest_posts']);
 
+            return $this->em->getRepository(Post::class)->findNewest();
+        });
+        */
+
+        $newestPosts = $this->em->getRepository(Post::class)->findAllNewestFlat();
+// dd($postDto->flatPosts($newestPosts));
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
-            'newest_posts' => $newestPosts,
-            ...$this->userInteraction->getUserInteractionIds($newestPosts, 'post', $user),
+            'newest_posts' => $postDto->flatPosts($newestPosts),
+            // ...$this->userInteraction->getUserInteractionIds($newestPosts, 'post', $user),
         ]);
     }
 

@@ -1,7 +1,7 @@
 <div class="row mt-2">
     <div class="col">
         {# Likes #}
-        {% set iconLikeName = (app.user and entity.id in user_like_interaction_ids) ? 'bi:heart-fill' : 'bi:heart' %}
+        {% set iconLikeName = (app.user and entity.id in entity.likeIds) ? 'bi:heart-fill' : 'bi:heart' %}
         {% set iconLike = '<span data-user-interactions-target="likeIcon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
         <button
             type="button"
@@ -9,11 +9,11 @@
             class="btn-likes p-2 rounded"
             data-action="click->user-interactions#like">
             {{ iconLike|raw }}
-            <span data-user-interactions-target="likeCount">{{ entity.userLikes | length }}</span>
+            <span data-user-interactions-target="likeCount">{{ entity.likeIds | length }}</span>
         </button>
 
         {# Comments #}
-        {% set iconCommentName = (app.user and entity.id in user_comment_interaction_ids) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
+        {% set iconCommentName = (app.user and entity.id in entity.commentIds) ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
         {% set iconComment = '<span data-user-interactions-target="commentIcon">' ~ ux_icon(iconCommentName, {class: 'basic-icon'}) ~ '</span>' %}
         <button
             type="button"
@@ -21,7 +21,7 @@
             class="btn-comments p-2 rounded"
             data-action="click->user-interactions#getCommentForm">
             {{ iconComment|raw }}
-            <span data-user-interactions-target="commentCount">{{ entity.userComments | length }}</span>
+            <span data-user-interactions-target="commentCount">{{ entity.commentIds | length }}</span>
         </button>
     </div>
 

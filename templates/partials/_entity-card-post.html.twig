@@ -5,7 +5,7 @@
     </span>
     {% endif %}
     <span title="{{ 'label.post_type' | trans }}" class="p-1 ps-3 pe-3 rounded-bottom fw-bold post-features">
-        {{ ('post.' ~ entity.type.name ~ '.singular') | trans }}
+        {{ ('post.' ~ entity.type ~ '.singular') | trans }}
     </span>
 </div>
 

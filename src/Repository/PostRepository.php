@@ -8,7 +8,9 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Enum\PostType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostRepository extends ServiceEntityRepository
 {
-    public const QB_ALIAS = 'p';
+    public const string QB_ALIAS = 'p';
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -26,7 +28,7 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @return array<mixed, mixed>
      */
-    public function findNewest(int $maxResult = 10): array
+    public function findNewestOld(int $maxResult = 10): array
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.createdAt', 'DESC')
@@ -35,18 +37,36 @@ class PostRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllNewestFlat(int $maxResult = 10): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
+            ->addSelect('u.id as userId, u.pseudo, u.avatarName')
+            ->addSelect('GROUP_CONCAT(DISTINCT c.id) AS commentIds')
+            ->addSelect('GROUP_CONCAT(DISTINCT l.id) AS likeIds')
+            ->innerJoin('p.user', 'u')
+            ->leftJoin('p.userComments', 'c')
+            ->leftJoin('p.userLikes', 'l')
+            ->groupBy('p.id, u.id')
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults($maxResult)
+            ->getQuery()
+            ->getResult(AbstractQuery::HYDRATE_ARRAY);
+    }
+
     /**
      * @return array<mixed, mixed>
      */
-    public function findLatestsArray(int $maxResult = 10): array
+    public function findAllNewest(int $maxResult = 10): array
     {
-        return $this->createQueryBuilder(self::QB_ALIAS)
-            ->select(self::QB_ALIAS, UserRepository::QB_ALIAS)
-            ->leftJoin(self::QB_ALIAS.'.user', UserRepository::QB_ALIAS)
-            ->orderBy(self::QB_ALIAS.'.id', 'DESC')
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.user', 'u')
+            ->leftJoin('p.userComments', 'c')
+            ->leftJoin('p.userLikes', 'l')
+            ->orderBy('p.id', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
-            ->getArrayResult();
+            ->getResult();
     }
 
     /**
@@ -125,5 +145,13 @@ class PostRepository extends ServiceEntityRepository
             ->groupBy('p.type')
             ->getQuery()
             ->getArrayResult();
+    }
+
+    private function baseQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.user', 'u')
+            ->leftJoin('p.userComments', 'uc')
+            ->leftJoin('p.userLikes', 'ul');
     }
 }

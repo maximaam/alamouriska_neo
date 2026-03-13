@@ -1,49 +1,47 @@
-{% if instanceof(entity, 'App\\Entity\\Post') %}
-    {% set entity_url = url('app_frontend_post', {'seoTypeSlug': ('post.'~ entity.type.name ~'.seo_route') | trans, 'id' : entity.id, 'titleSlug': entity.titleSlug}) %}
-    {% set entity_name = 'post' %}
+{% if entity.entityName == 'post' %}
+    {% set entity_url = url('app_frontend_post', {'seoTypeSlug': ('post.'~ entity.type ~'.seo_route') | trans, 'id' : entity.id, 'titleSlug': entity.titleSlug}) %}
 {% else %}
     {% set entity_url = url('app_frontend_wall', {'id' : entity.id }) %}
-    {% set entity_name = 'wall' %}
 {% endif %}
 
 <div class="card mb-3 card-post">
     <div class="card-header">
         <div class="d-inline-block align-middle">
-            {% include 'partials/_avatar.html.twig' with {'pseudo': entity.user.pseudo, 'avatarName': entity.user.avatarName, 'size': 64 } only %}
+            {% include 'partials/_avatar.html.twig' with {'pseudo': entity.pseudo, 'avatarName': entity.avatarName, 'size': 64 } only %}
         </div>
         <div class="d-inline-block align-middle">
-            <a href="{{ path('app_frontend_member_profile', {'pseudo': entity.user.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="fw-bold">
-                {{ entity.user.pseudo }}
+            <a href="{{ path('app_frontend_member_profile', {'pseudo': entity.pseudo}) }}" title="{{ 'label.profile'|trans }}" class="fw-bold">
+                {{ entity.pseudo }}
             </a>
             <br>
             <time class="" datetime="{{ entity.createdAt | date('Y.m.d H:i') }}">
-                {{ 'label.date_on' | trans }} : {{ entity.createdAt | date('d.m.Y H:i') }}
+                {{ 'label.date_on' | trans }} : {{ entity.createdAt }}
             </time>
         </div>
     </div>
     <div class="card-body p-2">
-        {% if instanceof(entity, 'App\\Entity\\Post') %}
+        {% if entity.entityName == 'post' %}
             {{ include ('partials/_entity-card-post.html.twig') }}
         {% else %}
             {{ include ('partials/_entity-card-wall.html.twig') }}
         {% endif %}
 
-        {% if app.user == entity.user %}
+        {% if app.user.pseudo == entity.pseudo %}
             <div class="text-end">
-                <a href="{{ path('app_' ~ entity_name ~ '_delete', {'id': entity.id} ) }}">{{ 'label.delete' | trans }}</a>
-                | 
-                <a href="{{ path('app_' ~ entity_name ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
+                <a href="{{ path('app_' ~ entity.entityName ~ '_delete', {'id': entity.id} ) }}">{{ 'label.delete' | trans }}</a>
+                |
+                <a href="{{ path('app_' ~ entity.entityName ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
             </div>
         {% endif %}
 
         <div class="card-footer" {{ stimulus_controller('user-interactions', {
             csrfToken: app.user ? csrf_token('user-interactions') : '',
             entityId: entity.id,
-            likeUrl: path('app_async_user_like', { 'id': entity.id, 'entityName': entity_name }),
-            commentUrl: path('app_async_user_comment', { 'id': entity.id, 'entityName': entity_name }),
+            likeUrl: path('app_async_user_like', { 'id': entity.id, 'entityName': entity.entityName }),
+            commentUrl: path('app_async_user_comment', { 'id': entity.id, 'entityName': entity.entityName }),
         }) }}>
             {{ include ('partials/_user-interactions.html.twig') }}
         </div>
     </div>
-    
+
 </div>
