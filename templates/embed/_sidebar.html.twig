@@ -12,8 +12,8 @@
         <div class="card-body">
             {% for post in newest_posts %}
                 <div class="mb-2 pb-1 card-list">
-                    {%  include 'partials/_avatar.html.twig' with {'pseudo': post.user.pseudo, 'avatarName': post.user.avatarName } only %}
-                    <a class="ms-1" href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'id' : post.id, 'titleSlug': post.titleSlug}) }}" title="Par: {{ post.user.pseudo }} - Le: {{ post.createdAt | date }}">
+                    {%  include 'partials/_avatar.html.twig' with {'pseudo': post.pseudo, 'avatarName': post.avatarName } only %}
+                    <a class="ms-1" href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ post.type.name ~'.seo_route') | trans, 'titleSlug': post.titleSlug}) }}">
                         {{ post.title[:100] }}
                     </a>
                 </div>
@@ -70,7 +70,7 @@
             {% for comment in newset_comments %}
                 <div class="mb-2 pb-1 card-list">
                     {%  include 'partials/_avatar.html.twig' with {'pseudo': comment.user.pseudo, 'avatarName': comment.user.avatarName } only %}
-                    
+
                     {{ comment.comment | raw }}
 
                     <div class="d-block text-end">

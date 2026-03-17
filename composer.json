@@ -36,6 +36,7 @@
         "symfony/mime": "^8.0.4",
         "symfony/monolog-bundle": "^v4.0.1",
         "symfony/notifier": "^8.0.4",
+        "symfony/object-mapper": "^8.0",
         "symfony/process": "^8.0.4",
         "symfony/property-access": "^8.0.4",
         "symfony/property-info": "^8.0.4",

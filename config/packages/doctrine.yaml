@@ -23,6 +23,7 @@ doctrine:
         dql:
             datetime_functions:
                 GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
+                CAST: DoctrineExtensions\Query\Mysql\Cast
 
 when@test:
     doctrine:

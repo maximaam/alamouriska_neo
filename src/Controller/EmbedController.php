@@ -19,7 +19,7 @@ final class EmbedController extends AbstractController
         $mainRequest = $requestStack->getMainRequest();
 
         return $this->render('embed/_sidebar.html.twig', [
-            'newest_posts' => $postRepo->findNewestOld(5),
+            'newest_posts' => $postRepo->fetchNewestSidebar(5),
             'newest_users' => $userRepo->findNewest(),
             'newset_questions' => $postRepo->findQuestions(),
             'newset_comments' => $commentRepo->findNewest(),

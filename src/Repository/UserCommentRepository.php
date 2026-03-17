@@ -8,7 +8,7 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\AbstractQuery;use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<UserComment>
@@ -52,5 +52,19 @@ class UserCommentRepository extends ServiceEntityRepository
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();
+    }
+
+    public function findByPostIds(array $postIds, ?int $userId): array
+    {
+        return $this->createQueryBuilder('uc')
+            ->select('IDENTITY(uc.post) AS postId')
+            ->addSelect('COUNT(uc.id) AS commentCount')
+            ->addSelect('MAX(CASE WHEN uc.user = :userId THEN 1 ELSE 0 END) AS commentedByCurrentUser')
+            ->where('uc.post IN (:postIds)')
+            ->setParameter('postIds', $postIds)
+            ->setParameter('userId', $userId ?? 0)
+            ->groupBy('uc.post')
+            ->getQuery()
+            ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 }

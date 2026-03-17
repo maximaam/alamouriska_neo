@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Dto\PostDto;use App\Entity\Page;
+use App\Dto\PostDto;
+use App\Entity\Page;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
+use App\Entity\UserLike;
 use App\Entity\Wall;
-use App\Form\ContactMemberForm;
+use App\Facade\FrontendFacade;use App\Form\ContactMemberForm;
 use App\Service\UserInteraction;
 use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,14 +40,15 @@ final class FrontendController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly UserInteraction $userInteraction,
         private readonly PaginatorInterface $paginator,
+        private readonly PostDto $postDto,
         #[Autowire(service: 'app.index_latest_posts')]
         private readonly CacheInterface $cache,
     ) {
     }
 
     #[Route('/', name: 'index')]
-    # #[Cache(maxage: 86400, smaxage: 86400, public: true)]
-    public function index(#[CurrentUser] ?User $user = null, PostDto $postDto): Response
+    // #[Cache(maxage: 86400, smaxage: 86400, public: true)]
+    public function index(#[CurrentUser] ?User $currentUser, FrontendFacade $facade): Response
     {
         /*
         $newestPosts = $this->cache->get('index_latest_posts', function (CacheItemInterface $item) {
@@ -56,12 +59,17 @@ final class FrontendController extends AbstractController
         });
         */
 
-        $newestPosts = $this->em->getRepository(Post::class)->findAllNewestFlat();
-// dd($postDto->flatPosts($newestPosts));
+        $posts = $this->em->getRepository(Post::class)->fetchNewest($currentUser?->getId());
+        $posts2 = $this->em->getRepository(Post::class)->fetchNewestSidebar(5);
+        dump($posts);
+        dd($posts2);
+        // $posts = $this->em->getRepository(Post::class)->findNewest();
+        // $posts = $facade->getNewestPosts($currentUser);
+
+
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
-            'newest_posts' => $postDto->flatPosts($newestPosts),
-            // ...$this->userInteraction->getUserInteractionIds($newestPosts, 'post', $user),
+            'newest_posts' => $this->postDto->fromFlatEntities($posts),
         ]);
     }
 
@@ -142,22 +150,14 @@ final class FrontendController extends AbstractController
         ]);
     }
 
-    #[Route('/{seoTypeSlug}/{id}/{titleSlug}', name: 'post', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS, 'id' => Requirement::POSITIVE_INT, 'titleSlug' => Requirement::ASCII_SLUG], methods: ['GET'])]
-    // condition: "service('post_utils').isValidSlug('mots-algeriens')",
-    public function post(Post $post, string $seoTypeSlug, string $titleSlug, #[CurrentUser] ?User $currentUser = null): Response
+    #[Route('/{seoTypeSlug}/{titleSlug}', name: 'post', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS, 'titleSlug' => Requirement::ASCII_SLUG], methods: ['GET'])]
+    public function post(string $titleSlug, #[CurrentUser] ?User $currentUser = null): Response
     {
-        // URL manipulation, like changing the ID
-        if ($titleSlug !== $post->getTitleSlug()) {
-            return $this->redirectToRoute('app_frontend_post', [
-                'seoTypeSlug' => $seoTypeSlug,
-                'id' => $post->getId(),
-                'titleSlug' => $post->getTitleSlug(),
-            ]);
-        }
+        $post = $this->em->getRepository(Post::class)->fetchOne($titleSlug, $currentUser?->getId())
+            ?? throw $this->createNotFoundException();
 
         return $this->render('frontend/post.html.twig', [
-            'entity' => $post,
-            ...$this->userInteraction->getUserInteractionIds($post, 'post', $currentUser),
+            'entity' => $this->postDto->fromFlatEntity($post),
         ]);
     }
 

@@ -25,6 +25,18 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    public function findNewest(int $limit = 10): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
+            ->addSelect('u.id AS userId, u.pseudo, u.avatarName')
+            ->innerJoin('p.user', 'u')
+            ->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult(AbstractQuery::HYDRATE_ARRAY);
+    }
+
     /**
      * @return array<mixed, mixed>
      */
@@ -37,21 +49,78 @@ class PostRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllNewestFlat(int $maxResult = 10): array
+    public function fetchNewest(?int $currentUserId, int $maxResult = 10): array
+    {
+        return $this->baseFlatQueryBuilder($currentUserId)
+            ->setMaxResults($maxResult)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult(AbstractQuery::HYDRATE_ARRAY);
+    }
+
+    public function fetchNewestSidebar(int $maxResult = 10): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.title, p.titleSlug, p.type')
+            ->addSelect('u.id as userId, u.pseudo, u.avatarName')
+            ->innerJoin('p.user', 'u')
+            ->setMaxResults($maxResult)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult(AbstractQuery::HYDRATE_ARRAY);
+    }
+
+    public function fetchOne(string $titleSlug, ?int $currentUserId): ?array
+    {
+        return $this->baseFlatQueryBuilder($currentUserId)
+            ->where('p.titleSlug = :title_slug')
+            ->setParameter('title_slug', $titleSlug)
+            ->getQuery()
+            ->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
+    }
+
+    private function baseFlatQueryBuilder(?int $currentUserId = null): QueryBuilder
     {
         return $this->createQueryBuilder('p')
             ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
             ->addSelect('u.id as userId, u.pseudo, u.avatarName')
-            ->addSelect('GROUP_CONCAT(DISTINCT c.id) AS commentIds')
-            ->addSelect('GROUP_CONCAT(DISTINCT l.id) AS likeIds')
+            ->addSelect('(SELECT COUNT(ul.id) FROM App\Entity\UserLike ul WHERE ul.post = p.id) AS likeCount')
+            ->addSelect('(SELECT COUNT(uc.id) FROM App\Entity\UserComment uc WHERE uc.post = p.id) AS commentCount')
+            ->addSelect('(
+                SELECT COUNT(ul2.id)
+                FROM App\Entity\UserLike ul2
+                WHERE ul2.post = p.id AND ul2.user = :currentUser
+                ) AS likedByCurrentUser')
+            ->addSelect('(
+                SELECT COUNT(uc2.id)
+                FROM App\Entity\UserComment uc2
+                WHERE uc2.post = p.id AND uc2.user = :currentUser
+                ) AS commentedByCurrentUser')
+            ->innerJoin('p.user', 'u')
+            ->setParameter('currentUser', $currentUserId);
+    }
+
+    private function baseFlat(?int $currentUserId): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
+            ->addSelect('u.id as userId, u.pseudo, u.avatarName')
+            ->addSelect('COUNT(DISTINCT l.id) AS likeCount')
+            ->addSelect('CASE WHEN COUNT(ul.id) > 0 THEN true ELSE false END AS likedByCurrentUser')
+            ->addSelect('COUNT(DISTINCT c.id) AS commentCount')
+            ->addSelect('CASE WHEN COUNT(uc.id) > 0 THEN true ELSE false END AS commentedByCurrentUser')
+            // ->addSelect('CASE WHEN uc.id IS NULL THEN false ELSE true END AS commentedByCurrentUser')
+            // ->addSelect('GROUP_CONCAT(DISTINCT c.id) AS commentIds')
+            // ->addSelect('GROUP_CONCAT(DISTINCT l.id) AS likeIds')
+            // ->addSelect("DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt")
+            // ->addSelect('CAST(p.type AS CHAR) AS type2')
             ->innerJoin('p.user', 'u')
             ->leftJoin('p.userComments', 'c')
             ->leftJoin('p.userLikes', 'l')
-            ->groupBy('p.id, u.id')
-            ->orderBy('p.id', 'DESC')
-            ->setMaxResults($maxResult)
-            ->getQuery()
-            ->getResult(AbstractQuery::HYDRATE_ARRAY);
+            ->leftJoin('p.userLikes', 'ul', 'WITH', 'ul.user = :currentUser')
+            ->leftJoin('p.userComments', 'uc', 'WITH', 'uc.user = :currentUser')
+            ->setParameter('currentUser', $currentUserId)
+            ->groupBy('p.id, u.id');
     }
 
     /**
