@@ -25,18 +25,6 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    public function findNewest(int $limit = 10): array
-    {
-        return $this->createQueryBuilder('p')
-            ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
-            ->addSelect('u.id AS userId, u.pseudo, u.avatarName')
-            ->innerJoin('p.user', 'u')
-            ->orderBy('p.createdAt', 'DESC')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult(AbstractQuery::HYDRATE_ARRAY);
-    }
-
     /**
      * @return array<int, array<string, mixed>>
      */
@@ -49,6 +37,9 @@ class PostRepository extends ServiceEntityRepository
             ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function fetchNewestSidebar(int $maxResult = 10): array
     {
         return $this->createQueryBuilder('p')
@@ -61,6 +52,9 @@ class PostRepository extends ServiceEntityRepository
             ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function fetchOne(string $titleSlug, ?int $currentUserId): ?array
     {
         return $this->baseFlatQueryBuilder($currentUserId)
@@ -91,31 +85,8 @@ class PostRepository extends ServiceEntityRepository
             ->setParameter('currentUser', $currentUserId);
     }
 
-    private function baseFlat(?int $currentUserId): QueryBuilder
-    {
-        return $this->createQueryBuilder('p')
-            ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
-            ->addSelect('u.id as userId, u.pseudo, u.avatarName')
-            ->addSelect('COUNT(DISTINCT l.id) AS likeCount')
-            ->addSelect('CASE WHEN COUNT(ul.id) > 0 THEN true ELSE false END AS likedByCurrentUser')
-            ->addSelect('COUNT(DISTINCT c.id) AS commentCount')
-            ->addSelect('CASE WHEN COUNT(uc.id) > 0 THEN true ELSE false END AS commentedByCurrentUser')
-            // ->addSelect('CASE WHEN uc.id IS NULL THEN false ELSE true END AS commentedByCurrentUser')
-            // ->addSelect('GROUP_CONCAT(DISTINCT c.id) AS commentIds')
-            // ->addSelect('GROUP_CONCAT(DISTINCT l.id) AS likeIds')
-            // ->addSelect("DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt")
-            // ->addSelect('CAST(p.type AS CHAR) AS type2')
-            ->innerJoin('p.user', 'u')
-            ->leftJoin('p.userComments', 'c')
-            ->leftJoin('p.userLikes', 'l')
-            ->leftJoin('p.userLikes', 'ul', 'WITH', 'ul.user = :currentUser')
-            ->leftJoin('p.userComments', 'uc', 'WITH', 'uc.user = :currentUser')
-            ->setParameter('currentUser', $currentUserId)
-            ->groupBy('p.id, u.id');
-    }
-
     /**
-     * @return array<mixed, mixed>
+     * @return array<int, array<string, mixed>>
      */
     public function findQuestions(int $maxResult = 5): array
     {

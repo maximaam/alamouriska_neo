@@ -9,9 +9,8 @@ use App\Entity\Page;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
-use App\Entity\UserLike;
 use App\Entity\Wall;
-use App\Facade\FrontendFacade;use App\Form\ContactMemberForm;
+use App\Form\ContactMemberForm;
 use App\Service\UserInteraction;
 use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,8 +47,9 @@ final class FrontendController extends AbstractController
 
     #[Route('/', name: 'index')]
     // #[Cache(maxage: 86400, smaxage: 86400, public: true)]
-    public function index(#[CurrentUser] ?User $currentUser, FrontendFacade $facade): Response
+    public function index(#[CurrentUser] ?User $currentUser): Response
     {
+        $this->cache->delete('index_latest_posts');
         /*
         $newestPosts = $this->cache->get('index_latest_posts', function (CacheItemInterface $item) {
             $item->expiresAfter(null);
@@ -60,7 +60,6 @@ final class FrontendController extends AbstractController
         */
 
         $posts = $this->em->getRepository(Post::class)->fetchNewest($currentUser?->getId());
-
 
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),

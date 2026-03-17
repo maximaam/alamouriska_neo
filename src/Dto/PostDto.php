@@ -8,6 +8,7 @@ final readonly class PostDto
 {
     /**
      * @param array<int, array<string, mixed>> $posts
+     *
      * @return array<int, array<string, mixed>>
      */
     public function fromFlatEntities(array $posts): array
@@ -17,6 +18,7 @@ final readonly class PostDto
 
     /**
      * @param array<string, mixed> $post
+     *
      * @return array<string, mixed>
      */
     public function fromFlatEntity(array $post): array
@@ -24,6 +26,11 @@ final readonly class PostDto
         return $this->map($post);
     }
 
+    /**
+     * @param array<string, mixed> $post
+     *
+     * @return array<string, mixed>
+     */
     private function map(array $post): array
     {
         return [
