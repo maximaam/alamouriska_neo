@@ -60,11 +60,6 @@ final class FrontendController extends AbstractController
         */
 
         $posts = $this->em->getRepository(Post::class)->fetchNewest($currentUser?->getId());
-        $posts2 = $this->em->getRepository(Post::class)->fetchNewestSidebar(5);
-        dump($posts);
-        dd($posts2);
-        // $posts = $this->em->getRepository(Post::class)->findNewest();
-        // $posts = $facade->getNewestPosts($currentUser);
 
 
         return $this->render('frontend/index.html.twig', [

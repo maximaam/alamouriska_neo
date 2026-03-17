@@ -38,17 +38,8 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return array<mixed, mixed>
+     * @return array<int, array<string, mixed>>
      */
-    public function findNewestOld(int $maxResult = 10): array
-    {
-        return $this->createQueryBuilder('p')
-            ->orderBy('p.createdAt', 'DESC')
-            ->setMaxResults($maxResult)
-            ->getQuery()
-            ->getResult();
-    }
-
     public function fetchNewest(?int $currentUserId, int $maxResult = 10): array
     {
         return $this->baseFlatQueryBuilder($currentUserId)
@@ -79,7 +70,7 @@ class PostRepository extends ServiceEntityRepository
             ->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
-    private function baseFlatQueryBuilder(?int $currentUserId = null): QueryBuilder
+    private function baseFlatQueryBuilder(?int $currentUserId): QueryBuilder
     {
         return $this->createQueryBuilder('p')
             ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
@@ -121,21 +112,6 @@ class PostRepository extends ServiceEntityRepository
             ->leftJoin('p.userComments', 'uc', 'WITH', 'uc.user = :currentUser')
             ->setParameter('currentUser', $currentUserId)
             ->groupBy('p.id, u.id');
-    }
-
-    /**
-     * @return array<mixed, mixed>
-     */
-    public function findAllNewest(int $maxResult = 10): array
-    {
-        return $this->createQueryBuilder('p')
-            ->innerJoin('p.user', 'u')
-            ->leftJoin('p.userComments', 'c')
-            ->leftJoin('p.userLikes', 'l')
-            ->orderBy('p.id', 'DESC')
-            ->setMaxResults($maxResult)
-            ->getQuery()
-            ->getResult();
     }
 
     /**
@@ -214,13 +190,5 @@ class PostRepository extends ServiceEntityRepository
             ->groupBy('p.type')
             ->getQuery()
             ->getArrayResult();
-    }
-
-    private function baseQuery(): QueryBuilder
-    {
-        return $this->createQueryBuilder('p')
-            ->innerJoin('p.user', 'u')
-            ->leftJoin('p.userComments', 'uc')
-            ->leftJoin('p.userLikes', 'ul');
     }
 }
