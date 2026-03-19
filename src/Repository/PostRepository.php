@@ -88,30 +88,15 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function findQuestions(int $maxResult = 5): array
+    public function search(string $searchInput, int $maxResult = 10): array
     {
-        return $this->createQueryBuilder('p')
-            ->select('p', 'u')
-            ->leftJoin('p.user', 'u')
-            ->andWhere('p.question = true')
-            ->orderBy('p.createdAt', 'DESC')
+        return $this->baseFlatQueryBuilder(null)
+            ->andWhere('LOWER(p.title) LIKE :search_input OR p.titleArabic LIKE :search_input')
+            ->setParameter('search_input', '%'.strtolower($searchInput).'%')
+            ->orderBy('p.id', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();
-    }
-
-    /**
-     * @return array<mixed, mixed>
-     */
-    public function search(string $searchInput, int $maxResult = 10): array
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.title) LIKE :search_input OR p.titleArabic LIKE :search_input')
-            ->setParameter('search_input', '%'.strtolower($searchInput).'%')
-            ->orderBy('p.createdAt', 'DESC')
-            ->setMaxResults($maxResult)
-            ->getQuery()
-            ->getResult();
     }
 
     public function fetchByType(PostType $type): array
@@ -147,15 +132,13 @@ class PostRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
-    /**
-     * @return Query<array<int, Post>>
-     */
-    public function findPaginatedQuestionsQuery(): Query
+    public function fetchQuestions(): array
     {
-        return $this->createQueryBuilder('p')
+        return $this->baseFlatQueryBuilder(null)
             ->where('p.question = TRUE')
-            ->orderBy('p.createdAt', 'DESC')
-            ->getQuery();
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getArrayResult();
     }
 
     /**

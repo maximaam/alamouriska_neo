@@ -121,7 +121,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Wall>
      */
-    #[ORM\OneToMany(targetEntity: Wall::class, mappedBy: 'User', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Wall::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $walls;
 
     public function __construct()

@@ -6,13 +6,17 @@ namespace App\Dto;
 
 final readonly class PostDto
 {
+    private string $entityName;
+
     /**
      * @param array<int, array<string, mixed>> $posts
      *
      * @return array<int, array<string, mixed>>
      */
-    public function fromFlatEntities(array $posts): array
+    public function fromFlatEntities(array $posts, string $entityName = 'post'): array
     {
+        $this->entityName = $entityName;
+
         return array_map($this->map(...), $posts);
     }
 
@@ -21,8 +25,10 @@ final readonly class PostDto
      *
      * @return array<string, mixed>
      */
-    public function fromFlatEntity(array $post): array
+    public function fromFlatEntity(array $post, string $entityName = 'post'): array
     {
+        $this->entityName = $entityName;
+
         return $this->map($post);
     }
 
@@ -35,8 +41,8 @@ final readonly class PostDto
     {
         return [
             ...$post,
-            'entityName' => 'post',
-            'type' => $post['type']->name,
+            'entityName' => $this->entityName,
+            'type' => isset($post['type']) ? $post['type']->name : null,
             'createdAt' => $post['createdAt']->format('Y-m-d H:i:s'),
             'updatedAt' => $post['updatedAt']->format('Y-m-d H:i:s'),
         ];

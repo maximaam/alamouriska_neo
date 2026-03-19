@@ -36,18 +36,18 @@ class Wall
 
     #[ORM\ManyToOne(inversedBy: 'walls')]
     #[ORM\JoinColumn(nullable: false)]
-    private User $User;
+    private User $user;
 
     /**
      * @var Collection<int, UserLike>
      */
-    #[ORM\OneToMany(targetEntity: UserLike::class, mappedBy: 'wall', fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: UserLike::class, mappedBy: 'wall', orphanRemoval: true)]
     private Collection $userLikes;
 
     /**
      * @var Collection<int, UserComment>
      */
-    #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'wall', fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'wall', orphanRemoval: true)]
     // #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $userComments;
 
@@ -88,12 +88,12 @@ class Wall
 
     public function getUser(): User
     {
-        return $this->User;
+        return $this->user;
     }
 
     public function setUser(User $User): static
     {
-        $this->User = $User;
+        $this->user = $User;
 
         return $this;
     }

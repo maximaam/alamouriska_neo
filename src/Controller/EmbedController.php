@@ -21,8 +21,8 @@ final class EmbedController extends AbstractController
         return $this->render('embed/_sidebar.html.twig', [
             'newest_posts' => $postRepo->fetchNewestSidebar(5),
             'newest_users' => $userRepo->findNewest(),
-            'newset_questions' => $postRepo->findQuestions(),
-            'newset_comments' => $commentRepo->findNewest(),
+            'newest_questions' => $postRepo->fetchQuestions(),
+            'newest_comments' => $commentRepo->findNewest(),
             'route_params' => $mainRequest?->attributes->get('_route_params'),
         ]);
     }

@@ -15,7 +15,6 @@ use App\Form\ContactMemberForm;
 use App\Service\UserInteraction;
 use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -163,21 +162,24 @@ final class FrontendController extends AbstractController
             return $this->redirectToRoute('app_frontend_index');
         }
 
+        $posts = $this->em->getRepository(Post::class)->fetchByType($type);
+
         return $this->renderPaginatedEntities(
             $request,
-            $this->postDto->fromFlatEntities($this->em->getRepository(Post::class)->fetchByType($type)),
+            $this->postDto->fromFlatEntities($posts),
             'frontend/posts.html.twig',
         );
     }
 
     #[Route('/questions', name: 'questions')]
-    public function questions(Request $request, #[CurrentUser] ?User $currentUser = null): Response
+    public function questions(Request $request): Response
     {
+        $posts = $this->em->getRepository(Post::class)->fetchQuestions();
+
         return $this->renderPaginatedEntities(
             $request,
-            $this->em->getRepository(Post::class)->findPaginatedQuestionsQuery(),
+            $this->postDto->fromFlatEntities($posts),
             'frontend/questions.html.twig',
-            $currentUser,
         );
     }
 
@@ -195,28 +197,27 @@ final class FrontendController extends AbstractController
 
         return $this->render('frontend/search.html.twig', [
             'search_input' => $searchInput,
-            'posts' => $posts,
-            ...$this->userInteraction->getUserInteractionIds($posts, 'post', $currentUser),
+            'posts' => $this->postDto->fromFlatEntities($posts),
         ]);
     }
 
     #[Route('/el7it/{id}', name: 'wall')]
-    public function wallBricks(Wall $wall, #[CurrentUser] ?User $currentUser = null): Response
+    public function wallBricks(int $id, #[CurrentUser] ?User $currentUser = null): Response
     {
+        $post = $this->em->getRepository(Wall::class)->fetchOne($id, $currentUser?->getId());
+
         return $this->render('frontend/wall.html.twig', [
-            'entity' => $wall,
-            ...$this->userInteraction->getUserInteractionIds($wall, 'wall', $currentUser),
+            'entity' => $this->postDto->fromFlatEntity($post, 'wall'),
         ]);
     }
 
     #[Route('/el7it', name: 'walls')]
     public function wall(#[CurrentUser] ?User $currentUser = null): Response
     {
-        $walls = $this->em->getRepository(Wall::class)->findBy([], ['createdAt' => 'DESC']);
+        $posts = $this->em->getRepository(Wall::class)->fetchAll($currentUser?->getId());
 
         return $this->render('frontend/walls.html.twig', [
-            'entities' => $walls,
-            ...$this->userInteraction->getUserInteractionIds($walls, 'wall', $currentUser),
+            'entities' => $this->postDto->fromFlatEntities($posts, 'wall'),
         ]);
     }
 
