@@ -10,6 +10,7 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
 use App\Entity\Wall;
+use App\Enum\PostType;
 use App\Form\ContactMemberForm;
 use App\Service\UserInteraction;
 use App\Utils\PostUtils;
@@ -106,7 +107,7 @@ final class FrontendController extends AbstractController
     }
 
     #[Route('/membre/{pseudo:user}', name: 'member_profile')]
-    public function memberProfile(User $user, Request $request, #[CurrentUser] ?User $currentUser = null): Response
+    public function memberProfile(User $user, Request $request): Response
     {
         if (!$user->isVerified()) {
             $this->addFlash('warning', 'flash.user_not_verified');
@@ -114,8 +115,9 @@ final class FrontendController extends AbstractController
             return $this->redirectToRoute('app_frontend_index', status: Response::HTTP_SEE_OTHER);
         }
 
+        $posts = $this->em->getRepository(Post::class)->fetchPaginatedByUser($user);
         $pagination = $this->paginator->paginate(
-            $this->em->getRepository(Post::class)->findPaginatedByUserQuery($user),
+            $this->postDto->fromFlatEntities($posts),
             $request->query->getInt('page', 1),
             self::PAGE_MAX_POSTS,
         );
@@ -126,7 +128,6 @@ final class FrontendController extends AbstractController
             'pagination' => $pagination,
             'posts_count' => $pagination->getTotalItemCount(),
             'comments_count' => $this->em->getRepository(UserComment::class)->count(['user' => $user]),
-            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), 'post', $currentUser),
         ]);
     }
 
@@ -156,17 +157,16 @@ final class FrontendController extends AbstractController
     }
 
     #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS])]
-    public function posts(Request $request, string $seoTypeSlug, #[CurrentUser] ?User $currentUser = null): Response
+    public function posts(Request $request, string $seoTypeSlug): Response
     {
-        if (!($type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) instanceof \App\Enum\PostType) {
+        if (!($type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) instanceof PostType) {
             return $this->redirectToRoute('app_frontend_index');
         }
 
         return $this->renderPaginatedEntities(
             $request,
-            $this->em->getRepository(Post::class)->findPaginatedQuery($type),
+            $this->postDto->fromFlatEntities($this->em->getRepository(Post::class)->fetchByType($type)),
             'frontend/posts.html.twig',
-            $currentUser,
         );
     }
 
@@ -221,15 +221,14 @@ final class FrontendController extends AbstractController
     }
 
     /**
-     * @param Query<mixed> $query
+     * @param array<int, array<string, mixed>> $posts
      */
-    private function renderPaginatedEntities(Request $request, Query $query, string $template, ?User $user): Response
+    private function renderPaginatedEntities(Request $request, array $posts, string $template): Response
     {
-        $pagination = $this->paginator->paginate($query, $request->query->getInt('page', 1), self::PAGE_MAX_POSTS);
+        $pagination = $this->paginator->paginate($posts, $request->query->getInt('page', 1), self::PAGE_MAX_POSTS);
 
         return $this->render($template, [
             'pagination' => $pagination,
-            ...$this->userInteraction->getUserInteractionIds($pagination->getItems(), 'post', $user),
         ]);
     }
 }

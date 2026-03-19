@@ -114,6 +114,16 @@ class PostRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function fetchByType(PostType $type): array
+    {
+        return $this->baseFlatQueryBuilder(null)
+            ->andWhere('p.type = :type')
+            ->setParameter('type', $type)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     /**
      * @return Query<array<int, Post>>
      */
@@ -127,15 +137,14 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Query<array<int, Post>>
+     * @return array<int, array<string, mixed>>
      */
-    public function findPaginatedByUserQuery(User $user): Query
+    public function fetchPaginatedByUser(User $user): array
     {
-        return $this->createQueryBuilder('p')
-            ->where('p.user = :user')
-            ->setParameter('user', $user)
-            ->orderBy('p.createdAt', 'DESC')
-            ->getQuery();
+        return $this->baseFlatQueryBuilder($user->getId())
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getArrayResult();
     }
 
     /**
