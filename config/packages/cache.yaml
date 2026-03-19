@@ -1,7 +1,7 @@
 framework:
     cache:
         pools:
-            app.index_latest_posts:
+            app.index_newest_posts:
                 adapter: cache.app
                 tags: true # Needed for cache invalidation
 

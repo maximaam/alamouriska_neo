@@ -124,7 +124,7 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function fetchPaginatedByUser(User $user): array
+    public function fetchByUser(User $user): array
     {
         return $this->baseFlatQueryBuilder($user->getId())
             ->orderBy('p.id', 'DESC')
