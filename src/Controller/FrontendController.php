@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Dto\PostDto;
 use App\Entity\Page;
-use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
 use App\Entity\Wall;
@@ -16,6 +15,7 @@ use App\Repository\PostRepository;
 use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -45,6 +45,9 @@ final class FrontendController extends AbstractController
     ) {
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Route('/', name: 'index')]
     #[Cache(maxage: 86400, smaxage: 86400, public: true)]
     public function index(#[CurrentUser] ?User $currentUser): Response
@@ -52,7 +55,15 @@ final class FrontendController extends AbstractController
         $posts = $this->cache->get('index_newest_posts', function (CacheItemInterface $item) use ($currentUser): array {
             $item->expiresAfter(null);
             $item->tag(['index_newest_posts']);
-            $posts = $this->postRepository->fetchNewest($currentUser?->getId());
+
+            $posts = $this->postRepository->fetchNewest($currentUser);
+
+            /*
+            $interactions = $this->postRepository->getUserInteractions(
+                array_column($posts, 'id'),
+                $currentUser?->getId()
+            );
+            */
 
             return $this->postDto->fromFlatEntities($posts);
         });
@@ -120,7 +131,8 @@ final class FrontendController extends AbstractController
     #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS])]
     public function posts(Request $request, string $seoTypeSlug): Response
     {
-        if (!($type = PostUtils::getTypeBySeoSlug($seoTypeSlug)) instanceof PostType) {
+        $type = PostUtils::getTypeBySeoSlug($seoTypeSlug);
+        if (!$type instanceof PostType) {
             return $this->redirectToRoute('app_frontend_index');
         }
 
@@ -151,9 +163,11 @@ final class FrontendController extends AbstractController
             return $this->redirectToRoute('app_frontend_index');
         }
 
+        $posts = $this->postRepository->search($searchInput, $currentUser?->getId());
+
         return $this->render('frontend/search.html.twig', [
             'search_input' => $searchInput,
-            'posts' => $this->postDto->fromFlatEntities($this->postRepository->search($searchInput)),
+            'posts' => $this->postDto->fromFlatEntities($posts),
         ]);
     }
 
