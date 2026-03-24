@@ -9,7 +9,7 @@ use App\Enum\PostType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-// use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class NavBuilder
@@ -17,7 +17,7 @@ final readonly class NavBuilder
     public function __construct(
         private FactoryInterface $factory,
         private EntityManagerInterface $entityManager,
-        // private readonly RequestStack $requestStack,
+        private RequestStack $requestStack,
         private TranslatorInterface $translator,
     ) {
     }
@@ -26,22 +26,28 @@ final readonly class NavBuilder
     {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'navbar-nav me-auto mb-2 mb-lg-0');
+        $currentSlug = $this->requestStack?->getCurrentRequest()?->attributes->get('seoTypeSlug');
 
         foreach (PostType::cases() as $type) {
-            $child = strtoupper($this->translator->trans(\sprintf('post.%s.singular', $type->name)));
-            $menu->addChild($child, [
+            $childName = $this->translator->trans(\sprintf('post.%s.singular', $type->name));
+            $seoType = $this->translator->trans(\sprintf('post.%s.seo_route', $type->name));
+            $menu->addChild(strtoupper($childName), [
                 'route' => 'app_frontend_posts',
                 'routeParameters' => [
-                    'seoTypeSlug' => $this->translator->trans(\sprintf('post.%s.seo_route', $type->name)),
+                    'seoTypeSlug' => $seoType,
                 ],
                 'attributes' => ['class' => 'nav-item'],
                 'linkAttributes' => ['class' => 'nav-link'],
-            ])->setExtra('translation_domain', false);
+            ])
+                ->setExtra('translation_domain', false)
+                ->setCurrent($currentSlug === $seoType);
         }
 
         $menu->addChild($this->translator->trans('label.wall_ar'), [
             'route' => 'app_frontend_walls',
-            'attributes' => ['class' => 'nav-item', 'title' => \sprintf('%s | %s', $this->translator->trans('label.wall_fr'), $this->translator->trans('label.wall_dz'))],
+            'attributes' => [
+                'class' => 'nav-item',
+                'title' => \sprintf('%s | %s', $this->translator->trans('label.wall_fr'), $this->translator->trans('label.wall_dz'))],
             'linkAttributes' => ['class' => 'nav-link'],
         ]);
 
