@@ -25,7 +25,7 @@ final class PostController extends AbstractController
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(#[CurrentUser] User $user, Request $request): Response
     {
-        $post = (new Post())->setUser($user);
+        $post = new Post()->setUser($user);
         $form = $this->createForm(PostForm::class, $post)
             ->handleRequest($request);
 

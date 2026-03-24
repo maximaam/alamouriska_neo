@@ -18,14 +18,14 @@
             <ul class="ml-0 pl-0">
                 <li>{{ 'label.email' | trans }}: {{ app.user.email }}</li>
                 <li>{{ 'label.pseudo' | trans }}: {{ app.user.pseudo }}</li>
-                <li>{{ 'label.enable_community_contact' | trans }}: 
+                <li>{{ 'label.enable_community_contact' | trans }}:
                     {% if app.user.enableCommunityContact %}
                         <span title="{{ 'label.yes'|trans }}">{{ ux_icon('bi:check', {class: 'basic-icon'}) }}</span>
                     {% else %}
                         <span title="{{ 'label.no'|trans }}">{{ ux_icon('bi:x', {class: 'basic-icon'}) }}</span>
                     {% endif %}
                 </li>
-                <li>{{ 'label.allow_post_notification' | trans }}: 
+                <li>{{ 'label.allow_post_notification' | trans }}:
                     {% if app.user.enablePostNotification %}
                         <span title="{{ 'label.yes'|trans }}">{{ ux_icon('bi:check', {class: 'basic-icon'}) }}</span>
                     {% else %}
@@ -34,25 +34,8 @@
                 </li>
             </ul>
         </div>
-        <div class="text-end mb-3">
-            <a title="{{ 'label.user_delete' | trans }}" href="{{ path('app_user_delete', {'id': app.user.id}) }}" class="btn btn-danger">
-                {{ ux_icon('bi:person-fill-dash', {class: 'basic-icon'}) }}
-            </a>
-            <a title="{{ 'label.password_edit' | trans }}" href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="btn btn-primary">
-                {{ ux_icon('bi:lock-fill', {class: 'basic-icon'}) }}
-            </a>
-            <a title="{{ 'label.email_edit' | trans }}" href="{{ path('app_user_change_email') }}" class="btn btn-primary">
-                {{ ux_icon('bi:envelope-at', {class: 'basic-icon'}) }}
-            </a>
-            <a title="{{ 'label.profile_edit' | trans }}" href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="btn btn-primary">
-                {{ ux_icon('bi:person-fill-gear', {class: 'basic-icon'}) }}
-            </a>
-            <a title="{{ 'label.logout' | trans }}" href="{{ path('app_security_logout') }}" class="btn btn-warning">
-                {{ ux_icon('bi:person-fill-lock', {class: 'basic-icon'}) }}
-            </a>
-        </div>
     </div>
-    <div class="">
+    <div class="mb-3">
         <a href="{{ path('app_frontend_member_profile', {'pseudo': app.user.pseudo }) }}" class="btn btn-secondary w-100 mb-2">
             {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'label.manage_my_stuff' | trans }}
         </a>
@@ -61,6 +44,28 @@
         </a>
         <a href="{{ path('app_wall_new') }}" class="btn btn-primary w-100 mb-2">
             {{ ux_icon('bi:arrow-right-circle-fill', {class: 'basic-icon'}) }} {{ 'label.wall_create_new' | trans }}
+        </a>
+    </div>
+    <div class="mb-3 border-top pt-3 text-center">
+        <a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="btn btn-primary w-50 mb-2">
+            {{ ux_icon('bi:lock-fill', {class: 'basic-icon'}) }}
+            {{ 'label.password_edit' | trans }}
+        </a>
+        <a href="{{ path('app_user_change_email') }}" class="btn btn-primary w-50 mb-2">
+            {{ ux_icon('bi:envelope-at', {class: 'basic-icon'}) }}
+            {{ 'label.email_edit' | trans }}
+        </a>
+        <a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="btn btn-primary w-50 mb-2">
+            {{ ux_icon('bi:person-fill-gear', {class: 'basic-icon'}) }}
+            {{ 'label.profile_edit' | trans }}
+        </a>
+        <a href="{{ path('app_security_logout') }}" class="btn btn-warning w-50 mb-2">
+            {{ ux_icon('bi:person-fill-lock', {class: 'basic-icon'}) }}
+            {{ 'label.logout' | trans }}
+        </a>
+        <a href="{{ path('app_user_delete', {'id': app.user.id}) }}" class="btn btn-danger w-50 mb-2">
+            {{ ux_icon('bi:person-fill-dash', {class: 'basic-icon'}) }}
+            {{ 'label.user_delete' | trans }}
         </a>
     </div>
 {% endblock %}

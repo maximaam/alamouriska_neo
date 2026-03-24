@@ -19,6 +19,8 @@ label:
   email_private: L'adresse Email reste privée
   password_constraints: Mot de passe entre 6 et 64 caractères
   profile_edit: Modifier le profil
+  password_edit: Modifier le mot de passe
+  email_edit: Modifier l'email
   avatar: Image de profil
   profile: Profil
   logout: Déconnexion
