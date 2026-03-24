@@ -83,7 +83,7 @@ final class FrontendController extends AbstractController
         );
 
         $pagination->setItems(
-            $this->postDto->fromFlatEntities($pagination->getItems())
+            $this->postDto->fromFlatEntities((array) $pagination->getItems())
         );
 
         return $this->render('frontend/member_profile.html.twig', [
@@ -166,10 +166,11 @@ final class FrontendController extends AbstractController
     #[Route('/el7it/{id}', name: 'wall')]
     public function wallBricks(int $id, #[CurrentUser] ?User $currentUser = null): Response
     {
-        $post = $this->em->getRepository(Wall::class)->fetchOne($id, $currentUser?->getId());
+        $post = $this->em->getRepository(Wall::class)->fetchOne($id, $currentUser?->getId())
+            ?? throw $this->createNotFoundException('Post not found.');
 
         return $this->render('frontend/wall.html.twig', [
-            'entity' => $this->postDto->fromFlatEntity($post, 'wall'),
+            'entity' => $this->postDto->fromFlatEntity($post),
         ]);
     }
 
@@ -179,7 +180,7 @@ final class FrontendController extends AbstractController
         $posts = $this->em->getRepository(Wall::class)->fetchAll($currentUser?->getId());
 
         return $this->render('frontend/walls.html.twig', [
-            'entities' => $this->postDto->fromFlatEntities($posts, 'wall'),
+            'entities' => $this->postDto->fromFlatEntities($posts),
         ]);
     }
 
@@ -190,7 +191,7 @@ final class FrontendController extends AbstractController
     {
         $pagination = $this->paginator->paginate($posts, $request->query->getInt('page', 1), self::PAGE_MAX_POSTS);
         $pagination->setItems(
-            $this->postDto->fromFlatEntities($pagination->getItems())
+            $this->postDto->fromFlatEntities((array) $pagination->getItems())
         );
 
         return $this->render($template, [

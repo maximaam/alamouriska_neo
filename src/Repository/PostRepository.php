@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Enum\PostType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,8 +17,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostRepository extends ServiceEntityRepository
 {
-    public const string QB_ALIAS = 'p';
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
@@ -35,21 +32,6 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy('p.id', 'DESC')
             ->getQuery()
             ->getResult(AbstractQuery::HYDRATE_ARRAY);
-    }
-
-    public function getUserInteractions(array $postIds, int $userId): array
-    {
-        return $this->createQueryBuilder('p')
-            ->select('p.id')
-            ->addSelect('CASE WHEN ul.id IS NOT NULL THEN 1 ELSE 0 END AS likedByCurrentUser')
-            ->leftJoin('App\Entity\UserLike', 'ul', 'WITH', 'ul.post = p.id AND ul.user = :user')
-            ->addSelect('CASE WHEN uc.id IS NOT NULL THEN 1 ELSE 0 END AS commentedByCurrentUser')
-            ->leftJoin('App\Entity\UserComment', 'uc', 'WITH', 'uc.post = p.id AND uc.user = :user')
-            ->where('p.id IN (:ids)')
-            ->setParameter('ids', $postIds)
-            ->setParameter('user', $userId)
-            ->getQuery()
-            ->getArrayResult();
     }
 
     /**
@@ -106,19 +88,6 @@ class PostRepository extends ServiceEntityRepository
             ->groupBy('p.id, u.id');
     }
 
-    private function baseFlatQueryBuilder2(): QueryBuilder
-    {
-        return $this->createQueryBuilder('p')
-            ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
-            ->addSelect('u.id as userId, u.pseudo, u.avatarName')
-            ->addSelect('COUNT(DISTINCT l.id) as likeCount')
-            ->addSelect('COUNT(DISTINCT c.id) as commentCount')
-            ->leftJoin('p.userLikes', 'l')
-            ->leftJoin('p.userComments', 'c')
-            ->innerJoin('p.user', 'u')
-            ->groupBy('p.id');
-    }
-
     /**
      * @return array<int, array<string, mixed>>
      */
@@ -133,6 +102,9 @@ class PostRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function fetchByType(PostType $type): array
     {
         return $this->baseFlatQueryBuilder(null)
@@ -141,18 +113,6 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy('p.id', 'DESC')
             ->getQuery()
             ->getArrayResult();
-    }
-
-    /**
-     * @return Query<array<int, Post>>
-     */
-    public function findPaginatedQuery(PostType $type): Query
-    {
-        return $this->createQueryBuilder('p')
-            ->where('p.type = :type')
-            ->setParameter('type', $type)
-            ->orderBy('p.createdAt', 'DESC')
-            ->getQuery();
     }
 
     /**
@@ -166,6 +126,9 @@ class PostRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function fetchQuestions(): array
     {
         return $this->baseFlatQueryBuilder(null)

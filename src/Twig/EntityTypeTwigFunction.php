@@ -8,6 +8,9 @@ use Twig\Attribute\AsTwigFunction;
 
 final class EntityTypeTwigFunction
 {
+    /**
+     * @param array<string, mixed> $object
+     */
     #[AsTwigFunction('entity_type')]
     public function __invoke(array $object): string
     {
