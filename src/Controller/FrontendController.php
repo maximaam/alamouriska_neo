@@ -55,22 +55,14 @@ final class FrontendController extends AbstractController
         $posts = $this->cache->get('index_newest_posts', function (CacheItemInterface $item) use ($currentUser): array {
             $item->expiresAfter(null);
             $item->tag(['index_newest_posts']);
-
             $posts = $this->postRepository->fetchNewest($currentUser);
-
-            /*
-            $interactions = $this->postRepository->getUserInteractions(
-                array_column($posts, 'id'),
-                $currentUser?->getId()
-            );
-            */
 
             return $this->postDto->fromFlatEntities($posts);
         });
 
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
-            'newest_posts' => $posts,
+            'posts' => $posts,
         ]);
     }
 

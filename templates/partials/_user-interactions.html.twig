@@ -1,6 +1,11 @@
+{% if entity_type == 'post' %}
+    {% set entity_url = url('app_frontend_post', {'seoTypeSlug': ('post.'~ entity.type ~'.seo_route') | trans, 'titleSlug': entity.titleSlug}) %}
+{% else %}
+    {% set entity_url = url('app_frontend_wall', {'id' : entity.id }) %}
+{% endif %}
+
 <div class="row mt-2">
     <div class="col">
-        {# Likes #}
         {% set iconLikeName = entity.likedByCurrentUser ? 'bi:heart-fill' : 'bi:heart' %}
         {% set iconLike = '<span data-user-interactions-target="likeIcon">' ~ ux_icon(iconLikeName, {class: 'basic-icon text-danger'}) ~ '</span>' %}
         <button
@@ -12,7 +17,6 @@
             <span data-user-interactions-target="likeCount">{{ entity.likeCount }}</span>
         </button>
 
-        {# Comments #}
         {% set iconCommentName = entity.commentedByCurrentUser ? 'bi:chat-dots-fill' : 'bi:chat-dots' %}
         {% set iconComment = '<span data-user-interactions-target="commentIcon">' ~ ux_icon(iconCommentName, {class: 'basic-icon'}) ~ '</span>' %}
         <button

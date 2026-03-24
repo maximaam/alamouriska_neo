@@ -16,7 +16,7 @@
 {% block body %}
     <div class="col-sm-8">
         <h1 class="mb-3 text-center">{{ header_meta }}</h1>
-        
+
         {% if app.user is null and page is not null %}
         <article class="mb-4 mt-4">
             <h2>{{ 'label.welcome_h2' | trans({'%app_name%': app_name}) }}</h2>
@@ -28,7 +28,7 @@
         {% endif %}
 
         <h3 class="white-hr"><span>{{ 'label.newest_posts'|trans }}</span></h3>
-        {% include 'partials/_entity-loop.html.twig' with {'entities': newest_posts} %}
+        {% include 'partials/_entity-loop.html.twig' with {'entities': posts} %}
 
         <div class="text-center mb-3">
             <a href="{{ path('app_post_new') }}" class="btn btn-secondary">

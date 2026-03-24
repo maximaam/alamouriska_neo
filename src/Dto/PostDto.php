@@ -11,9 +11,9 @@ final readonly class PostDto
      *
      * @return array<int, array<string, mixed>>
      */
-    public function fromFlatEntities(array $posts, string $entityName = 'post'): array
+    public function fromFlatEntities(array $posts): array
     {
-        return array_map(fn ($post) => $this->map($post, $entityName), $posts);
+        return array_map($this->map(...), $posts);
     }
 
     /**
@@ -21,9 +21,9 @@ final readonly class PostDto
      *
      * @return array<string, mixed>
      */
-    public function fromFlatEntity(array $post, string $entityName = 'post'): array
+    public function fromFlatEntity(array $post): array
     {
-        return $this->map($post, $entityName);
+        return $this->map($post);
     }
 
     /**
@@ -31,11 +31,10 @@ final readonly class PostDto
      *
      * @return array<string, mixed>
      */
-    private function map(array $post, string $entityName): array
+    private function map(array $post): array
     {
         return [
             ...$post,
-            'entityName' => $entityName,
             'type' => isset($post['type']) ? $post['type']->name : null,
             'createdAt' => $post['createdAt']->format('Y-m-d H:i:s'),
             'updatedAt' => $post['updatedAt']->format('Y-m-d H:i:s'),
