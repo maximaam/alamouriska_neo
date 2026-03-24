@@ -20,9 +20,9 @@
 
         {% if app.user is not null and app.user.pseudo == entity.pseudo %}
             <div class="text-end">
-                <a href="{{ path('app_' ~ entity.entityName ~ '_delete', {'id': entity.id} ) }}">{{ 'label.delete' | trans }}</a>
+                <a href="{{ path('app_' ~ entity_type ~ '_delete', {'id': entity.id} ) }}">{{ 'label.delete' | trans }}</a>
                 |
-                <a href="{{ path('app_' ~ entity.entityName ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
+                <a href="{{ path('app_' ~ entity_type ~ '_edit', {'id': entity.id} ) }}">{{ 'label.edit' | trans }}</a>
             </div>
         {% endif %}
 
