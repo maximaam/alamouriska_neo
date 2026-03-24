@@ -53,7 +53,7 @@ final class FrontendController extends AbstractController
     public function index(#[CurrentUser] ?User $currentUser): Response
     {
         $posts = $this->cache->get('index_newest_posts', function (CacheItemInterface $item) use ($currentUser): array {
-            $item->expiresAfter(null);
+            $item->expiresAfter(3600);
             $item->tag(['index_newest_posts']);
             $posts = $this->postRepository->fetchNewest($currentUser);
 
