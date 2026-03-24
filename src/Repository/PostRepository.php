@@ -105,9 +105,9 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function fetchByType(PostType $type): array
+    public function fetchByType(PostType $type, ?int $currentUserId): array
     {
-        return $this->baseFlatQueryBuilder(null)
+        return $this->baseFlatQueryBuilder($currentUserId)
             ->andWhere('p.type = :type')
             ->setParameter('type', $type)
             ->orderBy('p.id', 'DESC')
@@ -134,6 +134,7 @@ class PostRepository extends ServiceEntityRepository
         return $this->baseFlatQueryBuilder(null)
             ->where('p.question = TRUE')
             ->orderBy('p.id', 'DESC')
+            ->setMaxResults(5)
             ->getQuery()
             ->getArrayResult();
     }

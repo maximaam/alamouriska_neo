@@ -52,6 +52,7 @@ final class FrontendController extends AbstractController
     #[Cache(maxage: 86400, smaxage: 86400, public: true)]
     public function index(#[CurrentUser] ?User $currentUser): Response
     {
+        /*
         $posts = $this->cache->get('index_newest_posts', function (CacheItemInterface $item) use ($currentUser): array {
             $item->expiresAfter(3600);
             $item->tag(['index_newest_posts']);
@@ -59,6 +60,10 @@ final class FrontendController extends AbstractController
 
             return $this->postDto->fromFlatEntities($posts);
         });
+        */
+
+        $posts = $this->postRepository->fetchNewest($currentUser);
+        $posts = $this->postDto->fromFlatEntities($posts);
 
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
@@ -121,7 +126,7 @@ final class FrontendController extends AbstractController
     }
 
     #[Route('/{seoTypeSlug}', name: 'posts', requirements: ['seoTypeSlug' => PostUtils::SEO_POST_SLUGS])]
-    public function posts(Request $request, string $seoTypeSlug): Response
+    public function posts(Request $request, string $seoTypeSlug, #[CurrentUser] ?User $currentUser = null): Response
     {
         $type = PostUtils::getTypeBySeoSlug($seoTypeSlug);
         if (!$type instanceof PostType) {
@@ -130,7 +135,7 @@ final class FrontendController extends AbstractController
 
         return $this->renderPaginatedEntities(
             $request,
-            $this->postRepository->fetchByType($type),
+            $this->postRepository->fetchByType($type, $currentUser?->getId()),
             'frontend/posts.html.twig',
         );
     }
