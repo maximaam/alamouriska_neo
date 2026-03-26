@@ -28,7 +28,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface as CacheItemInterface;
+// use Symfony\Contracts\Cache\ItemInterface as CacheItemInterface;
 
 #[Route(name: 'app_frontend_', methods: ['GET'], priority: 1)]
 final class FrontendController extends AbstractController
