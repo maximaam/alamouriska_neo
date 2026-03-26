@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\Domain\Cache\Contract\PostCacheInvalidationAwareInterface;use App\Entity\Post;use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;use Doctrine\ORM\Event\OnFlushEventArgs;use Doctrine\ORM\Events;use Doctrine\ORM\UnitOfWork;use Psr\Cache\InvalidArgumentException;use Symfony\Component\DependencyInjection\Attribute\Autowire;use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use App\Domain\Cache\Contract\PostCacheInvalidationAwareInterface;
+use App\Entity\Post;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Events;
+use Doctrine\ORM\UnitOfWork;
+use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 #[AsDoctrineListener(event: Events::onFlush)]
 #[AsDoctrineListener(event: Events::postFlush)]
