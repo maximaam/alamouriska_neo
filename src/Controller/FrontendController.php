@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Dto\PostDto;
 use App\Entity\Page;
+use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserComment;
 use App\Entity\Wall;
@@ -28,7 +29,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Contracts\Cache\CacheInterface;
-// use Symfony\Contracts\Cache\ItemInterface as CacheItemInterface;
+use Symfony\Contracts\Cache\ItemInterface as CacheItemInterface;
 
 #[Route(name: 'app_frontend_', methods: ['GET'], priority: 1)]
 final class FrontendController extends AbstractController
@@ -40,7 +41,7 @@ final class FrontendController extends AbstractController
         private readonly PostRepository $postRepository,
         private readonly PaginatorInterface $paginator,
         private readonly PostDto $postDto,
-        #[Autowire(service: 'app.index_newest_posts')]
+        #[Autowire(service: 'app.posts_domain')]
         private readonly CacheInterface $cache,
     ) {
     }
@@ -52,18 +53,17 @@ final class FrontendController extends AbstractController
     #[Cache(maxage: 86400, smaxage: 86400, public: true)]
     public function index(#[CurrentUser] ?User $currentUser): Response
     {
-        /*
-        $posts = $this->cache->get('index_newest_posts', function (CacheItemInterface $item) use ($currentUser): array {
-            $item->expiresAfter(3600);
-            $item->tag(['index_newest_posts']);
+        $key = \sprintf('posts_domain_%s', $currentUser ? $currentUser->getId() : 'global');
+        $posts = $this->cache->get($key, function (CacheItemInterface $item) use ($currentUser): array {
+            dump('cache miss');
+            $item->expiresAfter(null);
+            $item->tag([Post::CACHE_TAG]);
             $posts = $this->postRepository->fetchNewest($currentUser);
 
             return $this->postDto->fromFlatEntities($posts);
         });
-        */
 
-        $posts = $this->postRepository->fetchNewest($currentUser);
-        $posts = $this->postDto->fromFlatEntities($posts);
+        dump('cache hit');
 
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),

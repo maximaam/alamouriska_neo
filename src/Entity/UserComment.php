@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Domain\Cache\Contract\PostCacheInvalidationAwareInterface;
 use App\Repository\UserCommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: UserCommentRepository::class)]
-class UserComment
+class UserComment implements PostCacheInvalidationAwareInterface
 {
     use TimestampableEntity;
 

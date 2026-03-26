@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Domain\Cache\Contract\PostCacheInvalidationAwareInterface;
 use App\Repository\UserLikeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: UserLikeRepository::class)]
-class UserLike
+class UserLike implements PostCacheInvalidationAwareInterface
 {
     use TimestampableEntity;
 

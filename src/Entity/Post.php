@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Domain\Cache\Contract\PostCacheInvalidationAwareInterface;
 use App\Enum\PostType;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,9 +22,11 @@ use Vich\UploaderBundle\Mapping\Attribute as Vich;
 #[UniqueEntity(fields: ['title'], message: 'post_title_exists')]
 #[Vich\Uploadable]
 // #[Assert\Callback('validateTitle')]
-class Post
+class Post implements PostCacheInvalidationAwareInterface
 {
     use TimestampableEntity;
+
+    public const string CACHE_TAG = 'posts_domain';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
