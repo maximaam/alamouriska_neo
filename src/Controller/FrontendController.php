@@ -55,7 +55,7 @@ final class FrontendController extends AbstractController
     {
         $key = \sprintf('posts_domain_%s', $currentUser ? $currentUser->getId() : 'global');
         $posts = $this->cache->get($key, function (CacheItemInterface $item) use ($currentUser): array {
-            dump('cache miss');
+            // dump('cache miss');
             $item->expiresAfter(null);
             $item->tag([Post::CACHE_TAG]);
             $posts = $this->postRepository->fetchNewest($currentUser);
@@ -63,7 +63,7 @@ final class FrontendController extends AbstractController
             return $this->postDto->fromFlatEntities($posts);
         });
 
-        dump('cache hit');
+        // dump('cache hit');
 
         return $this->render('frontend/index.html.twig', [
             'page' => $this->em->getRepository(Page::class)->findOneBy(['alias' => 'home']),
