@@ -1,0 +1,9 @@
+{% if current_user %}
+    <a href="{{ path('app_user_show') }}" title="{{ current_user.pseudo }} - {{ 'label.profile'|trans }}">
+        {%  include 'partials/_avatar.html.twig' with {'pseudo': current_user.pseudo, 'avatarName': current_user.avatarName, 'withoutLink': true } only %}
+    </a>
+{% else %}
+    <a href="{{ path('app_security_login') }}" title="{{ 'label.login'|trans }}">
+        {{ ux_icon('bi:person-fill', {class: 'basic-icon login-icon'}) }}
+    </a>
+{% endif %}

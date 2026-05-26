@@ -1,5 +1,10 @@
+<script>
+    setTimeout(function(){
+        document.querySelector('#confirm').style.display = 'none';
+    }, 5000);
+</script>
 
-    <h1 style="text-align: center">{{ code }}</h1>
+<h1 style="text-align: center">{{ code }}</h1>
     <h2><a href="/sw?generate=true" style="">Nouveau code</a></h2>
 
     <ul>
@@ -9,5 +14,9 @@
             </li>
         {% endfor %}
     </ul>
+    <br>
+    <div id="confirm" style="background: green; color: white; padding: 10px; text-align: center;">
+       Updated.
+    </div>
 
 

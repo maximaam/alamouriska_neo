@@ -17,14 +17,11 @@ use App\Utils\PostUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -210,7 +207,6 @@ final class FrontendController extends AbstractController
         $stream = fopen('sw.txt', 'a+');
         \assert(false !== $stream);
 
-        $code = '';
         $existingCodes = explode("\n", (string) file_get_contents('sw.txt'));
 
         if ($request->query->has('generate')) {
@@ -220,25 +216,22 @@ final class FrontendController extends AbstractController
             if (!\in_array($code, $existingCodes, true)) {
                 fwrite($stream, $code."\n");
             }
+
+            return $this->redirectToRoute('app_frontend_sw', ['code' => $code]);
         }
 
         return $this->render('frontend/sw.html.twig', [
-            'code' => $code,
+            'code' => $request->query->get('code', ''),
             'existing_codes' => $existingCodes,
         ]);
     }
 
-    #[Route('/sendmail', name: 'send_mail')]
-    public function sendMail(MailerInterface $mailer): Response
+    #[Route('/_fragment/current-user', name: 'current_user', methods: ['GET'])]
+    #[Cache(maxage: 0, public: false)]
+    public function currentUser(#[CurrentUser] ?User $currentUser): Response
     {
-        $email = new TemplatedEmail()
-            ->from(new Address('mimo@gmail.com', 'bla'))
-            ->to('mimo2@gmail.com')
-            ->subject('bla sujet')
-            ->text('body body');
-
-        $mailer->send($email);
-
-        return $this->redirectToRoute('app_frontend_index', status: Response::HTTP_SEE_OTHER);
+        return $this->render('partials/_current_user_fragment.html.twig', [
+            'current_user' => $currentUser,
+        ]);
     }
 }
