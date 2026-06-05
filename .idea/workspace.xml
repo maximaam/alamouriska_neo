@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a8a4675a-6529-4b8c-927f-1e635c1fb595" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/stimulus_bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/stimulus_bootstrap.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +255,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1779790886714</updated>
-      <workItem from="1779790888956" duration="17853000" />
+      <workItem from="1779790888956" duration="18585000" />
     </task>
     <servers />
   </component>
