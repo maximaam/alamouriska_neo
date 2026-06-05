@@ -49,7 +49,8 @@ final readonly class NavBuilder
                 'class' => 'nav-item',
                 'title' => \sprintf('%s | %s', $this->translator->trans('label.wall_fr'), $this->translator->trans('label.wall_dz'))],
             'linkAttributes' => ['class' => 'nav-link'],
-        ]);
+        ])
+        ->setExtra('translation_domain', false);
 
         return $menu;
     }
