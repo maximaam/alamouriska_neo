@@ -15,7 +15,6 @@ when@dev:
     framework:
         profiler:
             enabled: true
-            collect_serializer_data: true
 
 when@test:
     framework:
