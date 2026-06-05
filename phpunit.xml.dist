@@ -22,6 +22,9 @@
         </testsuite>
     </testsuites>
 
+    <extensions>
+    </extensions>
+
     <source>
         <include>
             <directory suffix=".php">src</directory>
