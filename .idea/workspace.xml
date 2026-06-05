@@ -5,26 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8a4675a-6529-4b8c-927f-1e635c1fb595" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/partials/_flash_messages_fragment.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/controllers.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/controllers.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/reference.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/reference.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/AsyncController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AsyncController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/FrontendController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/FrontendController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RegistrationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RegistrationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EventSubscriber/PostCacheInvalidator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/EventSubscriber/PostCacheInvalidator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Helper/EntityHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Helper/EntityHelper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/NavBuilder.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/NavBuilder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Controller/FrontendControllerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Controller/FrontendControllerTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Controller/RegistrationControllerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Controller/RegistrationControllerTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Helper/EntityHelperTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Helper/EntityHelperTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/frontend/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/frontend/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -272,7 +255,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1779790886714</updated>
-      <workItem from="1779790888956" duration="12624000" />
+      <workItem from="1779790888956" duration="13946000" />
     </task>
     <servers />
   </component>
