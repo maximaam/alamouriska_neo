@@ -50,7 +50,7 @@ final class FrontendController extends AbstractController
     #[Cache(maxage: 86400, smaxage: 86400, public: true)]
     public function index(#[CurrentUser] ?User $currentUser): Response
     {
-        $key = \sprintf('posts_domain_%s', $currentUser ? $currentUser->getId() : 'global');
+        $key = \sprintf('posts_domain_%s', $currentUser instanceof User ? $currentUser->getId() : 'global');
         $posts = $this->cache->get($key, function (CacheItemInterface $item) use ($currentUser): array {
             // dump('cache miss');
             $item->expiresAfter(null);
@@ -223,15 +223,6 @@ final class FrontendController extends AbstractController
         return $this->render('frontend/sw.html.twig', [
             'code' => $request->query->get('code', ''),
             'existing_codes' => $existingCodes,
-        ]);
-    }
-
-    #[Route('/_fragment/current-user', name: 'current_user', methods: ['GET'])]
-    #[Cache(maxage: 0, public: false)]
-    public function currentUser(#[CurrentUser] ?User $currentUser): Response
-    {
-        return $this->render('partials/_current_user_fragment.html.twig', [
-            'current_user' => $currentUser,
         ]);
     }
 }

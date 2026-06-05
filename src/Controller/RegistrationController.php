@@ -67,7 +67,7 @@ final class RegistrationController extends AbstractController
             $this->emailVerifier->sendEmailConfirmation(
                 'app_registration_verify_email',
                 $user,
-                (new TemplatedEmail())
+                new TemplatedEmail()
                     ->from(new Address($appNotifier, $appName))
                     ->to($user->getEmail())
                     ->subject($this->translator->trans('email.registration_confirmation.subject', ['%app_name%' => $appName]))

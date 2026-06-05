@@ -30,7 +30,6 @@ final class EntityHelper
         if ($entity instanceof Post) {
             return $urlGenerator->generate('app_frontend_post', [
                 'seoTypeSlug' => $translator->trans(\sprintf('post.%s.seo_route', $entity->getType()->name)),
-                'id' => $entity->getId(),
                 'titleSlug' => $entity->getTitleSlug(),
             ], UrlGeneratorInterface::ABSOLUTE_URL);
         }

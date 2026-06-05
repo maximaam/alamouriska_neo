@@ -26,7 +26,7 @@ final readonly class NavBuilder
     {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'navbar-nav me-auto mb-2 mb-lg-0');
-        $currentSlug = $this->requestStack?->getCurrentRequest()?->attributes->get('seoTypeSlug');
+        $currentSlug = $this->requestStack->getCurrentRequest()?->attributes->get('seoTypeSlug');
 
         foreach (PostType::cases() as $type) {
             $childName = $this->translator->trans(\sprintf('post.%s.singular', $type->name));

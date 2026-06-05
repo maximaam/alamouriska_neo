@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,7 +32,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/async', name: 'app_async_', condition: 'request.isXmlHttpRequest()')]
+#[Route(
+    path: '/async',
+    name: 'app_async_',
+    condition: "request.isXmlHttpRequest() || request.headers.get('HX-Request') == 'true'",
+)]
 final class AsyncController extends AbstractController
 {
     public function __construct(
@@ -187,6 +192,22 @@ final class AsyncController extends AbstractController
             'status' => 'error',
             'error' => $normalizer->normalize($form, null, ['groups' => ['Default']]),
         ]);
+    }
+
+    #[Route('/_fragment/current-user', name: 'current_user', methods: ['GET'])]
+    #[Cache(maxage: 0, public: false)]
+    public function currentUser(#[CurrentUser] ?User $currentUser): Response
+    {
+        return $this->render('partials/_current_user_fragment.html.twig', [
+            'current_user' => $currentUser,
+        ]);
+    }
+
+    #[Route('/_fragment/flash-messages', name: 'flash_messages', methods: ['GET'])]
+    #[Cache(maxage: 0, public: false)]
+    public function flashMessages(): Response
+    {
+        return $this->render('partials/_flash_messages_fragment.html.twig');
     }
 
     private function renderCommentForm(FormInterface $form, Post|Wall $entity): string

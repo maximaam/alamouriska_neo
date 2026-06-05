@@ -41,7 +41,7 @@ final class EntityHelperTest extends WebTestCase
 
     public function testResolveEntitySuccess(): void
     {
-        $post = (new Post())
+        $post = new Post()
             ->setType(PostType::word)
             ->setTitle('the title')
             ->setDescription('the descp')
@@ -58,7 +58,7 @@ final class EntityHelperTest extends WebTestCase
 
     public function testGenerateEntityUrlForPost(): void
     {
-        $post = (new Post())
+        $post = new Post()
             ->setType(PostType::word)
             ->setTitle('Ba3ouk fi souk D"lala')
             ->setDescription('the descp')
@@ -72,7 +72,7 @@ final class EntityHelperTest extends WebTestCase
         $url = $this->entityHelper->generateEntityUrl($post, $urlGenerator, $translator);
 
         self::assertSame(
-            \sprintf('https://www.alamouriska.com/mots-algeriens/%s/ba3ouk-fi-souk-d-lala', $post->getId()),
+            'https://www.alamouriska.com/mots-algeriens/ba3ouk-fi-souk-d-lala',
             $url,
         );
     }

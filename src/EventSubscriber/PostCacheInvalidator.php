@@ -49,6 +49,9 @@ final class PostCacheInvalidator
         }
     }
 
+    /**
+     * @return iterable<int, object>
+     */
     private function getScheduledEntities(UnitOfWork $uow): iterable
     {
         yield from $uow->getScheduledEntityInsertions();

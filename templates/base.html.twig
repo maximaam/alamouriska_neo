@@ -87,7 +87,7 @@
                             </div>
                             <div class="col-2 top-nav-user">
                                 <span
-                                    hx-get="{{ path('app_frontend_current_user') }}"
+                                    hx-get="{{ path('app_async_current_user') }}"
                                     hx-trigger="load"
                                     hx-target="this"
                                     hx-swap="outerHTML">
@@ -101,20 +101,11 @@
 
         <main>
             <div class="container">
-            {% if app.user %}
-                {% set flashes = app.flashes %}
-                {% if flashes is not empty %}
-                    <div class="row">
-                        {% for label, messages in flashes %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ label }}">
-                                    {{ message | trans }}
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endif %}
+                <div class="row"
+                    hx-get="{{ path('app_async_flash_messages') }}"
+                    hx-trigger="load"
+                    hx-swap="innerHTML">
+                </div>
                 <div class="row">
                     {% block body %}{% endblock %}
                 </div>
