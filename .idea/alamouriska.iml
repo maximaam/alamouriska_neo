@@ -82,6 +82,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/diff" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/environment" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/exporter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/file-filter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/git-state" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/global-state" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/lines-of-code" />
