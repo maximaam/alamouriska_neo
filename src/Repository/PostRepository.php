@@ -61,7 +61,7 @@ class PostRepository extends ServiceEntityRepository
             ->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
-    private function baseFlatQueryBuilder(?int $currentUserId): QueryBuilder
+    private function baseFlatQueryBuilder(?int $userId): QueryBuilder
     {
         return $this->createQueryBuilder('p')
             ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
@@ -80,11 +80,11 @@ class PostRepository extends ServiceEntityRepository
             ->leftJoin('p.userLikes', 'ul')
             ->leftJoin('p.userComments', 'uc')
 
-            ->leftJoin('p.userLikes', 'ul2', 'WITH', 'ul2.user = :currentUser')
-            ->leftJoin('p.userComments', 'uc2', 'WITH', 'uc2.user = :currentUser')
+            ->leftJoin('p.userLikes', 'ul2', 'WITH', 'ul2.user = :user')
+            ->leftJoin('p.userComments', 'uc2', 'WITH', 'uc2.user = :user')
 
-            ->setParameter('currentUser', $currentUserId)
-
+            ->andWhere('p.user = :user')
+            ->setParameter('user', $userId)
             ->groupBy('p.id, u.id');
     }
 
