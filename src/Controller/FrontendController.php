@@ -153,7 +153,7 @@ final class FrontendController extends AbstractController
         $searchInput = $request->query->getString('q');
         $searchLen = \strlen($searchInput);
 
-        if ($searchLen <= 3 || $searchLen > 100) {
+        if ($searchLen <= 2 || $searchLen > 100) {
             return $this->redirectToRoute('app_frontend_index');
         }
 
