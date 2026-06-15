@@ -17,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostRepository extends ServiceEntityRepository
 {
+    public const string QB_ALIAS = 'p';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
@@ -39,7 +41,7 @@ class PostRepository extends ServiceEntityRepository
      */
     public function fetchNewestSidebar(int $maxResult = 10): array
     {
-        return $this->createQueryBuilder('p')
+        return $this->createQueryBuilder(self::QB_ALIAS)
             ->select('p.title, p.titleSlug, p.type')
             ->addSelect('u.id as userId, u.pseudo, u.avatarName')
             ->innerJoin('p.user', 'u')
@@ -63,7 +65,7 @@ class PostRepository extends ServiceEntityRepository
 
     private function baseFlatQueryBuilder(?int $userId): QueryBuilder
     {
-        return $this->createQueryBuilder('p')
+        return $this->createQueryBuilder(self::QB_ALIAS)
             ->select('p.id, p.title, p.titleArabic, p.description, p.titleSlug, p.createdAt, p.updatedAt, p.type, p.question, p.postImageName')
             ->addSelect('u.id as userId, u.pseudo, u.avatarName')
 
@@ -75,16 +77,15 @@ class PostRepository extends ServiceEntityRepository
             ->addSelect('CASE WHEN COUNT(DISTINCT ul2.id) > 0 THEN true ELSE false END AS likedByCurrentUser')
             ->addSelect('CASE WHEN COUNT(DISTINCT uc2.id) > 0 THEN true ELSE false END AS commentedByCurrentUser')
 
-            ->innerJoin('p.user', 'u')
+            ->innerJoin('p.user', UserRepository::QB_ALIAS)
 
             ->leftJoin('p.userLikes', 'ul')
             ->leftJoin('p.userComments', 'uc')
 
-            ->leftJoin('p.userLikes', 'ul2', 'WITH', 'ul2.user = :user')
-            ->leftJoin('p.userComments', 'uc2', 'WITH', 'uc2.user = :user')
+            ->leftJoin('p.userLikes', 'ul2', 'WITH', 'ul2.user = :postUserId')
+            ->leftJoin('p.userComments', 'uc2', 'WITH', 'uc2.user = :postUserId')
+            ->setParameter('postUserId', $userId)
 
-            ->andWhere('p.user = :user')
-            ->setParameter('user', $userId)
             ->groupBy('p.id, u.id');
     }
 
@@ -121,6 +122,8 @@ class PostRepository extends ServiceEntityRepository
     public function fetchByUser(User $user): array
     {
         return $this->baseFlatQueryBuilder($user->getId())
+            ->andWhere(UserRepository::QB_ALIAS.' = :user')
+            ->setParameter('user', $user)
             ->orderBy('p.id', 'DESC')
             ->getQuery()
             ->getArrayResult();
@@ -144,7 +147,7 @@ class PostRepository extends ServiceEntityRepository
      */
     public function countWeeklyPosts(): array
     {
-        return $this->createQueryBuilder('p')
+        return $this->createQueryBuilder(self::QB_ALIAS)
             ->select('p.type AS type', 'COUNT(p.id) AS count')
             ->where('p.createdAt >= :last_week')
             ->setParameter('last_week', new \DateTimeImmutable('-1 week'))
