@@ -15,11 +15,6 @@
 /.phpunit.cache/
 ###< phpunit/phpunit ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
 ###> symfony/asset-mapper ###
 /public/assets/
 /assets/vendor/
@@ -41,3 +36,4 @@ phpstan.neon
 ###< friendsofphp/php-cs-fixer ###
 
 /brouillon.txt
+/.idea/

@@ -71,3 +71,9 @@ liip-cc: ## Clears uploaded images cache
 # https://ux.symfony.com/icons?set=bi&query=
 icon-import: ## Import icons from the BI lib using SF UX
 	$(PHP) $(CONSOLE) ux:icons:import bi:$(ICON)
+
+asset-compile: ## Assets map compile
+	$(PHP) $(CONSOLE) asset-map:compile
+
+sf-pool-cc: ## Clear Symfony cache
+	$(PHP) $(CONSOLE) cache:pool:clear --all
