@@ -36,4 +36,4 @@ phpstan.neon
 ###< friendsofphp/php-cs-fixer ###
 
 /brouillon.txt
-/.idea/
+.idea/
