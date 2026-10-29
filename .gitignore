@@ -37,3 +37,4 @@ phpstan.neon
 
 /brouillon.txt
 .idea/
+/env_prod.txt
