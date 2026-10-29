@@ -29,7 +29,7 @@ class UserCommentRepository extends ServiceEntityRepository
             ->leftJoin('p.user', 'postUser')       // author of the post
             ->leftJoin('c.user', 'commentUser')    // author of the comment
             ->where('c.post IS NOT NULL')
-            ->orderBy('c.createdAt', 'DESC')
+            ->orderBy('c.createdAt', \SortDirection::Descending)
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();

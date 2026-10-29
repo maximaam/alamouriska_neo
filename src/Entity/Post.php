@@ -70,7 +70,7 @@ class Post implements PostCacheInvalidationAwareInterface
      * @var Collection<int, UserComment>
      */
     #[ORM\OneToMany(targetEntity: UserComment::class, mappedBy: 'post', orphanRemoval: true)]
-    // #[ORM\OrderBy(['createdAt' => 'DESC'])]
+    // #[ORM\OrderBy(['createdAt' => \SortDirection::Descending])]
     private Collection $userComments;
 
     #[ORM\Column]

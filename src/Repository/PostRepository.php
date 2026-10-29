@@ -31,7 +31,7 @@ class PostRepository extends ServiceEntityRepository
     {
         return $this->baseFlatQueryBuilder($currentUser?->getId())
             ->setMaxResults($maxResult)
-            ->orderBy('p.id', 'DESC')
+            ->orderBy('p.id', \SortDirection::Descending)
             ->getQuery()
             ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
@@ -46,7 +46,7 @@ class PostRepository extends ServiceEntityRepository
             ->addSelect('u.id as userId, u.pseudo, u.avatarName')
             ->innerJoin('p.user', 'u')
             ->setMaxResults($maxResult)
-            ->orderBy('p.id', 'DESC')
+            ->orderBy('p.id', \SortDirection::Descending)
             ->getQuery()
             ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
@@ -97,7 +97,7 @@ class PostRepository extends ServiceEntityRepository
         return $this->baseFlatQueryBuilder($currentUserId)
             ->andWhere('LOWER(p.title) LIKE :search_input OR p.titleArabic LIKE :search_input')
             ->setParameter('search_input', '%'.strtolower($searchInput).'%')
-            ->orderBy('p.id', 'DESC')
+            ->orderBy('p.id', \SortDirection::Descending)
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();
@@ -111,7 +111,7 @@ class PostRepository extends ServiceEntityRepository
         return $this->baseFlatQueryBuilder($currentUserId)
             ->andWhere('p.type = :type')
             ->setParameter('type', $type)
-            ->orderBy('p.id', 'DESC')
+            ->orderBy('p.id', \SortDirection::Descending)
             ->getQuery()
             ->getArrayResult();
     }
@@ -124,7 +124,7 @@ class PostRepository extends ServiceEntityRepository
         return $this->baseFlatQueryBuilder($user->getId())
             ->andWhere(UserRepository::QB_ALIAS.' = :user')
             ->setParameter('user', $user)
-            ->orderBy('p.id', 'DESC')
+            ->orderBy('p.id', \SortDirection::Descending)
             ->getQuery()
             ->getArrayResult();
     }
@@ -136,7 +136,7 @@ class PostRepository extends ServiceEntityRepository
     {
         return $this->baseFlatQueryBuilder(null)
             ->where('p.question = TRUE')
-            ->orderBy('p.id', 'DESC')
+            ->orderBy('p.id', \SortDirection::Descending)
             ->setMaxResults(5)
             ->getQuery()
             ->getArrayResult();

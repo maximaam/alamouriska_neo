@@ -44,7 +44,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $this->createQueryBuilder(self::QB_ALIAS)
             ->andWhere(self::QB_ALIAS.'.isVerified = true')
-            ->orderBy(self::QB_ALIAS.'.createdAt', 'DESC')
+            ->orderBy(self::QB_ALIAS.'.createdAt', \SortDirection::Descending)
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getArrayResult();
