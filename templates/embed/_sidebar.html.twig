@@ -17,7 +17,7 @@
                     {{ comment.comment | raw }}
 
                     <div class="d-block text-end">
-                        <a class="a-yellow" href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ comment.post.type.name ~'.seo_route') | trans, 'id' : comment.post.id, 'titleSlug': comment.post.titleSlug}) }}" title="Par: {{ comment.post.user.pseudo }} - Le: {{ comment.post.createdAt | date }}">
+                        <a class="a-yellow" href="{{ path('app_frontend_post', {'seoTypeSlug': ('post.'~ comment.post.type.name ~'.seo_route') | trans, 'titleSlug': comment.post.titleSlug}) }}" title="Par: {{ comment.post.user.pseudo }} - Le: {{ comment.post.createdAt | date }}">
                             {{ 'label.see_post' | trans }}
                         </a>
                     </div>

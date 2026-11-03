@@ -17,7 +17,7 @@ final readonly class PostChangedListener
 {
     public function __construct(
         private LiipCacheManager $lcm,
-        #[Autowire('%posts_dir%')]
+        #[Autowire(param: 'posts_dir')]
         private string $postsDir,
     ) {
     }

@@ -20,7 +20,7 @@ final readonly class UserChangedListener
 {
     public function __construct(
         private LiipCacheManager $lcm,
-        #[Autowire('%avatars_dir%')]
+        #[Autowire(param: 'avatars_dir')]
         private string $avatarsDir,
     ) {
     }

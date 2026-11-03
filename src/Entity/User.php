@@ -195,16 +195,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    #[\Deprecated]
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
     public function isVerified(): bool
     {
         return $this->isVerified;
@@ -293,15 +283,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // updatedAt, requird by VichUppload to trigger doctrine
-    // is automatically called TimestampableEntity
+    // updatedAt, required by VichUpload to trigger doctrine automatically called TimestampableEntity
     public function setAvatarFile(?File $avatarFile = null): void
     {
         $this->avatarFile = $avatarFile;
 
         if ($avatarFile instanceof File) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
+            // It is required that at least one field changes if you are using doctrine,
+            // otherwise the event listeners won't be called, and the file is lost.
             $this->updatedAt = new \DateTime();
         }
     }

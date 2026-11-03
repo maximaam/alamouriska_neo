@@ -1,5 +1,11 @@
 <?php
 
-foreach (glob(dirname(__DIR__).'/var/cache/prod/*.preload.php') ?: [] as $file) {
-    require $file;
+declare(strict_types=1);
+
+$files = glob(__DIR__.'/var/cache/prod/*.preload.php');
+
+if (false !== $files) {
+    foreach ($files as $file) {
+        require $file;
+    }
 }
